@@ -2,7 +2,7 @@ package redis
 
 import (
 	"context"
-	"fmt"
+	"log"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -24,6 +24,6 @@ func NewRedisClient(host string, password string, db int) (*redis.Client, error)
 		return nil, err
 	}
 
-	fmt.Println("Connected to Redis Server")
+	log.Println("Connected to Redis Server")
 	return client, nil
 }

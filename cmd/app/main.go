@@ -1,12 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"context"
+	cloudstorage "go_project_template/configs/cloud_storage"
 	"go_project_template/configs/db"
 	"go_project_template/configs/redis"
 	"go_project_template/internal/controller"
 	"go_project_template/internal/query"
 	router "go_project_template/internal/routes"
+	"log"
 	"os"
 	"strconv"
 
@@ -18,7 +20,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Running App1")
+	log.Println("Running App1")
 
 	// Load .env
 	godotenv.Load(".env")
@@ -33,10 +35,10 @@ func main() {
 	)
 
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Fatalln(err.Error())
 		return
 	} else {
-		fmt.Println("Connected to DB")
+		log.Println("Connected to DB")
 	}
 	defer dbConnection.Close()
 
@@ -52,8 +54,31 @@ func main() {
 	)
 
 	if err != nil {
-		fmt.Println("Failed to connect redis")
+		log.Fatalln("Failed to connect redis")
 	}
+
+	// Setup Cloud Storage
+	var cloudClient cloudstorage.CloudStorageInterface
+
+	cloudStorageUseSSL, err := strconv.ParseBool(os.Getenv("CLOUD_STORAGE_USE_SSL"))
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	minioClient, err := cloudstorage.NewMinioClient(
+		os.Getenv("CLOUD_STORAGE_ENDPOINT"),
+		os.Getenv("CLOUD_STORAGE_ACCESS_KEY"),
+		os.Getenv("CLOUD_STORAGE_SECRET_KEY"),
+		cloudStorageUseSSL,
+	)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	// Use minio as cloud client
+	cloudClient = minioClient
+
+	cloudClient.ListBuckets(context.Background())
 
 	// Setup REST Server
 	restServer := gin.New()
@@ -66,6 +91,6 @@ func main() {
 	userRouter := router.NewRouter(userController)
 
 	userRouter.AddRoute(restServer.Group("/api"))
-	restServer.Run("localhost:8080")
+	// restServer.Run("localhost:8080")
 
 }
