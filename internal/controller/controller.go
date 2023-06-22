@@ -2,9 +2,10 @@ package controller
 
 import (
 	"database/sql"
-	"go_project_template/internal/model"
-	"go_project_template/internal/repository"
 	"net/http"
+
+	"github.com/ardimr/train-booking-system/internal/model"
+	"github.com/ardimr/train-booking-system/internal/repository"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,7 +1,7 @@
 package router
 
 import (
-	"go_project_template/internal/controller"
+	"github.com/ardimr/train-booking-system/internal/controller"
 
 	"github.com/gin-gonic/gin"
 )

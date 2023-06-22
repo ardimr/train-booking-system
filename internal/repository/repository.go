@@ -3,8 +3,9 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"go_project_template/configs/db"
-	"go_project_template/internal/model"
+
+	"github.com/ardimr/train-booking-system/configs/db"
+	"github.com/ardimr/train-booking-system/internal/model"
 )
 
 type Repository interface {

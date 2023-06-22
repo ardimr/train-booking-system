@@ -4,9 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"go_project_template/internal/repository"
 	"regexp"
 	"testing"
+
+	"github.com/ardimr/train-booking-system/internal/repository"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"

@@ -2,15 +2,16 @@ package main
 
 import (
 	"context"
-	cloudstorage "go_project_template/configs/cloud_storage"
-	"go_project_template/configs/db"
-	"go_project_template/configs/redis"
-	"go_project_template/internal/controller"
-	"go_project_template/internal/repository"
-	router "go_project_template/internal/routes"
 	"log"
 	"os"
 	"strconv"
+
+	cloudstorage "github.com/ardimr/train-booking-system/configs/cloud_storage"
+	"github.com/ardimr/train-booking-system/configs/db"
+	"github.com/ardimr/train-booking-system/configs/redis"
+	"github.com/ardimr/train-booking-system/internal/controller"
+	"github.com/ardimr/train-booking-system/internal/repository"
+	router "github.com/ardimr/train-booking-system/internal/routes"
 
 	"github.com/gin-contrib/gzip"
 

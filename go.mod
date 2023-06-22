@@ -1,4 +1,4 @@
-module go_project_template
+module github.com/ardimr/train-booking-system
 
 go 1.20
 
