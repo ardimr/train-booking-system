@@ -1,10 +1,10 @@
-package query_test
+package repository_test
 
 import (
 	"context"
 	"database/sql"
 	"fmt"
-	"go_project_template/internal/query"
+	"go_project_template/internal/repository"
 	"regexp"
 	"testing"
 
@@ -28,8 +28,8 @@ func TestGetUser(t *testing.T) {
 	db, mock := NewDBMock()
 	defer db.Close()
 
-	// Setup querier
-	querier := query.NewPostgresQuerier(db)
+	// Setup Repository
+	Repository := repository.NewPostgresRepository(db)
 
 	// Expected query statement
 	queryStatement := `SELECT * FROM public.users`
@@ -44,7 +44,7 @@ func TestGetUser(t *testing.T) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WillReturnRows(rows)
 
 	// Excecute mock query
-	users, err := querier.GetUsers(context.Background())
+	users, err := Repository.GetUsers(context.Background())
 
 	assert.NoError(t, err)
 	assert.NotNil(t, users)
@@ -54,8 +54,8 @@ func TestGetUserById(t *testing.T) {
 	// creates sqlmock database connection and a mock to manage expectations
 	db, mock := NewDBMock()
 	defer db.Close()
-	// Setup querier
-	querier := query.NewPostgresQuerier(db)
+	// Setup Repository
+	Repository := repository.NewPostgresRepository(db)
 
 	// Expected query statement
 	queryStatement := `SELECT * FROM public.users WHERE id=$1`
@@ -70,7 +70,7 @@ func TestGetUserById(t *testing.T) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WithArgs(int64(1)).WillReturnRows(rows)
 
 	// Excecute mock query
-	_, err := querier.GetUserById(context.Background(), int64(1))
+	_, err := Repository.GetUserById(context.Background(), int64(1))
 
 	assert.NoError(t, err)
 	if err = mock.ExpectationsWereMet(); err != nil {
@@ -82,8 +82,8 @@ func BenchmarkGetUsers(b *testing.B) {
 	// creates sqlmock database connection and a mock to manage expectations
 	db, mock := NewDBMock()
 
-	// Setup querier
-	querier := query.NewPostgresQuerier(db)
+	// Setup Repository
+	Repository := repository.NewPostgresRepository(db)
 
 	// Expected query statement
 	queryStatement := `SELECT * FROM public.users`
@@ -98,7 +98,7 @@ func BenchmarkGetUsers(b *testing.B) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WillReturnRows(rows)
 
 	// Excecute mock query
-	_, err := querier.GetUsers(context.Background())
+	_, err := Repository.GetUsers(context.Background())
 
 	if err != nil {
 		panic(err)
@@ -109,8 +109,8 @@ func BenchmarkGetUserById(b *testing.B) {
 	// creates sqlmock database connection and a mock to manage expectations
 	db, mock := NewDBMock()
 
-	// Setup querier
-	querier := query.NewPostgresQuerier(db)
+	// Setup Repository
+	Repository := repository.NewPostgresRepository(db)
 
 	// Expected query statement
 	queryStatement := `SELECT * FROM public.users WHERE id=$1`
@@ -125,7 +125,7 @@ func BenchmarkGetUserById(b *testing.B) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WithArgs(int64(1)).WillReturnRows(rows)
 
 	// Excecute mock query
-	user, err := querier.GetUserById(context.Background(), int64(1))
+	user, err := Repository.GetUserById(context.Background(), int64(1))
 
 	fmt.Println(*user)
 	if err != nil {
