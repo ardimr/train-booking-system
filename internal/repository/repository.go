@@ -1,4 +1,4 @@
-package query
+package repository
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"go_project_template/internal/model"
 )
 
-type Querier interface {
+type Repository interface {
 	GetUsers(ctx context.Context) ([]model.User, error)
 	GetUserById(ctx context.Context, id int64) (*model.User, error)
 	AddNewUser(ctx context.Context, newUser model.User) (int64, error)
@@ -15,19 +15,19 @@ type Querier interface {
 	DeleteUser(ctx context.Context, id int64) error
 }
 
-type PostgresQuerier struct {
+type PostgresRepository struct {
 	db db.DBInterface
 }
 
-func NewPostgresQuerier(db db.DBInterface) *PostgresQuerier {
-	return &PostgresQuerier{
+func NewPostgresRepository(db db.DBInterface) *PostgresRepository {
+	return &PostgresRepository{
 		db: db,
 	}
 }
 
 // Query Implementation
 
-func (q *PostgresQuerier) GetUsers(ctx context.Context) ([]model.User, error) {
+func (q *PostgresRepository) GetUsers(ctx context.Context) ([]model.User, error) {
 	var users []model.User
 
 	sqlStatement := `
@@ -56,7 +56,7 @@ func (q *PostgresQuerier) GetUsers(ctx context.Context) ([]model.User, error) {
 	return users, nil
 }
 
-func (q *PostgresQuerier) GetUserById(ctx context.Context, id int64) (*model.User, error) {
+func (q *PostgresRepository) GetUserById(ctx context.Context, id int64) (*model.User, error) {
 	var user model.User
 
 	queryStatement := `
@@ -77,7 +77,7 @@ func (q *PostgresQuerier) GetUserById(ctx context.Context, id int64) (*model.Use
 	return &user, nil
 }
 
-func (q *PostgresQuerier) AddNewUser(ctx context.Context, newUser model.User) (int64, error) {
+func (q *PostgresRepository) AddNewUser(ctx context.Context, newUser model.User) (int64, error) {
 
 	var newId int64
 
@@ -94,7 +94,7 @@ func (q *PostgresQuerier) AddNewUser(ctx context.Context, newUser model.User) (i
 	return newId, nil
 }
 
-func (q *PostgresQuerier) UpdateUser(ctx context.Context, user model.User) (int64, error) {
+func (q *PostgresRepository) UpdateUser(ctx context.Context, user model.User) (int64, error) {
 
 	sqlStatement := `
 	UPDATE public.users SET name=$2 WHERE id=$1
@@ -114,7 +114,7 @@ func (q *PostgresQuerier) UpdateUser(ctx context.Context, user model.User) (int6
 	return rowsAffeced, nil
 }
 
-func (q *PostgresQuerier) DeleteUser(ctx context.Context, id int64) error {
+func (q *PostgresRepository) DeleteUser(ctx context.Context, id int64) error {
 
 	// create sql statement to delete user from database
 	sqlStatement := `DELETE FROM public.users WHERE id=$1`

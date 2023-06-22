@@ -6,7 +6,7 @@ import (
 	"go_project_template/configs/db"
 	"go_project_template/configs/redis"
 	"go_project_template/internal/controller"
-	"go_project_template/internal/query"
+	"go_project_template/internal/repository"
 	router "go_project_template/internal/routes"
 	"log"
 	"os"
@@ -87,7 +87,7 @@ func main() {
 	restServer.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	// Setup Router
-	userController := controller.NewController(query.NewPostgresQuerier(dbConnection))
+	userController := controller.NewController(repository.NewPostgresRepository(dbConnection))
 	userRouter := router.NewRouter(userController)
 
 	userRouter.AddRoute(restServer.Group("/api"))

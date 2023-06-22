@@ -3,17 +3,17 @@ package controller
 import (
 	"database/sql"
 	"go_project_template/internal/model"
-	"go_project_template/internal/query"
+	"go_project_template/internal/repository"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Controller struct {
-	querier query.Querier
+	querier repository.Repository
 }
 
-func NewController(q query.Querier) *Controller {
+func NewController(q repository.Repository) *Controller {
 	return &Controller{
 		querier: q,
 	}
