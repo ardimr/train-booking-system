@@ -17,15 +17,24 @@ func NewRouter(controller *controller.Controller) *Router {
 }
 
 func (router *Router) AddRoute(superRoute *gin.RouterGroup) {
-	router.userRoutes(superRoute)
-	// router.sfmRoutes(superRoute)
+	router.travelRoutes(superRoute)
+	router.stationRoutes(superRoute)
 }
 
-func (router *Router) userRoutes(superRoute *gin.RouterGroup) {
+func (router *Router) travelRoutes(superRoute *gin.RouterGroup) {
 	userRouter := superRoute.Group("/v1")
 	userRouter.GET("/travels", router.controller.ListTravels)
 	userRouter.GET("/travels/:id", router.controller.GetTravelById)
 	userRouter.POST("/travels", router.controller.AddNewTravel)
 	userRouter.PATCH("/travels/:id", router.controller.UpdateTravelById)
 	userRouter.DELETE("/travels/:id", router.controller.DeleteTravel)
+}
+
+func (router *Router) stationRoutes(superRoute *gin.RouterGroup) {
+	userRouter := superRoute.Group("/v1")
+	userRouter.GET("/stations", router.controller.FindStations)
+	// userRouter.GET("/station/:id", router.controller.GetTravelById)
+	// userRouter.POST("/station", router.controller.AddNewTravel)
+	// userRouter.PATCH("/station/:id", router.controller.UpdateTravelById)
+	// userRouter.DELETE("/station/:id", router.controller.DeleteTravel)
 }
