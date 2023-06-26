@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/ardimr/train-booking-system/internal/model"
 	"github.com/ardimr/train-booking-system/internal/repository"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -45,7 +46,7 @@ func TestGetUser(t *testing.T) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WillReturnRows(rows)
 
 	// Excecute mock query
-	users, err := Repository.GetUsers(context.Background())
+	users, err := Repository.ListTravels(context.Background(), model.TravelScheduleReqParam{})
 
 	assert.NoError(t, err)
 	assert.NotNil(t, users)
@@ -71,7 +72,7 @@ func TestGetUserById(t *testing.T) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WithArgs(int64(1)).WillReturnRows(rows)
 
 	// Excecute mock query
-	_, err := Repository.GetUserById(context.Background(), int64(1))
+	_, err := Repository.GetTravelById(context.Background(), int64(1))
 
 	assert.NoError(t, err)
 	if err = mock.ExpectationsWereMet(); err != nil {
@@ -99,7 +100,7 @@ func BenchmarkGetUsers(b *testing.B) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WillReturnRows(rows)
 
 	// Excecute mock query
-	_, err := Repository.GetUsers(context.Background())
+	_, err := Repository.ListTravels(context.Background(), model.TravelScheduleReqParam{})
 
 	if err != nil {
 		panic(err)
@@ -126,7 +127,7 @@ func BenchmarkGetUserById(b *testing.B) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WithArgs(int64(1)).WillReturnRows(rows)
 
 	// Excecute mock query
-	user, err := Repository.GetUserById(context.Background(), int64(1))
+	user, err := Repository.GetTravelById(context.Background(), int64(1))
 
 	fmt.Println(*user)
 	if err != nil {

@@ -1,12 +1,10 @@
 package main
 
 import (
-	"context"
 	"log"
 	"os"
 	"strconv"
 
-	cloudstorage "github.com/ardimr/train-booking-system/configs/cloud_storage"
 	"github.com/ardimr/train-booking-system/configs/db"
 	"github.com/ardimr/train-booking-system/configs/redis"
 	"github.com/ardimr/train-booking-system/internal/controller"
@@ -59,27 +57,25 @@ func main() {
 	}
 
 	// Setup Cloud Storage
-	var cloudClient cloudstorage.CloudStorageInterface
+	// var cloudClient cloudstorage.CloudStorageInterface
 
-	cloudStorageUseSSL, err := strconv.ParseBool(os.Getenv("CLOUD_STORAGE_USE_SSL"))
-	if err != nil {
-		log.Fatalln(err)
-	}
+	// cloudStorageUseSSL, err := strconv.ParseBool(os.Getenv("CLOUD_STORAGE_USE_SSL"))
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
 
-	minioClient, err := cloudstorage.NewMinioClient(
-		os.Getenv("CLOUD_STORAGE_ENDPOINT"),
-		os.Getenv("CLOUD_STORAGE_ACCESS_KEY"),
-		os.Getenv("CLOUD_STORAGE_SECRET_KEY"),
-		cloudStorageUseSSL,
-	)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	// minioClient, err := cloudstorage.NewMinioClient(
+	// 	os.Getenv("CLOUD_STORAGE_ENDPOINT"),
+	// 	os.Getenv("CLOUD_STORAGE_ACCESS_KEY"),
+	// 	os.Getenv("CLOUD_STORAGE_SECRET_KEY"),
+	// 	cloudStorageUseSSL,
+	// )
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
 
 	// Use minio as cloud client
-	cloudClient = minioClient
-
-	cloudClient.ListBuckets(context.Background())
+	// cloudClient = minioClient
 
 	// Setup REST Server
 	restServer := gin.New()
@@ -92,6 +88,6 @@ func main() {
 	userRouter := router.NewRouter(userController)
 
 	userRouter.AddRoute(restServer.Group("/api"))
-	// restServer.Run("localhost:8080")
+	restServer.Run("localhost:8080")
 
 }

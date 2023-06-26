@@ -22,9 +22,22 @@ func NewController(q repository.Repository) *Controller {
 
 // Controller Implementation
 
-func (controller *Controller) GetUsers(ctx *gin.Context) {
+func (controller *Controller) ListTravels(ctx *gin.Context) {
+	// Retrieve the request parameters
+	var reqParam model.TravelScheduleReqParam
+
+	if err := ctx.BindQuery(&reqParam); err != nil {
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"Message": err.Error(),
+			},
+		)
+		return
+	}
+
 	// Get users data from db
-	users, err := controller.querier.GetUsers(ctx)
+	users, err := controller.querier.ListTravels(ctx, reqParam)
 	if err != nil {
 		ctx.JSON(
 			http.StatusInternalServerError,
@@ -41,7 +54,7 @@ func (controller *Controller) GetUsers(ctx *gin.Context) {
 	)
 }
 
-func (controller *Controller) GetUserById(ctx *gin.Context) {
+func (controller *Controller) GetTravelById(ctx *gin.Context) {
 	var reqUri model.GetUserByIdReqUri
 
 	// Request URI Binding
@@ -55,7 +68,7 @@ func (controller *Controller) GetUserById(ctx *gin.Context) {
 		return
 	}
 
-	user, err := controller.querier.GetUserById(ctx, reqUri.ID)
+	user, err := controller.querier.GetTravelById(ctx, reqUri.ID)
 
 	if err != nil {
 		switch err {
@@ -77,10 +90,10 @@ func (controller *Controller) GetUserById(ctx *gin.Context) {
 	)
 }
 
-func (controler *Controller) AddNewUser(ctx *gin.Context) {
-	var newUser model.User
+func (controler *Controller) AddNewTravel(ctx *gin.Context) {
+	var newTravel model.Travel
 
-	if err := ctx.BindJSON(&newUser); err != nil {
+	if err := ctx.BindJSON(&newTravel); err != nil {
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
@@ -90,7 +103,7 @@ func (controler *Controller) AddNewUser(ctx *gin.Context) {
 		return
 	}
 
-	newId, err := controler.querier.AddNewUser(ctx, newUser)
+	newId, err := controler.querier.AddNewTravel(ctx, newTravel)
 
 	if err != nil {
 		ctx.JSON(
@@ -111,10 +124,10 @@ func (controler *Controller) AddNewUser(ctx *gin.Context) {
 	)
 }
 
-func (controller *Controller) UpdateUser(ctx *gin.Context) {
-	var user model.User
+func (controller *Controller) UpdateTravelById(ctx *gin.Context) {
+	var travel model.Travel
 
-	if err := ctx.BindJSON(&user); err != nil {
+	if err := ctx.BindJSON(&travel); err != nil {
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
@@ -124,7 +137,7 @@ func (controller *Controller) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	res, err := controller.querier.UpdateUser(ctx, user)
+	res, err := controller.querier.UpdateTravelById(ctx, 1, travel)
 
 	if err != nil {
 		ctx.JSON(
@@ -144,7 +157,7 @@ func (controller *Controller) UpdateUser(ctx *gin.Context) {
 	)
 }
 
-func (controller *Controller) DeleteUser(ctx *gin.Context) {
+func (controller *Controller) DeleteTravel(ctx *gin.Context) {
 	var reqUri model.DeleteUserReqUri
 
 	if err := ctx.BindUri(&reqUri); err != nil {
@@ -157,7 +170,7 @@ func (controller *Controller) DeleteUser(ctx *gin.Context) {
 		return
 	}
 
-	if err := controller.querier.DeleteUser(ctx, reqUri.ID); err != nil {
+	if err := controller.querier.DeleteTravel(ctx, reqUri.ID); err != nil {
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{

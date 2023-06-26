@@ -22,10 +22,10 @@ func (router *Router) AddRoute(superRoute *gin.RouterGroup) {
 }
 
 func (router *Router) userRoutes(superRoute *gin.RouterGroup) {
-	userRouter := superRoute.Group("/user-service")
-	userRouter.GET("/users", router.controller.GetUsers)
-	userRouter.GET("/users/:id", router.controller.GetUserById)
-	userRouter.POST("/users", router.controller.AddNewUser)
-	userRouter.PATCH("/users", router.controller.UpdateUser)
-	userRouter.DELETE("/users/:id", router.controller.DeleteUser)
+	userRouter := superRoute.Group("/v1")
+	userRouter.GET("/travels", router.controller.ListTravels)
+	userRouter.GET("/travels/:id", router.controller.GetTravelById)
+	userRouter.POST("/travels", router.controller.AddNewTravel)
+	userRouter.PATCH("/travels/:id", router.controller.UpdateTravelById)
+	userRouter.DELETE("/travels/:id", router.controller.DeleteTravel)
 }
