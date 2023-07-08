@@ -13,15 +13,16 @@ func (q *PostgresRepository) FindStations(ctx context.Context, param model.Stati
 	WITH city_stations AS (
 		SELECT
 			cities.name as city_name,
-			stations.station_code,
-			stations.name as station_name
+			stations.station_code as code,
+			stations.name as name,
+			stations.station_code || ' - ' || stations.name as label
 		FROM travel_schedules.stations
 		INNER JOIN travel_schedules.cities
 		ON stations.city_code=cities.city_code
 	)
 	
 	SELECT * FROM city_stations
-	WHERE station_code ILIKE $1 || '%' OR city_name ILIKE  $1 || '%'
+	WHERE code ILIKE $1 || '%' OR city_name ILIKE  $1 || '%'
 	`
 
 	// Querying
@@ -36,8 +37,9 @@ func (q *PostgresRepository) FindStations(ctx context.Context, param model.Stati
 
 		err := rows.Scan(
 			&cityStation.CityName,
-			&cityStation.StationCode,
-			&cityStation.StationName,
+			&cityStation.Code,
+			&cityStation.Name,
+			&cityStation.Label,
 		)
 
 		if err != nil {
