@@ -14,7 +14,11 @@ type Repository interface {
 	UpdateTravelById(ctx context.Context, id int64, newTravel model.Travel) (int64, error)
 	DeleteTravel(ctx context.Context, id int64) error
 
+	// Stations
 	FindStations(ctx context.Context, param model.StationRequestParam) ([]model.CityStation, error)
+
+	// Seats
+	FindAvailableSeats(ctx context.Context, param model.AvailableSeatRequestParam) ([]model.AvailableSeat, error)
 }
 
 type PostgresRepository struct {
