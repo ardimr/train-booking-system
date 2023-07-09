@@ -38,8 +38,8 @@ type WagonClass struct {
 }
 
 type Duration struct {
-	Hour   int `json:"duration_hour"`
-	Minute int `json:"duration_minute"`
+	Hour   int `json:"hour"`
+	Minute int `json:"minute"`
 }
 
 type Cost struct {
