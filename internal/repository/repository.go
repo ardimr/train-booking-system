@@ -19,6 +19,10 @@ type Repository interface {
 
 	// Seats
 	FindAvailableSeats(ctx context.Context, param model.AvailableSeatRequestParam) ([]model.AvailableSeat, error)
+
+	// Tickets
+	GetUserTickets(ctx context.Context, param model.GetUserTicketsRequestParam) ([]model.UserTicket, error)
+	GetTicketDetailsById(ctx context.Context, param model.GetTicketDetailsRequestUri) (model.TicketDetails, error)
 }
 
 type PostgresRepository struct {
