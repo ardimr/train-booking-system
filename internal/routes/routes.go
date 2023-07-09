@@ -20,6 +20,7 @@ func (router *Router) AddRoute(superRoute *gin.RouterGroup) {
 	router.travelRoutes(superRoute)
 	router.stationRoutes(superRoute)
 	router.seatRoutes(superRoute)
+	router.ticketRoutes(superRoute)
 }
 
 func (router *Router) travelRoutes(superRoute *gin.RouterGroup) {
@@ -43,4 +44,10 @@ func (router *Router) stationRoutes(superRoute *gin.RouterGroup) {
 func (router *Router) seatRoutes(superRoute *gin.RouterGroup) {
 	seatRouter := superRoute.Group("/v1")
 	seatRouter.GET("/seats", router.controller.FindAvailableSeats)
+}
+
+func (router *Router) ticketRoutes(superRoute *gin.RouterGroup) {
+	ticketRouter := superRoute.Group("/v1")
+	ticketRouter.GET("/tickets", router.controller.GetUserTickets)
+	ticketRouter.GET("/tickets/:ticket_id", router.controller.GetTicketDetailsById)
 }
