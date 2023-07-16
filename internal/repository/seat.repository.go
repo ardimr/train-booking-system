@@ -31,9 +31,13 @@ func (q *PostgresRepository) FindAvailableSeats(ctx context.Context, param model
 	),
 	travel_tickets AS (
 		SELECT
-			*
+			tickets.travel_id,
+			tickets.ticket_id,
+			tickets.user_id,
+			passengers.seat_id
 		FROM
 			travel_schedules.tickets
+			INNER JOIN users.passengers ON passengers.ticket_id = tickets.ticket_id
 		WHERE
 			tickets.travel_id = $1
 	),
