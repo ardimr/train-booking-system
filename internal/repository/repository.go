@@ -5,6 +5,7 @@ import (
 
 	"github.com/ardimr/train-booking-system/configs/db"
 	"github.com/ardimr/train-booking-system/internal/model"
+	"github.com/redis/go-redis/v9"
 )
 
 type Repository interface {
@@ -32,6 +33,19 @@ type PostgresRepository struct {
 func NewPostgresRepository(db db.DBInterface) *PostgresRepository {
 	return &PostgresRepository{
 		db: db,
+	}
+}
+
+type IRedisRepository interface {
+	CreateBooking(ctx context.Context, booking model.BookingRequestBody) error
+}
+type RedisRepository struct {
+	redisClient *redis.Client
+}
+
+func NewRedisRepository(redisClient *redis.Client) *RedisRepository {
+	return &RedisRepository{
+		redisClient: redisClient,
 	}
 }
 

@@ -12,11 +12,13 @@ import (
 
 type Controller struct {
 	querier repository.Repository
+	redis   repository.IRedisRepository
 }
 
-func NewController(q repository.Repository) *Controller {
+func NewController(q repository.Repository, r repository.IRedisRepository) *Controller {
 	return &Controller{
 		querier: q,
+		redis:   r,
 	}
 }
 

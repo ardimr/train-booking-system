@@ -19,6 +19,14 @@ func (controller *Controller) NewBooking(ctx *gin.Context) {
 		return
 	}
 
+	// Set to redis
+	if err := controller.redis.CreateBooking(ctx, reqBody); err != nil {
+		ctx.AbortWithStatusJSON(
+			http.StatusInternalServerError,
+			gin.H{"Err": err.Error()},
+		)
+		return
+	}
 	ctx.JSON(
 		http.StatusAccepted,
 		reqBody,

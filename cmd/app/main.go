@@ -11,6 +11,7 @@ import (
 	"github.com/ardimr/train-booking-system/internal/repository"
 	router "github.com/ardimr/train-booking-system/internal/routes"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 
 	"github.com/gin-gonic/gin"
@@ -46,7 +47,7 @@ func main() {
 	redisPassword := os.Getenv("REDIS_PASSWORD")
 	redisDB, _ := strconv.Atoi(os.Getenv("REDIS_DB"))
 
-	_, err = redis.NewRedisClient(
+	redisClient, err := redis.NewRedisClient(
 		redisHost,
 		redisPassword,
 		redisDB,
@@ -83,11 +84,15 @@ func main() {
 	restServer.Use(gin.Logger())
 	restServer.Use(gzip.Gzip(gzip.DefaultCompression))
 
-	// Setup Router
-	userController := controller.NewController(repository.NewPostgresRepository(dbConnection))
-	userRouter := router.NewRouter(userController)
+	// Setup CORS Policy
+	corsConfig := cors.Default()
+	restServer.Use(corsConfig)
 
-	userRouter.AddRoute(restServer.Group("/api"))
+	// Setup Router
+	tbsController := controller.NewController(repository.NewPostgresRepository(dbConnection), repository.NewRedisRepository(redisClient))
+	tbsRouter := router.NewRouter(tbsController)
+
+	tbsRouter.AddRoute(restServer.Group("/api"))
 	restServer.Run("localhost:8080")
 
 }
