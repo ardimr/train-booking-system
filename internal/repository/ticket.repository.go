@@ -15,7 +15,7 @@ func (q *PostgresRepository) GetUserTickets(ctx context.Context, param model.Get
 		SELECT
 			users.user_id,
 			tickets.ticket_id,
-			-- travels.travel_code,
+			travels.travel_code,
 			json_build_object(
 				'code',
 				departure_station.station_code,
@@ -49,7 +49,7 @@ func (q *PostgresRepository) GetUserTickets(ctx context.Context, param model.Get
 				)
 			) AS duration
 		FROM
-			travel_schedules.tickets
+			bookings.tickets
 			INNER JOIN users.users ON users.user_id = tickets.user_id
 			INNER JOIN travel_schedules.travels ON travels.travel_id = tickets.travel_id
 			INNER JOIN travel_schedules.stations departure_station ON departure_station.station_code = travels.departure_station
@@ -76,6 +76,7 @@ func (q *PostgresRepository) GetUserTickets(ctx context.Context, param model.Get
 		rows.Scan(
 			&userTicket.UserId,
 			&userTicket.TicketId,
+			&userTicket.TravelCode,
 			&departureStationRaw,
 			&destinationStationRaw,
 			&userTicket.DepartureSchedule,
@@ -106,6 +107,7 @@ func (q *PostgresRepository) GetTicketDetailsById(ctx context.Context, param mod
 	WITH travel_tickets AS (
 		SELECT
 			tickets.ticket_id,
+			bookings.status,
 			users.user_id,
 			travels.travel_code,
 			json_build_object(
@@ -141,7 +143,8 @@ func (q *PostgresRepository) GetTicketDetailsById(ctx context.Context, param mod
 				)
 			) AS duration
 		FROM
-			travel_schedules.tickets
+			bookings.tickets
+			INNER JOIN bookings.bookings ON bookings.booking_code = tickets.booking_code
 			INNER JOIN users.users ON users.user_id = tickets.user_id
 			INNER JOIN travel_schedules.travels ON travels.travel_id = tickets.travel_id
 			INNER JOIN travel_schedules.stations departure_station ON departure_station.station_code = travels.departure_station
@@ -155,7 +158,7 @@ func (q *PostgresRepository) GetTicketDetailsById(ctx context.Context, param mod
 			seats.seat_id,
 			classes.class_code || '-' || train_cars.train_car_no || '/' || seats.seat_row || seats.seat_column as seat_label
 		FROM
-			users.passengers
+			bookings.passengers
 			INNER JOIN travel_schedules.seats on passengers.seat_id = seats.seat_id
 			INNER JOIN travel_schedules.train_cars on train_cars.train_car_id = travel_schedules.seats.train_car_id
 			INNER JOIN travel_schedules.classes on classes.id = train_cars.class_id
@@ -184,8 +187,8 @@ func (q *PostgresRepository) GetTicketDetailsById(ctx context.Context, param mod
 				)
 			) AS passengers
 		FROM
-			users.passengers
-			INNER JOIN travel_schedules.tickets on tickets.ticket_id = passengers.ticket_id
+			bookings.passengers
+			INNER JOIN bookings.tickets on tickets.ticket_id = passengers.ticket_id
 			INNER JOIN users.id_types ON id_types.id_type_id = passengers.passenger_id_type
 			INNER JOIN passenger_seats ON passenger_seats.ticket_id = tickets.ticket_id
 			AND passengers.passenger_id = passenger_seats.passenger_id
@@ -197,6 +200,7 @@ func (q *PostgresRepository) GetTicketDetailsById(ctx context.Context, param mod
 	ticket_details AS (
 		SELECT
 			travel_tickets.ticket_id,
+			travel_tickets.status,
 			departure_station,
 			destination_station,
 			departure_schedule,
@@ -219,6 +223,7 @@ func (q *PostgresRepository) GetTicketDetailsById(ctx context.Context, param mod
 
 	err := q.db.QueryRowContext(ctx, queryStatement, param.TicketId).Scan(
 		&ticketDetails.TicketId,
+		&ticketDetails.Status,
 		&departureStationRaw,
 		&destinationStationRaw,
 		&ticketDetails.DepartureSchedule,
