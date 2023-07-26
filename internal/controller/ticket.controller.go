@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/ardimr/train-booking-system/internal/model"
@@ -18,8 +17,6 @@ func (controller *Controller) GetUserTickets(ctx *gin.Context) {
 		)
 		return
 	}
-
-	fmt.Println("User ID: ", reqParam.UserId)
 	// Get the stations data from database
 	userTickets, err := controller.querier.GetUserTickets(ctx, reqParam)
 
