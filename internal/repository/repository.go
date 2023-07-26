@@ -24,6 +24,9 @@ type Repository interface {
 	// Tickets
 	GetUserTickets(ctx context.Context, param model.GetUserTicketsRequestParam) ([]model.UserTicket, error)
 	GetTicketDetailsById(ctx context.Context, param model.GetTicketDetailsRequestUri) (model.TicketDetails, error)
+
+	// Bookings
+	CreateBooking(ctx context.Context, bookingCode string, booking model.BookingRequestBody) error
 }
 
 type PostgresRepository struct {
@@ -37,7 +40,7 @@ func NewPostgresRepository(db db.DBInterface) *PostgresRepository {
 }
 
 type IRedisRepository interface {
-	CreateBooking(ctx context.Context, booking model.BookingRequestBody) error
+	CreateBooking(ctx context.Context, booking model.BookingRequestBody) (string, error)
 }
 type RedisRepository struct {
 	redisClient *redis.Client
