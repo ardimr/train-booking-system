@@ -4,6 +4,7 @@ import "time"
 
 type TicketDetails struct {
 	TicketId           int64             `json:"ticket_id"`
+	Status             string            `json:"status"`
 	DepartureStation   Station           `json:"departure_station"`
 	DestinationStation Station           `json:"destination_station"`
 	DepartureSchedule  time.Time         `json:"departure_schedule"`
@@ -24,6 +25,7 @@ type TicketPassenger struct {
 type UserTicket struct {
 	UserId             int64     `json:"user_id"`
 	TicketId           int64     `json:"ticket_id"`
+	TravelCode         string    `json:"travel_code"`
 	DepartureStation   Station   `json:"departure_station"`
 	DestinationStation Station   `json:"destination_station"`
 	DepartureSchedule  time.Time `json:"departure_schedule"`
