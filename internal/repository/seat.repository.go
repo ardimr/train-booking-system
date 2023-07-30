@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/ardimr/train-booking-system/internal/model"
 )
@@ -36,8 +37,8 @@ func (q *PostgresRepository) FindAvailableSeats(ctx context.Context, param model
 			tickets.user_id,
 			passengers.seat_id
 		FROM
-			travel_schedules.tickets
-			INNER JOIN users.passengers ON passengers.ticket_id = tickets.ticket_id
+			bookings.tickets
+			INNER JOIN bookings.passengers ON passengers.ticket_id = tickets.ticket_id
 		WHERE
 			tickets.travel_id = $1
 	),
@@ -140,4 +141,35 @@ func (q *PostgresRepository) FindAvailableSeats(ctx context.Context, param model
 	}
 
 	return availableSeats, nil
+}
+
+func (r *RedisRepository) GetBookedSeats(ctx context.Context, travelId int64) ([]int64, error) {
+	bookingFormat := fmt.Sprintf("booking.%d.*", travelId)
+	seats := []int64{}
+	iter := r.redisClient.Scan(ctx, 0, bookingFormat, 0).Iterator()
+
+	for iter.Next(ctx) {
+		bookingKey := iter.Val()
+
+		// Get seat id
+		var bookingDetails model.BookingDetails
+		bookingRedis, err := r.redisClient.Get(ctx, bookingKey).Result()
+		if err != nil {
+			return nil, err
+		}
+
+		if err := json.Unmarshal([]byte(bookingRedis), &bookingDetails); err != nil {
+			return nil, err
+		}
+
+		for _, passenger := range bookingDetails.PassengerDetails {
+			seats = append(seats, passenger.SeatId)
+		}
+
+	}
+	if err := iter.Err(); err != nil {
+		panic(err)
+	}
+
+	return seats, nil
 }

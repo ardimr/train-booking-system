@@ -16,6 +16,7 @@ func (controller *Controller) FindAvailableSeats(ctx *gin.Context) {
 			http.StatusBadRequest,
 			gin.H{"Error": err.Error()},
 		)
+		return
 	}
 
 	// Get the stations data from database
@@ -26,8 +27,32 @@ func (controller *Controller) FindAvailableSeats(ctx *gin.Context) {
 			http.StatusInternalServerError,
 			gin.H{"Error": err.Error()},
 		)
+		return
 	}
 
+	// Check in redis for any booked seats
+	bookedSeats, err := controller.redis.GetBookedSeats(ctx, reqParam.TravelId)
+
+	for _, bookedSeat := range bookedSeats {
+		// Overide the avaiability status
+		for wagonIdx, wagon := range availableSeats {
+			for rowIdx, row := range wagon.SeatingRows {
+				for seatIdx, seat := range row.RowElements {
+					if bookedSeat == seat.SeatId {
+						availableSeats[wagonIdx].SeatingRows[rowIdx].RowElements[seatIdx].Available = false
+					}
+				}
+			}
+		}
+	}
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(
+			http.StatusInternalServerError,
+			gin.H{"Error": err.Error()},
+		)
+		return
+	}
 	ctx.JSON(
 		http.StatusOK,
 		availableSeats,
