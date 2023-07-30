@@ -20,7 +20,7 @@ func (controller *Controller) NewBooking(ctx *gin.Context) {
 	}
 
 	// Set to redis
-	bookingCode, err := controller.redis.CreateBooking(ctx, reqBody)
+	bookingDetails, err := controller.redis.CreateBooking(ctx, reqBody)
 	if err != nil {
 		ctx.AbortWithStatusJSON(
 			http.StatusInternalServerError,
@@ -30,7 +30,7 @@ func (controller *Controller) NewBooking(ctx *gin.Context) {
 	}
 
 	// The following process is proceed with assumptions the payment is success
-	err = controller.querier.CreateBooking(ctx, bookingCode, reqBody)
+	err = controller.querier.CreateBooking(ctx, bookingDetails)
 	if err != nil {
 		ctx.AbortWithStatusJSON(
 			http.StatusInternalServerError,
@@ -40,6 +40,6 @@ func (controller *Controller) NewBooking(ctx *gin.Context) {
 	}
 	ctx.JSON(
 		http.StatusAccepted,
-		gin.H{"Booking code": bookingCode},
+		gin.H{"Booking code": bookingDetails.BookingCode},
 	)
 }

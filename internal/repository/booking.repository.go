@@ -5,58 +5,63 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/ardimr/train-booking-system/internal/helpers"
 	"github.com/ardimr/train-booking-system/internal/model"
 )
 
 // Redis implementation
-func (r *RedisRepository) CreateBooking(ctx context.Context, booking model.BookingRequestBody) (string, error) {
+func (r *RedisRepository) CreateBooking(ctx context.Context, booking model.BookingRequestBody) (model.BookingDetails, error) {
 
 	// Generate booking code
-	var bookingCode string
-	bookingCode = helpers.GenerateBookingCode()
+	var bookingDetails model.BookingDetails
+	bookingDetails.BookingCode = helpers.GenerateBookingCode()
+	bookingDetails.TravelId = booking.TravelId
+	bookingDetails.ContactDetails = booking.ContactDetails
+	bookingDetails.PassengerDetails = booking.PassengerDetails
 
+	// Set key in redis
+	bookingKey := fmt.Sprintf("booking.%d.%s", bookingDetails.TravelId, bookingDetails.BookingCode)
 	// If booking code is already exists in the redis or database, then regenerate the new booking code
 	isAlreadyExists := true
 	for isAlreadyExists {
-		isExists, err := r.redisClient.Exists(ctx, bookingCode).Result()
+		isExists, err := r.redisClient.Exists(ctx, bookingKey).Result()
 
 		if err != nil {
-			return "", err
+			return bookingDetails, err
 		}
 
 		if isExists == 0 {
 			isAlreadyExists = false
 			break
 		} else {
-			bookingCode = helpers.GenerateBookingCode()
+			bookingDetails.BookingCode = helpers.GenerateBookingCode()
 		}
 
 	}
 
-	bookingJson, err := json.Marshal(booking)
+	bookingJson, err := json.Marshal(bookingDetails)
 
 	if err != nil {
-		return "", err
+		return bookingDetails, err
 	}
 
 	err = r.redisClient.Set(
 		ctx,
-		bookingCode,
+		bookingKey,
 		string(bookingJson),
-		time.Duration(300)*time.Second,
+		0,
+		// time.Duration(300)*time.Second,
 	).Err()
 
 	if err != nil {
-		return "", err
+		return bookingDetails, err
 	}
 
-	return bookingCode, nil
+	return bookingDetails, nil
 }
 
-func (q *PostgresRepository) CreateBooking(ctx context.Context, bookingCode string, booking model.BookingRequestBody) error {
+func (q *PostgresRepository) CreateBooking(ctx context.Context, booking model.BookingDetails) error {
 
 	tx, err := q.db.BeginTx(ctx, &sql.TxOptions{})
 
@@ -71,7 +76,7 @@ func (q *PostgresRepository) CreateBooking(ctx context.Context, bookingCode stri
 	VALUES
 		($1, 'PAID', '150000')
 	`
-	_, err = tx.ExecContext(ctx, sqlStatementBooking, bookingCode)
+	_, err = tx.ExecContext(ctx, sqlStatementBooking, booking.BookingCode)
 
 	if err != nil {
 		if rbErr := tx.Rollback(); rbErr != nil {
@@ -92,7 +97,7 @@ func (q *PostgresRepository) CreateBooking(ctx context.Context, bookingCode stri
 	RETURNING ticket_id
 	`
 
-	err = tx.QueryRowContext(ctx, sqlStatementTicket, booking.TravelId, 1, bookingCode).Scan(&ticketId)
+	err = tx.QueryRowContext(ctx, sqlStatementTicket, booking.TravelId, 1, booking.BookingCode).Scan(&ticketId)
 
 	if err != nil {
 		if rbErr := tx.Rollback(); rbErr != nil {
