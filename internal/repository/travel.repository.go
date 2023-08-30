@@ -28,8 +28,8 @@ func (q *PostgresRepository) ListTravels(ctx context.Context, param model.Travel
 			travel_id,
 			passengers.seat_id
 		FROM
-			travel_schedules.tickets
-			INNER JOIN users.passengers ON passengers.ticket_id = tickets.ticket_id
+			bookings.tickets
+			INNER JOIN bookings.passengers ON passengers.ticket_id = tickets.ticket_id
 	),
 	num_available_seats AS (
 		SELECT
