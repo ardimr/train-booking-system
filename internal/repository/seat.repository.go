@@ -62,6 +62,7 @@ func (q *PostgresRepository) FindAvailableSeats(ctx context.Context, param model
 						ELSE FALSE
 					END
 				)
+				ORDER BY seat_column
 			) AS seating_row_elements
 		FROM
 			available_travel_seats
