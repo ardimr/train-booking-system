@@ -30,6 +30,14 @@ func (controller *Controller) FindAvailableSeats(ctx *gin.Context) {
 		return
 	}
 
+	if len(availableSeats) == 0 {
+		ctx.AbortWithStatusJSON(
+			http.StatusNotFound,
+			gin.H{"Error": "No Content"},
+		)
+		return
+	}
+
 	// Check in redis for any booked seats
 	bookedSeats, err := controller.redis.GetBookedSeats(ctx, reqParam.TravelId)
 
