@@ -169,24 +169,64 @@ func (q *PostgresRepository) ListTravels(ctx context.Context, param model.Travel
 }
 
 func (q *PostgresRepository) GetTravelById(ctx context.Context, id int64) (*model.Travel, error) {
-	var user model.Travel
+	var travel model.Travel
 
+	var departureStationRaw []byte
+	var destinationStaionRaw []byte
 	queryStatement := `
 	SELECT
-		*
-	FROM public.users
-	WHERE id=$1
+			travels.travel_id,
+			travels.travel_code,
+			trains.name as train_name,
+			travels.departure_schedule,
+			travels.arrival_schedule,
+			json_build_object(
+					'city_code',
+					dep_station.city_code,
+					'name',
+					dep_station.name,
+					'code',
+					dep_station.station_code
+			) AS departure_station,
+			json_build_object(
+					'city_code',
+					dest_station.city_code,
+					'name',
+					dest_station.name,
+					'code',
+					dest_station.station_code
+			) AS destination_station
+	FROM
+			travel_schedules.travels 
+			INNER JOIN travel_schedules.stations dep_station ON dep_station.station_code = travels.departure_station
+			INNER JOIN travel_schedules.stations dest_station ON dest_station.station_code = travels.destination_station
+			INNER JOIN travel_schedules.trains on trains.train_code = travels.train_code
+	WHERE
+			travels.travel_id = $1
 	`
 	err := q.db.QueryRowContext(ctx, queryStatement, id).Scan(
-		&user.TravelID,
-		&user.TravelCode,
+		&travel.TravelID,
+		&travel.TravelCode,
+		&travel.TrainName,
+		&travel.DepartureSchedule,
+		&travel.ArrivalSchedule,
+		&departureStationRaw,
+		&destinationStaionRaw,
 	)
 
 	if err != nil {
 		return nil, sql.ErrNoRows
 	}
 
-	return &user, nil
+	if err := json.Unmarshal(departureStationRaw, &travel.DepartureStation); err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(destinationStaionRaw, &travel.DestinationStation); err != nil {
+		return nil, err
+	}
+
+	return &travel, nil
 }
 
 func (q *PostgresRepository) AddNewTravel(ctx context.Context, newTravel model.Travel) (int64, error) {

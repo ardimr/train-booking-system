@@ -15,6 +15,7 @@ type Travel struct {
 	DepartureSchedule  time.Time `json:"departure_schedule"`
 	ArrivalSchedule    time.Time `json:"arrival_schedule"`
 	TrainCode          string    `json:"train_code"`
+	TrainName          string    `json:"train_name"`
 }
 
 type TravelSchedule struct {

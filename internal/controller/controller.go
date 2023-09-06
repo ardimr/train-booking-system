@@ -75,7 +75,7 @@ func (controller *Controller) GetTravelById(ctx *gin.Context) {
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
-			ctx.JSON(
+			ctx.AbortWithStatusJSON(
 				http.StatusNotFound,
 				gin.H{
 					"Message": "Not Found",
