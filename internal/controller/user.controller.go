@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func (controller *Controller) ListUsers(ctx *gin.Context) {}
+func (controller *Controller) GetUser(ctx *gin.Context)   {}
 func (controller *Controller) NewUser(ctx *gin.Context) {
 	var reqBody model.NewUserRequestBody
 
@@ -23,3 +25,5 @@ func (controller *Controller) NewUser(ctx *gin.Context) {
 		reqBody,
 	)
 }
+func (controller *Controller) EditUser(ctx *gin.Context)   {}
+func (controller *Controller) DeleteUser(ctx *gin.Context) {}

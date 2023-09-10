@@ -33,3 +33,9 @@ func (controller *Controller) FindStations(ctx *gin.Context) {
 		cityCtations,
 	)
 }
+
+func (controller *Controller) AddStation(ctx *gin.Context) {}
+
+func (controller *Controller) EditStation(ctx *gin.Context) {}
+
+func (controller *Controller) DeleteStation(ctx *gin.Context) {}
