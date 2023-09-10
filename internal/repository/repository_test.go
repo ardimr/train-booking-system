@@ -72,7 +72,7 @@ func TestGetUserById(t *testing.T) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WithArgs(int64(1)).WillReturnRows(rows)
 
 	// Excecute mock query
-	_, err := Repository.GetTravelById(context.Background(), int64(1))
+	_, err := Repository.GetTravelById(context.Background(), int64(1), "")
 
 	assert.NoError(t, err)
 	if err = mock.ExpectationsWereMet(); err != nil {
@@ -127,7 +127,7 @@ func BenchmarkGetUserById(b *testing.B) {
 	mock.ExpectQuery(regexp.QuoteMeta(queryStatement)).WithArgs(int64(1)).WillReturnRows(rows)
 
 	// Excecute mock query
-	user, err := Repository.GetTravelById(context.Background(), int64(1))
+	user, err := Repository.GetTravelById(context.Background(), int64(1), "")
 
 	fmt.Println(*user)
 	if err != nil {

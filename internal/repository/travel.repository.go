@@ -169,50 +169,81 @@ func (q *PostgresRepository) ListTravels(ctx context.Context, param model.Travel
 	return travelSchedules, nil
 }
 
-func (q *PostgresRepository) GetTravelById(ctx context.Context, id int64) (*model.Travel, error) {
+func (q *PostgresRepository) GetTravelById(ctx context.Context, id int64, class string) (*model.Travel, error) {
 	var travel model.Travel
 
 	var departureStationRaw []byte
 	var destinationStaionRaw []byte
+	var durationRaw []byte
+	var fareRaw []byte
+	var wagonClassRaw []byte
 	queryStatement := `
 	SELECT
-			travels.travel_id,
-			travels.travel_code,
-			trains.name as train_name,
-			travels.departure_schedule,
-			travels.arrival_schedule,
-			json_build_object(
-					'city_code',
-					dep_station.city_code,
-					'name',
-					dep_station.name,
-					'code',
-					dep_station.station_code
-			) AS departure_station,
-			json_build_object(
-					'city_code',
-					dest_station.city_code,
-					'name',
-					dest_station.name,
-					'code',
-					dest_station.station_code
-			) AS destination_station
+    travels.travel_id,
+    travels.travel_code,
+		trains.train_code as train_code,
+    trains.name as train_name,
+    json_build_object('wagon_class_code', classes.class_code, 'wagon_class_name', classes.name) AS wagon_class,
+    travels.departure_schedule,
+    travels.arrival_schedule,
+    json_build_object(
+        'city_code',
+        dep_station.city_code,
+        'name',
+        dep_station.name,
+        'code',
+        dep_station.station_code
+    ) AS departure_station,
+    json_build_object(
+        'city_code',
+        dest_station.city_code,
+        'name',
+        dest_station.name,
+        'code',
+        dest_station.station_code
+    ) AS destination_station,
+    json_build_object (
+    	'hour',
+    	EXTRACT (
+        	HOUR
+        	FROM
+            (
+                travels.arrival_schedule - travels.departure_schedule
+            )
+    	),
+    	'minute',
+    	EXTRACT (
+            MINUTE
+            FROM
+                (
+                    travels.arrival_schedule - travels.departure_schedule
+                )
+        )
+    ) AS duration,
+    json_build_object('currency', travel_fares.currency_code, 'amount', travel_fares.fare) AS fare
+
 	FROM
 			travel_schedules.travels 
 			INNER JOIN travel_schedules.stations dep_station ON dep_station.station_code = travels.departure_station
 			INNER JOIN travel_schedules.stations dest_station ON dest_station.station_code = travels.destination_station
 			INNER JOIN travel_schedules.trains on trains.train_code = travels.train_code
+			INNER JOIN travel_schedules.travel_fares ON travel_fares.travel_id = travels.travel_id
+			INNER JOIN travel_schedules.classes ON travel_fares.class_id = classes.id
 	WHERE
-			travels.travel_id = $1
+			travels.travel_id = $1 AND classes.class_code = $2
 	`
-	err := q.db.QueryRowContext(ctx, queryStatement, id).Scan(
+	err := q.db.QueryRowContext(ctx, queryStatement, id, class).Scan(
 		&travel.TravelID,
 		&travel.TravelCode,
+		&travel.TrainCode,
 		&travel.TrainName,
+		&wagonClassRaw,
 		&travel.DepartureSchedule,
 		&travel.ArrivalSchedule,
 		&departureStationRaw,
 		&destinationStaionRaw,
+		&durationRaw,
+		&fareRaw,
 	)
 
 	if err != nil {
@@ -224,6 +255,18 @@ func (q *PostgresRepository) GetTravelById(ctx context.Context, id int64) (*mode
 	}
 
 	if err := json.Unmarshal(destinationStaionRaw, &travel.DestinationStation); err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(wagonClassRaw, &travel.WagonClass); err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(durationRaw, &travel.Duration); err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(fareRaw, &travel.Fare); err != nil {
 		return nil, err
 	}
 

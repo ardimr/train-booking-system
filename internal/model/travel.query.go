@@ -8,14 +8,17 @@ type User struct {
 }
 
 type Travel struct {
-	TravelID           int64     `json:"travel_id,omitempty"`
-	TravelCode         int64     `json:"travel_code"`
-	DepartureStation   Station   `json:"departure_station"`
-	DestinationStation Station   `json:"destination_station"`
-	DepartureSchedule  time.Time `json:"departure_schedule"`
-	ArrivalSchedule    time.Time `json:"arrival_schedule"`
-	TrainCode          string    `json:"train_code"`
-	TrainName          string    `json:"train_name"`
+	TravelID           int64      `json:"travel_id,omitempty"`
+	TravelCode         int64      `json:"travel_code"`
+	TrainCode          string     `json:"train_code"`
+	TrainName          string     `json:"train_name"`
+	WagonClass         WagonClass `json:"wagon_class"`
+	DepartureStation   Station    `json:"departure_station"`
+	DestinationStation Station    `json:"destination_station"`
+	DepartureSchedule  time.Time  `json:"departure_schedule"`
+	ArrivalSchedule    time.Time  `json:"arrival_schedule"`
+	Duration           Duration   `json:"duration"`
+	Fare               Cost       `json:"fare"`
 }
 
 type TravelSchedule struct {

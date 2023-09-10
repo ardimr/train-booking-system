@@ -24,3 +24,11 @@ type AddNewTravel struct {
 	TrainCode          string             `json:"train_code"`
 	Fares              []AddNewTravelFare `json:"fares"`
 }
+
+type GetTravelByIdReqUri struct {
+	TravelId int64 `uri:"id"`
+}
+
+type GetTravelByIdParam struct {
+	WagonClass string `form:"wagon_class"`
+}
