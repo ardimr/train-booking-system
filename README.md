@@ -80,16 +80,10 @@ Key Features:
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [![Golang][Golang]][Next-url]
-<!-- * [![Next][Next.js]][Next-url] -->
-<!-- * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url] -->
+* [![Golang][Golang]][Golang-url]
+* [![Postgres][Postgres]][Postgres-url]
+* [![Redis][Redis]][Redis-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -98,20 +92,19 @@ This section should list any major frameworks/libraries used to bootstrap your p
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * Golang
+* Make
+* Redis
+* PostgreSQL
   <!-- ```sh
   npm install npm@latest -g
   ``` -->
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+
 
 1. Clone the repo
    ```sh
@@ -133,7 +126,6 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
@@ -186,7 +178,7 @@ Rizky Ardi Maulana - rizkyardimaulana@gmail.com
 
 Project Link: 
 * Backend: [https://github.com/ardimr/train-booking-system](https://github.com/ardimr/train-booking-system)
-* Frontend: 
+* Frontend: [https://github.com/ardimr/train-booking-system.frontend](https://github.com/ardimr/train-booking-system.frontend)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -242,3 +234,8 @@ Use this space to list resources you find helpful and would like to give credit 
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
 [Golang]: https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white
+[Golang-url]: https://go.dev/
+[Redis]: https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white
+[Redis-url]: https://redis.io/
+[Postgres]: https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white
+[Postgres-url]: https://www.postgresql.org/
