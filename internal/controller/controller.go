@@ -93,7 +93,7 @@ func (controller *Controller) GetTravelById(ctx *gin.Context) {
 }
 
 func (controler *Controller) AddNewTravel(ctx *gin.Context) {
-	var newTravel model.Travel
+	var newTravel model.AddNewTravel
 
 	if err := ctx.BindJSON(&newTravel); err != nil {
 		ctx.JSON(

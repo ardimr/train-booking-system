@@ -11,7 +11,7 @@ import (
 type Repository interface {
 	ListTravels(ctx context.Context, param model.TravelScheduleReqParam) ([]model.TravelSchedule, error)
 	GetTravelById(ctx context.Context, id int64) (*model.Travel, error)
-	AddNewTravel(ctx context.Context, newTravel model.Travel) (int64, error)
+	AddNewTravel(ctx context.Context, newTravel model.AddNewTravel) (int64, error)
 	UpdateTravelById(ctx context.Context, id int64, newTravel model.Travel) (int64, error)
 	DeleteTravel(ctx context.Context, id int64) error
 

@@ -37,10 +37,6 @@ func (router *Router) travelRoutes(superRoute *gin.RouterGroup) {
 func (router *Router) stationRoutes(superRoute *gin.RouterGroup) {
 	userRouter := superRoute.Group("/v1")
 	userRouter.GET("/stations", router.controller.FindStations)
-	// userRouter.GET("/station/:id", router.controller.GetTravelById)
-	// userRouter.POST("/station", router.controller.AddNewTravel)
-	// userRouter.PATCH("/station/:id", router.controller.UpdateTravelById)
-	// userRouter.DELETE("/station/:id", router.controller.DeleteTravel)
 }
 
 func (router *Router) seatRoutes(superRoute *gin.RouterGroup) {

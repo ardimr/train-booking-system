@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 
 	"github.com/ardimr/train-booking-system/internal/model"
 )
@@ -229,21 +230,87 @@ func (q *PostgresRepository) GetTravelById(ctx context.Context, id int64) (*mode
 	return &travel, nil
 }
 
-func (q *PostgresRepository) AddNewTravel(ctx context.Context, newTravel model.Travel) (int64, error) {
+func (q *PostgresRepository) AddNewTravel(ctx context.Context, newTravel model.AddNewTravel) (int64, error) {
 
-	var newId int64
+	var newTravelId int64
 
-	sqlStatement := `
-	INSERT INTO public.users (name) VALUES ($1) RETURNING id
+	travelStatement := `
+	INSERT INTO
+	    travel_schedules.travels (
+	        travel_code,
+	        departure_schedule,
+	        arrival_schedule,
+	        departure_station,
+	        destination_station,
+	        train_code
+	    )
+	VALUES
+	    (
+	        $1,
+	        $2,
+	        $3,
+	        $4,
+	        $5,
+	        $6
+	    )
+	RETURNING travel_id
+	`
+	fareStatement := `
+	INSERT INTO
+	travel_schedules.travel_fares (
+			travel_id,
+			class_id,
+			fare,
+			currency_code
+		)
+	VALUES
+		(
+				$1,
+				$2,
+				$3,
+				$4
+		)
 	`
 
-	err := q.db.QueryRowContext(ctx, sqlStatement, newTravel.TravelCode).Scan(&newId)
+	tx, err := q.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelDefault})
 
 	if err != nil {
-		return 0, err
+		return newTravelId, err
 	}
 
-	return newId, nil
+	// insert travel
+	err = tx.QueryRowContext(ctx,
+		travelStatement,
+		newTravel.TravelCode,
+		newTravel.DepartureSchedule,
+		newTravel.ArrivalSchedule,
+		newTravel.DepartureStation.Code,
+		newTravel.DestinationStation.Code,
+		newTravel.TrainCode).Scan(&newTravelId)
+
+	if err != nil {
+		fmt.Println("Error travelID", err.Error())
+		return newTravelId, err
+	}
+
+	// insert travel fares
+	// var travelFareId int64
+	for _, fare := range newTravel.Fares {
+		_, err = tx.ExecContext(ctx,
+			fareStatement,
+			newTravelId,
+			fare.ClassId,
+			fare.Amount,
+			fare.Currency,
+		)
+
+		if err != nil {
+			fmt.Println("Error Travel Fare Input", err.Error())
+			return newTravelId, err
+		}
+	}
+	tx.Commit()
+	return newTravelId, nil
 }
 
 func (q *PostgresRepository) UpdateTravelById(ctx context.Context, id int64, newTravel model.Travel) (int64, error) {
