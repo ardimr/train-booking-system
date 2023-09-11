@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/ardimr/train-booking-system/internal/model"
 )
@@ -173,4 +175,51 @@ func (r *RedisRepository) GetBookedSeats(ctx context.Context, travelId int64) ([
 	}
 
 	return seats, nil
+}
+
+func (q *PostgresRepository) AddSeats(ctx context.Context, wagonId int64, numberOfRows int) error {
+	seatColumns := []string{"A", "B", "C", "D"}
+
+	var (
+		placeholders []string
+		vals         []interface{}
+	)
+
+	offset := 0
+	for i := 0; i < numberOfRows; i++ {
+		seatRow := i + 1
+
+		for index, seatColumn := range seatColumns {
+			placeholders = append(placeholders, fmt.Sprintf("($%d,$%d,$%d)",
+				(index+offset)*3+1,
+				(index+offset)*3+2,
+				(index+offset)*3+3,
+			))
+			vals = append(vals, seatRow, seatColumn, wagonId)
+		}
+
+		offset += 4
+	}
+
+	insertStatement := fmt.Sprintf("INSERT INTO travel_schedules.seats (seat_row,seat_column,train_car_id) VALUES %s", strings.Join(placeholders, ","))
+	fmt.Println(insertStatement)
+
+	tx, err := q.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelDefault})
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec(insertStatement, vals...)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+
+	// fmt.Println(vals...)
+
+	return nil
 }

@@ -23,7 +23,7 @@ type Repository interface {
 
 	// Seats
 	FindAvailableSeats(ctx context.Context, param model.AvailableSeatRequestParam) ([]model.AvailableSeat, error)
-
+	AddSeats(ctx context.Context, wagonId int64, numberOfRows int) error
 	// Tickets
 	GetUserTickets(ctx context.Context, param model.GetUserTicketsRequestParam) ([]model.UserTicket, error)
 	GetTicketDetailsById(ctx context.Context, param model.GetTicketDetailsRequestUri) (model.TicketDetails, error)
