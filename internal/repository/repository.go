@@ -17,6 +17,9 @@ type Repository interface {
 
 	// Stations
 	FindStations(ctx context.Context, param model.StationRequestParam) ([]model.CityStation, error)
+	AddStation(ctx context.Context, newStation model.NewStation) error
+	EditStation(ctx context.Context, stationCode string, newStation model.NewStation) error
+	DeleteStation(ctx context.Context, stationCode string) error
 
 	// Seats
 	FindAvailableSeats(ctx context.Context, param model.AvailableSeatRequestParam) ([]model.AvailableSeat, error)

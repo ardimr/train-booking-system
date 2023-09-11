@@ -26,17 +26,20 @@ func (router *Router) AddRoute(superRoute *gin.RouterGroup) {
 }
 
 func (router *Router) travelRoutes(superRoute *gin.RouterGroup) {
-	userRouter := superRoute.Group("/v1")
-	userRouter.GET("/travels", router.controller.ListTravels)
-	userRouter.GET("/travels/:id", router.controller.GetTravelById)
-	userRouter.POST("/travels", router.controller.AddNewTravel)
-	userRouter.PATCH("/travels/:id", router.controller.UpdateTravelById)
-	userRouter.DELETE("/travels/:id", router.controller.DeleteTravel)
+	travelRouter := superRoute.Group("/v1")
+	travelRouter.GET("/travels", router.controller.ListTravels)
+	travelRouter.GET("/travels/:id", router.controller.GetTravelById)
+	travelRouter.POST("/travels", router.controller.AddNewTravel)
+	travelRouter.PATCH("/travels/:id", router.controller.UpdateTravelById)
+	travelRouter.DELETE("/travels/:id", router.controller.DeleteTravel)
 }
 
 func (router *Router) stationRoutes(superRoute *gin.RouterGroup) {
-	userRouter := superRoute.Group("/v1")
-	userRouter.GET("/stations", router.controller.FindStations)
+	stationRouter := superRoute.Group("/v1")
+	stationRouter.GET("/stations", router.controller.FindStations)
+	stationRouter.POST("/stations", router.controller.AddStation)
+	stationRouter.PATCH("/stations/:station_code", router.controller.EditStation)
+	stationRouter.DELETE("/stations/:station_code", router.controller.DeleteStation)
 }
 
 func (router *Router) seatRoutes(superRoute *gin.RouterGroup) {

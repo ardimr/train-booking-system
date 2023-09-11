@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/ardimr/train-booking-system/internal/model"
 )
@@ -50,4 +51,71 @@ func (q *PostgresRepository) FindStations(ctx context.Context, param model.Stati
 	}
 
 	return cityStations, nil
+}
+
+func (q *PostgresRepository) AddStation(ctx context.Context, newStation model.NewStation) error {
+
+	insertStatement := `
+	INSERT INTO
+    travel_schedules.stations (station_code, name, city_code)
+	VALUES
+			($1, $2, $3) 
+	`
+
+	_, err := q.db.ExecContext(ctx, insertStatement, newStation.StationCode, newStation.Name, newStation.CityCode)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (q *PostgresRepository) EditStation(ctx context.Context, stationCode string, newStation model.NewStation) error {
+
+	updateStatement := `
+	UPDATE 
+		travel_schedules.stations 
+	SET
+		station_code = $2,
+		name = $3, 
+		city_code= $4
+	WHERE 
+		station_code = $1
+	`
+
+	res, err := q.db.ExecContext(ctx, updateStatement, stationCode, newStation.StationCode, newStation.Name, newStation.CityCode)
+
+	if err != nil {
+		return err
+	}
+
+	rows, _ := res.RowsAffected()
+	if rows < 1 {
+		return sql.ErrNoRows
+	}
+	return nil
+}
+
+func (q *PostgresRepository) DeleteStation(ctx context.Context, stationCode string) error {
+	deleteStatement := `
+	DELETE FROM
+    travel_schedules.stations
+	WHERE
+			stations.station_code = $1
+	`
+
+	res, err := q.db.ExecContext(ctx, deleteStatement, stationCode)
+
+	if err != nil {
+		return err
+	}
+
+	rows, _ := res.RowsAffected()
+
+	if rows < 1 {
+		return sql.ErrNoRows
+	}
+
+	return nil
 }
