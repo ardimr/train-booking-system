@@ -20,8 +20,10 @@ func (r *RedisRepository) CreateBooking(ctx context.Context, booking model.Booki
 	bookingDetails.TravelId = booking.TravelId
 	bookingDetails.ContactDetails = booking.ContactDetails
 	bookingDetails.PassengerDetails = booking.PassengerDetails
+
 	// Set key in redis
 	bookingKey := fmt.Sprintf("booking.%d.%s", bookingDetails.TravelId, bookingDetails.BookingCode)
+
 	// If booking code is already exists in the redis or database, then regenerate the new booking code
 	isAlreadyExists := true
 	for isAlreadyExists {

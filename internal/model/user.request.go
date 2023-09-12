@@ -1,5 +1,9 @@
 package model
 
+type UserRequestUri struct {
+	UserId   int64  `uri:"user_id,omitempty"`
+	Username string `uri:"username,omitempty"`
+}
 type NewUserRequestBody struct {
 	FullName    string      `json:"full_name" binding:"required"`
 	Username    string      `json:"username" binding:"required"`

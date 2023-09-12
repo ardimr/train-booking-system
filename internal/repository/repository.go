@@ -30,6 +30,9 @@ type Repository interface {
 
 	// Bookings
 	CreateBooking(ctx context.Context, booking model.BookingDetails) error
+
+	// Users
+	GetUserDetails(ctx context.Context, userId int64) (model.UserDetails, error)
 }
 
 type PostgresRepository struct {

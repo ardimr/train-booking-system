@@ -57,7 +57,8 @@ func (router *Router) seatRoutes(superRoute *gin.RouterGroup) {
 
 func (router *Router) userRoutes(superRoute *gin.RouterGroup) {
 	userRouter := superRoute.Group("/v1")
-	userRouter.POST("users", router.controller.NewUser)
+	userRouter.POST("/users", router.controller.NewUser)
+	userRouter.GET("/users/:user_id", router.controller.GetUserDetails)
 }
 
 func (router *Router) bookingRoutes(superRoute *gin.RouterGroup) {
