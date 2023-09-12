@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/ardimr/train-booking-system/internal/helpers"
 	"github.com/ardimr/train-booking-system/internal/model"
@@ -19,7 +20,6 @@ func (r *RedisRepository) CreateBooking(ctx context.Context, booking model.Booki
 	bookingDetails.TravelId = booking.TravelId
 	bookingDetails.ContactDetails = booking.ContactDetails
 	bookingDetails.PassengerDetails = booking.PassengerDetails
-
 	// Set key in redis
 	bookingKey := fmt.Sprintf("booking.%d.%s", bookingDetails.TravelId, bookingDetails.BookingCode)
 	// If booking code is already exists in the redis or database, then regenerate the new booking code
@@ -40,6 +40,9 @@ func (r *RedisRepository) CreateBooking(ctx context.Context, booking model.Booki
 
 	}
 
+	// Set booking deadline
+	bookingDetails.Deadline = time.Now().Add(time.Duration(300) * time.Second)
+
 	bookingJson, err := json.Marshal(bookingDetails)
 
 	if err != nil {
@@ -50,8 +53,8 @@ func (r *RedisRepository) CreateBooking(ctx context.Context, booking model.Booki
 		ctx,
 		bookingKey,
 		string(bookingJson),
-		0,
-		// time.Duration(300)*time.Second,
+		// 0,
+		time.Duration(300)*time.Second, // 5 minutes
 	).Err()
 
 	if err != nil {
