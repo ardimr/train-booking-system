@@ -49,6 +49,7 @@ func (router *Router) wagonRoutes(superRoute *gin.RouterGroup) {
 	wagonRouter.GET("/wagons/:wagon_id")
 	wagonRouter.POST("/wagons", router.controller.AddNewWagon)
 }
+
 func (router *Router) seatRoutes(superRoute *gin.RouterGroup) {
 	seatRouter := superRoute.Group("/v1")
 	seatRouter.GET("/seats", router.controller.FindAvailableSeats)
@@ -62,6 +63,7 @@ func (router *Router) userRoutes(superRoute *gin.RouterGroup) {
 func (router *Router) bookingRoutes(superRoute *gin.RouterGroup) {
 	bookingRouter := superRoute.Group(("/v1"))
 	bookingRouter.POST("/bookings", router.controller.NewBooking)
+	bookingRouter.GET("/bookings/:booking_code", router.controller.GetBookingDetails)
 }
 
 func (router *Router) ticketRoutes(superRoute *gin.RouterGroup) {

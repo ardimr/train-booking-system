@@ -45,6 +45,7 @@ func NewPostgresRepository(db db.DBInterface) *PostgresRepository {
 type IRedisRepository interface {
 	CreateBooking(ctx context.Context, booking model.BookingRequestBody) (model.BookingDetails, error)
 	GetBookedSeats(ctx context.Context, travelId int64) ([]int64, error)
+	GetBooking(ctx context.Context, travelId int64, bookingCode string) (model.BookingDetails, error)
 }
 type RedisRepository struct {
 	redisClient *redis.Client

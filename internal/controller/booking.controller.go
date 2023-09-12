@@ -44,4 +44,27 @@ func (controller *Controller) NewBooking(ctx *gin.Context) {
 	)
 }
 
-func (controller *Controller) GetBookingDetails(ctx *gin.Context) {}
+func (controller *Controller) GetBookingDetails(ctx *gin.Context) {
+	var reqUri model.BookingRequestUri
+	var reqParam model.BookingRequestParam
+
+	if err := ctx.BindUri(&reqUri); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		return
+	}
+
+	if err := ctx.BindQuery(&reqParam); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		return
+	}
+
+	bookingDetails, err := controller.redis.GetBooking(ctx, reqParam.TravelId, reqUri.BookingCode)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, bookingDetails)
+
+}
