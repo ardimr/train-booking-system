@@ -4,13 +4,13 @@ import (
 	"github.com/ardimr/train-booking-system/internal/booking/repository"
 )
 
-type Controller struct {
+type BookingController struct {
 	querier repository.IBookingRepository
 	redis   repository.IBookingRedisRepository
 }
 
-func NewController(q repository.IBookingRepository, r repository.IBookingRedisRepository) *Controller {
-	return &Controller{
+func NewBookingController(q repository.IBookingRepository, r repository.IBookingRedisRepository) *BookingController {
+	return &BookingController{
 		querier: q,
 		redis:   r,
 	}
