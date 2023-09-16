@@ -22,8 +22,8 @@ func (router *Router) AddRoute(superRoute *gin.RouterGroup) {
 	// router.seatRoutes(superRoute)
 	// router.ticketRoutes(superRoute)
 	// router.bookingRoutes(superRoute)
-	router.userRoutes(superRoute)
-	router.wagonRoutes(superRoute)
+	// router.userRoutes(superRoute)
+	// router.wagonRoutes(superRoute)
 }
 
 // func (router *Router) travelRoutes(superRoute *gin.RouterGroup) {
@@ -43,23 +43,23 @@ func (router *Router) AddRoute(superRoute *gin.RouterGroup) {
 // 	stationRouter.DELETE("/stations/:station_code", router.controller.DeleteStation)
 // }
 
-func (router *Router) wagonRoutes(superRoute *gin.RouterGroup) {
-	wagonRouter := superRoute.Group("/v1")
-	wagonRouter.GET("/wagons")
-	wagonRouter.GET("/wagons/:wagon_id")
-	wagonRouter.POST("/wagons", router.controller.AddNewWagon)
-}
+// func (router *Router) wagonRoutes(superRoute *gin.RouterGroup) {
+// 	wagonRouter := superRoute.Group("/v1")
+// 	wagonRouter.GET("/wagons")
+// 	wagonRouter.GET("/wagons/:wagon_id")
+// 	wagonRouter.POST("/wagons", router.controller.AddNewWagon)
+// }
 
 // func (router *Router) seatRoutes(superRoute *gin.RouterGroup) {
 // 	seatRouter := superRoute.Group("/v1")
 // 	seatRouter.GET("/seats", router.controller.FindAvailableSeats)
 // }
 
-func (router *Router) userRoutes(superRoute *gin.RouterGroup) {
-	userRouter := superRoute.Group("/v1")
-	userRouter.POST("/users", router.controller.NewUser)
-	userRouter.GET("/users/:user_id", router.controller.GetUserDetails)
-}
+// func (router *Router) userRoutes(superRoute *gin.RouterGroup) {
+// 	userRouter := superRoute.Group("/v1")
+// 	userRouter.POST("/users", router.controller.NewUser)
+// 	userRouter.GET("/users/:user_id", router.controller.GetUserDetails)
+// }
 
 // func (router *Router) bookingRoutes(superRoute *gin.RouterGroup) {
 // 	bookingRouter := superRoute.Group(("/v1"))
