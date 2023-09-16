@@ -11,7 +11,7 @@ import (
 type IStationRepository interface {
 	GetStations(ctx context.Context, param model.StationRequestParam) ([]model.CityStation, error)
 	AddStation(ctx context.Context, newStation model.NewStation) error
-	EditStation(ctx context.Context, stationCode string, newStation model.NewStation) error
+	UpdateStation(ctx context.Context, stationCode string, newStation model.NewStation) error
 	DeleteStation(ctx context.Context, stationCode string) error
 }
 
@@ -90,7 +90,7 @@ func (q *StationRepository) AddStation(ctx context.Context, newStation model.New
 	return nil
 }
 
-func (q *StationRepository) EditStation(ctx context.Context, stationCode string, newStation model.NewStation) error {
+func (q *StationRepository) UpdateStation(ctx context.Context, stationCode string, newStation model.NewStation) error {
 
 	updateStatement := `
 	UPDATE 
