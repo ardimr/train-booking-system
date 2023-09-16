@@ -23,6 +23,24 @@ import (
 	stationRepository "github.com/ardimr/train-booking-system/internal/station/repository"
 	stationUseCase "github.com/ardimr/train-booking-system/internal/station/usecase"
 
+	// Tickets
+	ticket "github.com/ardimr/train-booking-system/internal/ticket"
+	ticketController "github.com/ardimr/train-booking-system/internal/ticket/controller"
+	ticketRepository "github.com/ardimr/train-booking-system/internal/ticket/repository"
+	ticketUseCase "github.com/ardimr/train-booking-system/internal/ticket/usecase"
+
+	// Travels
+	travel "github.com/ardimr/train-booking-system/internal/travel"
+	travelController "github.com/ardimr/train-booking-system/internal/travel/controller"
+	travelRepository "github.com/ardimr/train-booking-system/internal/travel/repository"
+	travelUseCase "github.com/ardimr/train-booking-system/internal/travel/usecase"
+
+	// Travels
+	booking "github.com/ardimr/train-booking-system/internal/booking"
+	bookingController "github.com/ardimr/train-booking-system/internal/booking/controller"
+	bookingRepository "github.com/ardimr/train-booking-system/internal/booking/repository"
+	bookingUseCase "github.com/ardimr/train-booking-system/internal/booking/usecase"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 
@@ -114,6 +132,29 @@ func main() {
 	stationController := stationController.NewStationController(stationUseCase)
 	stationRouter := station.NewStationRouter(stationController)
 	stationRouter.RegisterRoute(restServer.Group("/api"))
+
+	// Ticket Router
+	ticketRepo := ticketRepository.NewTicketRepository(dbConnection)
+	ticketUseCase := ticketUseCase.NewTicketUseCase(ticketRepo)
+	ticketController := ticketController.NewTicketController(ticketUseCase)
+	ticketRouter := ticket.NewTicketRouter(ticketController)
+	ticketRouter.RegisterRoute(restServer.Group("/api"))
+
+	// Travel Router
+	travelRepo := travelRepository.NewTravelRepository(dbConnection)
+	travelUseCase := travelUseCase.NewTravelUseCase(travelRepo)
+	travelController := travelController.NewTravelController(travelUseCase)
+	travelRouter := travel.NewTravelRouter(travelController)
+	travelRouter.RegisterRoute(restServer.Group("/api"))
+
+	// Booking Router
+	bookingRepo := bookingRepository.NewBookingRepository(dbConnection)
+	bookingRedisRepo := bookingRepository.NewRedisRepository(redisClient)
+	bookingUseCase := bookingUseCase.NewBookingUseCase(bookingRepo, bookingRedisRepo)
+	bookingController := bookingController.NewBookingController(bookingUseCase)
+	bookingRouter := booking.NewBookingRouter(bookingController)
+	bookingRouter.RegisterRoute(restServer.Group("/api"))
+
 	// Setup Router
 	tbsController := controller.NewController(repository.NewPostgresRepository(dbConnection), repository.NewRedisRepository(redisClient))
 	tbsRouter := router.NewRouter(tbsController)
