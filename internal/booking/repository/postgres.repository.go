@@ -12,6 +12,7 @@ import (
 type IBookingRepository interface {
 	CreateBooking(ctx context.Context, booking model.BookingDetails) error
 }
+
 type BookingRepository struct {
 	db db.DBInterface
 }

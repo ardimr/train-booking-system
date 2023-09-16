@@ -1,17 +1,83 @@
 package controller
 
 import (
-	"github.com/ardimr/train-booking-system/internal/booking/repository"
+	"net/http"
+
+	"github.com/ardimr/train-booking-system/internal/booking/model"
+	"github.com/ardimr/train-booking-system/internal/booking/usecase"
+	"github.com/gin-gonic/gin"
 )
 
 type BookingController struct {
-	querier repository.IBookingRepository
-	redis   repository.IBookingRedisRepository
+	bookingUseCase usecase.IBookingUseCase
 }
 
-func NewBookingController(q repository.IBookingRepository, r repository.IBookingRedisRepository) *BookingController {
+func NewBookingController(bookingUseCase usecase.IBookingUseCase) *BookingController {
 	return &BookingController{
-		querier: q,
-		redis:   r,
+		bookingUseCase: bookingUseCase,
 	}
+}
+
+func (controller *BookingController) NewBooking(ctx *gin.Context) {
+
+	var reqBody model.BookingRequestBody
+
+	if err := ctx.BindJSON(&reqBody); err != nil {
+		ctx.AbortWithStatusJSON(
+			http.StatusBadRequest,
+			gin.H{"Err": err.Error()},
+		)
+		return
+	}
+
+	// Store new booking
+	bookingDetails, err := controller.bookingUseCase.NewBooking(ctx, reqBody)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(
+			http.StatusInternalServerError,
+			gin.H{"Err": err.Error()},
+		)
+		return
+	}
+
+	// The following process is proceed with assumptions the payment is success
+	// err = controller.querier.CreateBooking(ctx, bookingDetails)
+	// if err != nil {
+	// 	ctx.AbortWithStatusJSON(
+	// 		http.StatusInternalServerError,
+	// 		gin.H{"Err": err.Error()},
+	// 	)
+	// 	return
+	// }
+
+	ctx.JSON(
+		http.StatusAccepted,
+		gin.H{"Booking code": bookingDetails.BookingCode},
+	)
+}
+
+func (controller *BookingController) GetBookingDetails(ctx *gin.Context) {
+	var reqUri model.BookingRequestUri
+	var reqParam model.BookingRequestParam
+
+	if err := ctx.BindUri(&reqUri); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		return
+	}
+
+	if err := ctx.BindQuery(&reqParam); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		return
+	}
+
+	bookingDetails, err := controller.bookingUseCase.GetBookingDetails(ctx, reqParam.TravelId, reqUri.BookingCode)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, bookingDetails)
+
 }

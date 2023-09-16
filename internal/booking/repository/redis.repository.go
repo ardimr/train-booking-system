@@ -6,15 +6,14 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ardimr/train-booking-system/internal/helpers"
-	"github.com/ardimr/train-booking-system/internal/model"
+	"github.com/ardimr/train-booking-system/internal/booking/model"
 	"github.com/redis/go-redis/v9"
 )
 
 type IBookingRedisRepository interface {
-	CreateBooking(ctx context.Context, booking model.BookingRequestBody) (model.BookingDetails, error)
-	GetBookedSeats(ctx context.Context, travelId int64) ([]int64, error)
 	GetBooking(ctx context.Context, travelId int64, bookingCode string) (model.BookingDetails, error)
+	CheckBookingKey(ctx context.Context, bookingKey string) (int64, error)
+	SetBooking(ctx context.Context, bookingKey string, bookingJson []byte, expiration time.Duration) error
 }
 
 type BookingRedisRepository struct {
@@ -28,58 +27,16 @@ func NewRedisRepository(redisClient *redis.Client) *BookingRedisRepository {
 }
 
 // Redis implementation
-func (r *BookingRedisRepository) CreateBooking(ctx context.Context, booking model.BookingRequestBody) (model.BookingDetails, error) {
 
-	// Generate booking code
-	var bookingDetails model.BookingDetails
-	bookingDetails.BookingCode = helpers.GenerateBookingCode()
-	bookingDetails.TravelId = booking.TravelId
-	bookingDetails.ContactDetails = booking.ContactDetails
-	bookingDetails.PassengerDetails = booking.PassengerDetails
-
-	// Set key in redis
-	bookingKey := fmt.Sprintf("booking.%d.%s", bookingDetails.TravelId, bookingDetails.BookingCode)
-
-	// If booking code is already exists in the redis or database, then regenerate the new booking code
-	isAlreadyExists := true
-	for isAlreadyExists {
-		isExists, err := r.redisClient.Exists(ctx, bookingKey).Result()
-
-		if err != nil {
-			return bookingDetails, err
-		}
-
-		if isExists == 0 {
-			isAlreadyExists = false
-			break
-		} else {
-			bookingDetails.BookingCode = helpers.GenerateBookingCode()
-		}
-
-	}
-
-	// Set booking deadline
-	bookingDetails.Deadline = time.Now().Add(time.Duration(300) * time.Second)
-
-	bookingJson, err := json.Marshal(bookingDetails)
-
-	if err != nil {
-		return bookingDetails, err
-	}
-
-	err = r.redisClient.Set(
+func (r *BookingRedisRepository) SetBooking(ctx context.Context, bookingKey string, bookingJson []byte, expiration time.Duration) error {
+	err := r.redisClient.Set(
 		ctx,
 		bookingKey,
-		string(bookingJson),
-		// 0,
-		time.Duration(300)*time.Second, // 5 minutes
+		bookingJson,
+		expiration,
 	).Err()
 
-	if err != nil {
-		return bookingDetails, err
-	}
-
-	return bookingDetails, nil
+	return err
 }
 
 func (r *BookingRedisRepository) GetBooking(ctx context.Context, travelId int64, bookingCode string) (model.BookingDetails, error) {
@@ -100,4 +57,10 @@ func (r *BookingRedisRepository) GetBooking(ctx context.Context, travelId int64,
 	// fmt.Println(val)
 
 	return bookingDetails, nil
+}
+
+func (r *BookingRedisRepository) CheckBookingKey(ctx context.Context, bookingKey string) (int64, error) {
+	countKeys, err := r.redisClient.Exists(ctx, bookingKey).Result()
+
+	return countKeys, err
 }
