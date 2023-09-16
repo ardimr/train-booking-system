@@ -7,9 +7,6 @@ import (
 
 	"github.com/ardimr/train-booking-system/configs/db"
 	"github.com/ardimr/train-booking-system/configs/redis"
-	"github.com/ardimr/train-booking-system/internal/controller"
-	"github.com/ardimr/train-booking-system/internal/repository"
-	router "github.com/ardimr/train-booking-system/internal/routes"
 
 	// Seats
 	seat "github.com/ardimr/train-booking-system/internal/seat"
@@ -40,6 +37,18 @@ import (
 	bookingController "github.com/ardimr/train-booking-system/internal/booking/controller"
 	bookingRepository "github.com/ardimr/train-booking-system/internal/booking/repository"
 	bookingUseCase "github.com/ardimr/train-booking-system/internal/booking/usecase"
+
+	// Users
+	user "github.com/ardimr/train-booking-system/internal/user"
+	userController "github.com/ardimr/train-booking-system/internal/user/controller"
+	userRepository "github.com/ardimr/train-booking-system/internal/user/repository"
+	userUseCase "github.com/ardimr/train-booking-system/internal/user/usecase"
+
+	// Wagons
+	wagon "github.com/ardimr/train-booking-system/internal/wagon"
+	wagonController "github.com/ardimr/train-booking-system/internal/wagon/controller"
+	wagonRepository "github.com/ardimr/train-booking-system/internal/wagon/repository"
+	wagonUseCase "github.com/ardimr/train-booking-system/internal/wagon/usecase"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
@@ -118,7 +127,7 @@ func main() {
 	corsConfig := cors.Default()
 	restServer.Use(corsConfig)
 
-	// Seat Router
+	// Seat Service
 	seatRepo := seatRepository.NewSeatRepository(dbConnection)
 	seatRedisRepo := seatRepository.NewSeatRedisRepository(redisClient)
 	seatUseCase := seatUseCase.NewSeatUseCase(seatRepo, seatRedisRepo)
@@ -126,28 +135,28 @@ func main() {
 	seatRouter := seat.NewSeatRouter(seatController)
 	seatRouter.RegisterRoute(restServer.Group("/api"))
 
-	// Station Router
+	// Station Service
 	stationRepo := stationRepository.NewStationRepository(dbConnection)
 	stationUseCase := stationUseCase.NewStationUsecase(stationRepo)
 	stationController := stationController.NewStationController(stationUseCase)
 	stationRouter := station.NewStationRouter(stationController)
 	stationRouter.RegisterRoute(restServer.Group("/api"))
 
-	// Ticket Router
+	// Ticket Service
 	ticketRepo := ticketRepository.NewTicketRepository(dbConnection)
 	ticketUseCase := ticketUseCase.NewTicketUseCase(ticketRepo)
 	ticketController := ticketController.NewTicketController(ticketUseCase)
 	ticketRouter := ticket.NewTicketRouter(ticketController)
 	ticketRouter.RegisterRoute(restServer.Group("/api"))
 
-	// Travel Router
+	// Travel Service
 	travelRepo := travelRepository.NewTravelRepository(dbConnection)
 	travelUseCase := travelUseCase.NewTravelUseCase(travelRepo)
 	travelController := travelController.NewTravelController(travelUseCase)
 	travelRouter := travel.NewTravelRouter(travelController)
 	travelRouter.RegisterRoute(restServer.Group("/api"))
 
-	// Booking Router
+	// Booking Service
 	bookingRepo := bookingRepository.NewBookingRepository(dbConnection)
 	bookingRedisRepo := bookingRepository.NewRedisRepository(redisClient)
 	bookingUseCase := bookingUseCase.NewBookingUseCase(bookingRepo, bookingRedisRepo)
@@ -155,11 +164,25 @@ func main() {
 	bookingRouter := booking.NewBookingRouter(bookingController)
 	bookingRouter.RegisterRoute(restServer.Group("/api"))
 
-	// Setup Router
-	tbsController := controller.NewController(repository.NewPostgresRepository(dbConnection), repository.NewRedisRepository(redisClient))
-	tbsRouter := router.NewRouter(tbsController)
+	// User Service
+	userRepo := userRepository.NewUserRepository(dbConnection)
+	userUseCase := userUseCase.NewUserUseCae(userRepo)
+	userController := userController.NewUserController(userUseCase)
+	userRouter := user.NewUserRouter(userController)
+	userRouter.RegisterRoute(restServer.Group("/api"))
 
-	tbsRouter.AddRoute(restServer.Group("/api"))
+	// Wagon Service
+	wagonRepo := wagonRepository.NewWagonRepository(dbConnection)
+	wagonUseCase := wagonUseCase.NewWagonUseCae(wagonRepo)
+	wagonController := wagonController.NewWagonController(wagonUseCase)
+	wagonRouter := wagon.NewWagonRouter(wagonController)
+	wagonRouter.RegisterRoute(restServer.Group("/api"))
+
+	// Setup Router
+	// tbsController := controller.NewController(repository.NewPostgresRepository(dbConnection), repository.NewRedisRepository(redisClient))
+	// tbsRouter := router.NewRouter(tbsController)
+
+	// tbsRouter.AddRoute(restServer.Group("/api"))
 	restServer.Run("localhost:8080")
 
 }
