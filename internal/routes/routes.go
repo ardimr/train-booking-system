@@ -18,8 +18,8 @@ func NewRouter(controller *controller.Controller) *Router {
 
 func (router *Router) AddRoute(superRoute *gin.RouterGroup) {
 	router.travelRoutes(superRoute)
-	router.stationRoutes(superRoute)
-	router.seatRoutes(superRoute)
+	// router.stationRoutes(superRoute)
+	// router.seatRoutes(superRoute)
 	router.ticketRoutes(superRoute)
 	router.bookingRoutes(superRoute)
 	router.userRoutes(superRoute)
@@ -35,13 +35,13 @@ func (router *Router) travelRoutes(superRoute *gin.RouterGroup) {
 	travelRouter.DELETE("/travels/:id", router.controller.DeleteTravel)
 }
 
-func (router *Router) stationRoutes(superRoute *gin.RouterGroup) {
-	stationRouter := superRoute.Group("/v1")
-	stationRouter.GET("/stations", router.controller.FindStations)
-	stationRouter.POST("/stations", router.controller.AddStation)
-	stationRouter.PATCH("/stations/:station_code", router.controller.EditStation)
-	stationRouter.DELETE("/stations/:station_code", router.controller.DeleteStation)
-}
+// func (router *Router) stationRoutes(superRoute *gin.RouterGroup) {
+// 	stationRouter := superRoute.Group("/v1")
+// 	stationRouter.GET("/stations", router.controller.FindStations)
+// 	stationRouter.POST("/stations", router.controller.AddStation)
+// 	stationRouter.PATCH("/stations/:station_code", router.controller.EditStation)
+// 	stationRouter.DELETE("/stations/:station_code", router.controller.DeleteStation)
+// }
 
 func (router *Router) wagonRoutes(superRoute *gin.RouterGroup) {
 	wagonRouter := superRoute.Group("/v1")
@@ -50,10 +50,10 @@ func (router *Router) wagonRoutes(superRoute *gin.RouterGroup) {
 	wagonRouter.POST("/wagons", router.controller.AddNewWagon)
 }
 
-func (router *Router) seatRoutes(superRoute *gin.RouterGroup) {
-	seatRouter := superRoute.Group("/v1")
-	seatRouter.GET("/seats", router.controller.FindAvailableSeats)
-}
+// func (router *Router) seatRoutes(superRoute *gin.RouterGroup) {
+// 	seatRouter := superRoute.Group("/v1")
+// 	seatRouter.GET("/seats", router.controller.FindAvailableSeats)
+// }
 
 func (router *Router) userRoutes(superRoute *gin.RouterGroup) {
 	userRouter := superRoute.Group("/v1")
