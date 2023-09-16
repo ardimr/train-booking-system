@@ -1,13 +1,74 @@
 package controller
 
-import "github.com/ardimr/train-booking-system/internal/booking/repository"
+import (
+	"net/http"
+
+	"github.com/ardimr/train-booking-system/internal/ticket/model"
+	"github.com/ardimr/train-booking-system/internal/ticket/usecase"
+	"github.com/gin-gonic/gin"
+)
 
 type TicketController struct {
-	querier repository.IBookingRepository
+	ticketUseCase usecase.ITicketUseCase
 }
 
-func NewBookingController(q repository.IBookingRepository) *TicketController {
+func NewTicketController(ticketUseCase usecase.ITicketUseCase) *TicketController {
 	return &TicketController{
-		querier: q,
+		ticketUseCase: ticketUseCase,
 	}
+}
+
+func (controller *TicketController) GetUserTickets(ctx *gin.Context) {
+	// Retrieve the request parameter in query
+	var reqParam model.TicketRequestParam
+	if err := ctx.BindQuery(&reqParam); err != nil {
+		ctx.AbortWithStatusJSON(
+			http.StatusBadRequest,
+			gin.H{"Error": err.Error()},
+		)
+		return
+	}
+	// Get the stations data from database
+	userTickets, err := controller.ticketUseCase.GetUserTickets(ctx, reqParam)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(
+			http.StatusInternalServerError,
+			gin.H{"Error": err.Error()},
+		)
+		return
+	}
+
+	ctx.JSON(
+		http.StatusOK,
+		userTickets,
+	)
+}
+
+func (controller *TicketController) GetTicketDetailsById(ctx *gin.Context) {
+	// Retrieve the request parameter in query
+	var reqParam model.TicketRequestUri
+	if err := ctx.BindUri(&reqParam); err != nil {
+		ctx.AbortWithStatusJSON(
+			http.StatusBadRequest,
+			gin.H{"Error": err.Error()},
+		)
+		return
+	}
+
+	// Get the stations data from database
+	ticketDetails, err := controller.ticketUseCase.GetTicketDetailsById(ctx, reqParam)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(
+			http.StatusInternalServerError,
+			gin.H{"Error": err.Error()},
+		)
+		return
+	}
+
+	ctx.JSON(
+		http.StatusOK,
+		ticketDetails,
+	)
 }

@@ -9,8 +9,8 @@ import (
 )
 
 type ITicketRepository interface {
-	GetUserTickets(ctx context.Context, param model.TicketRequestParam) ([]model.UserTicket, error)
-	GetTicketDetailsById(ctx context.Context, param model.TicketRequestUri) (model.TicketDetails, error)
+	GetUserTickets(ctx context.Context, userId int64) ([]model.UserTicket, error)
+	GetTicketDetailsById(ctx context.Context, ticketId int64) (model.TicketDetails, error)
 }
 
 type TicketRepository struct {
@@ -24,7 +24,7 @@ func NewTicketRepository(db db.DBInterface) *TicketRepository {
 }
 
 // Implementation
-func (q *TicketRepository) GetUserTickets(ctx context.Context, param model.TicketRequestParam) ([]model.UserTicket, error) {
+func (q *TicketRepository) GetUserTickets(ctx context.Context, userId int64) ([]model.UserTicket, error) {
 	var userTickets []model.UserTicket
 
 	queryStatement := `
@@ -78,7 +78,7 @@ func (q *TicketRepository) GetUserTickets(ctx context.Context, param model.Ticke
 		user_tickets
 	WHERE user_id = $1
 	`
-	rows, err := q.db.QueryContext(ctx, queryStatement, param.UserId)
+	rows, err := q.db.QueryContext(ctx, queryStatement, userId)
 
 	if err != nil {
 		return nil, err
@@ -118,7 +118,8 @@ func (q *TicketRepository) GetUserTickets(ctx context.Context, param model.Ticke
 
 	return userTickets, nil
 }
-func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, param model.TicketRequestUri) (model.TicketDetails, error) {
+
+func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, ticketId int64) (model.TicketDetails, error) {
 	var ticketDetails model.TicketDetails
 	queryStatement := `
 	WITH travel_tickets AS (
@@ -238,7 +239,7 @@ func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, param model
 	var destinationStationRaw []byte
 	var durationRaw []byte
 
-	err := q.db.QueryRowContext(ctx, queryStatement, param.TicketId).Scan(
+	err := q.db.QueryRowContext(ctx, queryStatement, ticketId).Scan(
 		&ticketDetails.TicketId,
 		&ticketDetails.Status,
 		&departureStationRaw,
