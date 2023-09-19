@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"net/http"
 
+	"github.com/ardimr/train-booking-system/internal/exception"
 	"github.com/ardimr/train-booking-system/internal/travel/model"
 	"github.com/ardimr/train-booking-system/internal/travel/usecase"
 	"github.com/gin-gonic/gin"
@@ -23,24 +24,15 @@ func (controller *TravelController) ListTravels(ctx *gin.Context) {
 	var reqParam model.TravelScheduleReqParam
 
 	if err := ctx.BindQuery(&reqParam); err != nil {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"Message": err.Error(),
-			},
-		)
+		httpError := exception.NewHttpError(http.StatusBadRequest, err.Error())
+		ctx.Error(httpError)
 		return
 	}
 
 	// Get users data from db
 	users, err := controller.travelUseCase.ListTravels(ctx, reqParam)
 	if err != nil {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"Message": err.Error(),
-			},
-		)
+		ctx.Error(err)
 		return
 	}
 
