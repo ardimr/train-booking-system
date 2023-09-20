@@ -30,7 +30,7 @@ func (controller *TravelController) ListTravels(ctx *gin.Context) {
 	// Get users data from db
 	users, err := controller.travelUseCase.ListTravels(ctx, reqParam)
 	if err != nil {
-		ctx.Error(err)
+		ctx.JSON(exception.ErrorResponse(err))
 		return
 	}
 
@@ -73,25 +73,14 @@ func (controler *TravelController) AddNewTravel(ctx *gin.Context) {
 	var newTravel model.AddNewTravel
 
 	if err := ctx.BindJSON(&newTravel); err != nil {
-		ctx.JSON(
-			http.StatusBadRequest,
-			gin.H{
-				"Message": err.Error(),
-			},
-		)
+		ctx.JSON(exception.ErrorResponse(err))
 		return
 	}
 
 	newId, err := controler.travelUseCase.AddNewTravel(ctx, newTravel)
 
 	if err != nil {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"Message": err.Error(),
-			},
-		)
-
+		ctx.JSON(exception.ErrorResponse(err))
 		return
 	}
 
