@@ -9,6 +9,7 @@ import (
 	"github.com/ardimr/train-booking-system/configs/redis"
 
 	// Seats
+
 	seat "github.com/ardimr/train-booking-system/internal/seat"
 	seatController "github.com/ardimr/train-booking-system/internal/seat/controller"
 	seatRepository "github.com/ardimr/train-booking-system/internal/seat/repository"
@@ -126,6 +127,8 @@ func main() {
 	// Setup CORS Policy
 	corsConfig := cors.Default()
 	restServer.Use(corsConfig)
+
+	// Middleware
 
 	// Seat Service
 	seatRepo := seatRepository.NewSeatRepository(dbConnection)

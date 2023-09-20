@@ -2,9 +2,7 @@ package usecase
 
 import (
 	"context"
-	"net/http"
 
-	"github.com/ardimr/train-booking-system/internal/exception"
 	"github.com/ardimr/train-booking-system/internal/travel/model"
 	"github.com/ardimr/train-booking-system/internal/travel/repository"
 )
@@ -32,8 +30,8 @@ func (uc *TravelUseCase) ListTravels(ctx context.Context, param model.TravelSche
 	travels, err := uc.travelRepo.ListTravels(ctx, param)
 
 	if err != nil {
-		errUc := exception.NewHttpError(http.StatusInternalServerError, err.Error())
-		return nil, errUc
+
+		return nil, err
 	}
 
 	return travels, nil

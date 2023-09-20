@@ -86,5 +86,5 @@ type TravelReqUri struct {
 }
 
 type TravelReqParam struct {
-	WagonClass string `form:"wagon_class"`
+	WagonClass string `form:"wagon_class" binding:"required"`
 }

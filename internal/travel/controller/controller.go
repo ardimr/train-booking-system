@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/ardimr/train-booking-system/internal/exception"
@@ -24,8 +23,7 @@ func (controller *TravelController) ListTravels(ctx *gin.Context) {
 	var reqParam model.TravelScheduleReqParam
 
 	if err := ctx.BindQuery(&reqParam); err != nil {
-		httpError := exception.NewHttpError(http.StatusBadRequest, err.Error())
-		ctx.Error(httpError)
+		ctx.JSON(exception.ErrorResponse(err))
 		return
 	}
 
@@ -45,39 +43,22 @@ func (controller *TravelController) ListTravels(ctx *gin.Context) {
 func (controller *TravelController) GetTravelById(ctx *gin.Context) {
 	var reqUri model.TravelReqUri
 	var reqParam model.TravelReqParam
+
 	// Request URI Binding
-	if err := ctx.BindUri(&reqUri); err != nil {
-		ctx.JSON(
-			http.StatusBadRequest,
-			gin.H{
-				"message": err.Error(),
-			},
-		)
+	if err := ctx.ShouldBindUri(&reqUri); err != nil {
+		ctx.JSON(exception.ErrorResponse(err))
 		return
 	}
 
-	if err := ctx.BindQuery(&reqParam); err != nil {
-		ctx.JSON(
-			http.StatusBadRequest,
-			gin.H{
-				"message": err.Error(),
-			},
-		)
+	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
+		ctx.JSON(exception.ErrorResponse(err))
 		return
 	}
 
 	user, err := controller.travelUseCase.GetTravelById(ctx, reqUri.TravelId, reqParam.WagonClass)
 
 	if err != nil {
-		switch err {
-		case sql.ErrNoRows:
-			ctx.AbortWithStatusJSON(
-				http.StatusNotFound,
-				gin.H{
-					"Message": "Not Found",
-				},
-			)
-		}
+		ctx.JSON(exception.ErrorResponse(err))
 		return
 	}
 
