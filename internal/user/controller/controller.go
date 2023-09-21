@@ -21,7 +21,7 @@ func NewUserController(userUseCase usecase.IUserUseCase) *UserController {
 
 func (controller *UserController) GetUserDetails(ctx *gin.Context) {
 	var reqUri model.UserRequestUri
-	if err := ctx.BindUri(&reqUri); err != nil {
+	if err := ctx.ShouldBindUri(&reqUri); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
@@ -39,7 +39,7 @@ func (controller *UserController) GetUserDetails(ctx *gin.Context) {
 func (controller *UserController) NewUser(ctx *gin.Context) {
 	var reqBody model.NewUserRequestBody
 
-	if err := ctx.BindJSON(&reqBody); err != nil {
+	if err := ctx.ShouldBindJSON(&reqBody); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}

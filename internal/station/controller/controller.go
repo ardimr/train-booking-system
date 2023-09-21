@@ -23,7 +23,7 @@ func (controller *StationController) FindStations(ctx *gin.Context) {
 	// Retrieve the request parameter in query
 	var reqParam model.StationRequestParam
 
-	if err := ctx.BindQuery(&reqParam); err != nil {
+	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
@@ -45,7 +45,7 @@ func (controller *StationController) FindStations(ctx *gin.Context) {
 func (controller *StationController) AddStation(ctx *gin.Context) {
 	var reqBody model.NewStation
 
-	if err := ctx.BindJSON(&reqBody); err != nil {
+	if err := ctx.ShouldBindJSON(&reqBody); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
@@ -53,7 +53,7 @@ func (controller *StationController) AddStation(ctx *gin.Context) {
 	err := controller.stationUseCase.AddStation(ctx, reqBody)
 
 	if err != nil {
-		if err := ctx.BindJSON(&reqBody); err != nil {
+		if err := ctx.ShouldBindJSON(&reqBody); err != nil {
 			ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 			return
 		}
@@ -66,12 +66,12 @@ func (controller *StationController) EditStation(ctx *gin.Context) {
 	var reqUri model.StationReqUri
 	var newStation model.NewStation
 
-	if err := ctx.BindUri(&reqUri); err != nil {
+	if err := ctx.ShouldBindUri(&reqUri); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
-	if err := ctx.BindJSON(&newStation); err != nil {
+	if err := ctx.ShouldBindJSON(&newStation); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
@@ -88,7 +88,7 @@ func (controller *StationController) EditStation(ctx *gin.Context) {
 func (controller *StationController) DeleteStation(ctx *gin.Context) {
 	var reqUri model.StationReqUri
 
-	if err := ctx.BindUri(&reqUri); err != nil {
+	if err := ctx.ShouldBindUri(&reqUri); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
 		return
 	}

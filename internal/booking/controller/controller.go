@@ -23,7 +23,7 @@ func (controller *BookingController) NewBooking(ctx *gin.Context) {
 
 	var reqBody model.BookingRequestBody
 
-	if err := ctx.BindJSON(&reqBody); err != nil {
+	if err := ctx.ShouldBindJSON(&reqBody); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
@@ -56,12 +56,12 @@ func (controller *BookingController) GetBookingDetails(ctx *gin.Context) {
 	var reqUri model.BookingRequestUri
 	var reqParam model.BookingRequestParam
 
-	if err := ctx.BindUri(&reqUri); err != nil {
+	if err := ctx.ShouldBindUri(&reqUri); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
-	if err := ctx.BindQuery(&reqParam); err != nil {
+	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}

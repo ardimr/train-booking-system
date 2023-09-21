@@ -23,7 +23,7 @@ func (controller *SeatController) FindAvailableSeats(ctx *gin.Context) {
 	// Retrieve the request parameter in query
 	var reqParam model.AvailableSeatRequestParam
 
-	if err := ctx.BindQuery(&reqParam); err != nil {
+	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}

@@ -22,7 +22,7 @@ func NewTravelController(travelUseCase usecase.ITravelUseCase) *TravelController
 func (controller *TravelController) ListTravels(ctx *gin.Context) {
 	var reqParam model.TravelScheduleReqParam
 
-	if err := ctx.BindQuery(&reqParam); err != nil {
+	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
@@ -44,7 +44,7 @@ func (controller *TravelController) GetTravelById(ctx *gin.Context) {
 	var reqUri model.TravelReqUri
 	var reqParam model.TravelReqParam
 
-	// Request URI Binding
+	// Request URI ShouldBinding
 	if err := ctx.ShouldBindUri(&reqUri); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
@@ -72,7 +72,7 @@ func (controller *TravelController) GetTravelById(ctx *gin.Context) {
 func (controler *TravelController) AddNewTravel(ctx *gin.Context) {
 	var newTravel model.AddNewTravel
 
-	if err := ctx.BindJSON(&newTravel); err != nil {
+	if err := ctx.ShouldBindJSON(&newTravel); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}

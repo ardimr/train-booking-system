@@ -22,7 +22,7 @@ func NewTicketController(ticketUseCase usecase.ITicketUseCase) *TicketController
 func (controller *TicketController) GetUserTickets(ctx *gin.Context) {
 	// Retrieve the request parameter in query
 	var reqParam model.TicketRequestParam
-	if err := ctx.BindQuery(&reqParam); err != nil {
+	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
@@ -43,7 +43,7 @@ func (controller *TicketController) GetUserTickets(ctx *gin.Context) {
 func (controller *TicketController) GetTicketDetailsById(ctx *gin.Context) {
 	// Retrieve the request parameter in query
 	var reqParam model.TicketRequestUri
-	if err := ctx.BindUri(&reqParam); err != nil {
+	if err := ctx.ShouldBindUri(&reqParam); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
