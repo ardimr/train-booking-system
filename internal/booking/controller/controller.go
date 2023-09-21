@@ -5,6 +5,7 @@ import (
 
 	"github.com/ardimr/train-booking-system/internal/booking/model"
 	"github.com/ardimr/train-booking-system/internal/booking/usecase"
+	"github.com/ardimr/train-booking-system/internal/exception"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,10 +24,7 @@ func (controller *BookingController) NewBooking(ctx *gin.Context) {
 	var reqBody model.BookingRequestBody
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
-		ctx.AbortWithStatusJSON(
-			http.StatusBadRequest,
-			gin.H{"Err": err.Error()},
-		)
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
@@ -34,10 +32,7 @@ func (controller *BookingController) NewBooking(ctx *gin.Context) {
 	bookingDetails, err := controller.bookingUseCase.NewBooking(ctx, reqBody)
 
 	if err != nil {
-		ctx.AbortWithStatusJSON(
-			http.StatusInternalServerError,
-			gin.H{"Err": err.Error()},
-		)
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
@@ -62,19 +57,19 @@ func (controller *BookingController) GetBookingDetails(ctx *gin.Context) {
 	var reqParam model.BookingRequestParam
 
 	if err := ctx.BindUri(&reqUri); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
 	if err := ctx.BindQuery(&reqParam); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
 	bookingDetails, err := controller.bookingUseCase.GetBookingDetails(ctx, reqParam.TravelId, reqUri.BookingCode)
 
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Error": err.Error()})
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 

@@ -23,14 +23,14 @@ func (controller *TravelController) ListTravels(ctx *gin.Context) {
 	var reqParam model.TravelScheduleReqParam
 
 	if err := ctx.BindQuery(&reqParam); err != nil {
-		ctx.JSON(exception.ErrorResponse(err))
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
 	// Get users data from db
 	users, err := controller.travelUseCase.ListTravels(ctx, reqParam)
 	if err != nil {
-		ctx.JSON(exception.ErrorResponse(err))
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
@@ -46,19 +46,19 @@ func (controller *TravelController) GetTravelById(ctx *gin.Context) {
 
 	// Request URI Binding
 	if err := ctx.ShouldBindUri(&reqUri); err != nil {
-		ctx.JSON(exception.ErrorResponse(err))
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
 	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
-		ctx.JSON(exception.ErrorResponse(err))
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
 	user, err := controller.travelUseCase.GetTravelById(ctx, reqUri.TravelId, reqParam.WagonClass)
 
 	if err != nil {
-		ctx.JSON(exception.ErrorResponse(err))
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
@@ -73,14 +73,14 @@ func (controler *TravelController) AddNewTravel(ctx *gin.Context) {
 	var newTravel model.AddNewTravel
 
 	if err := ctx.BindJSON(&newTravel); err != nil {
-		ctx.JSON(exception.ErrorResponse(err))
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
 	newId, err := controler.travelUseCase.AddNewTravel(ctx, newTravel)
 
 	if err != nil {
-		ctx.JSON(exception.ErrorResponse(err))
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 

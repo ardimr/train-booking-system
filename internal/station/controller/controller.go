@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"database/sql"
 	"net/http"
 
+	"github.com/ardimr/train-booking-system/internal/exception"
 	"github.com/ardimr/train-booking-system/internal/station/model"
 	"github.com/ardimr/train-booking-system/internal/station/usecase"
 	"github.com/gin-gonic/gin"
@@ -24,20 +24,16 @@ func (controller *StationController) FindStations(ctx *gin.Context) {
 	var reqParam model.StationRequestParam
 
 	if err := ctx.BindQuery(&reqParam); err != nil {
-		ctx.AbortWithStatusJSON(
-			http.StatusBadRequest,
-			gin.H{"Error": err.Error()},
-		)
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
 	}
 
 	// Get the stations data from database
 	cityCtations, err := controller.stationUseCase.GetStations(ctx, reqParam)
 
 	if err != nil {
-		ctx.AbortWithStatusJSON(
-			http.StatusInternalServerError,
-			gin.H{"Error": err.Error()},
-		)
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
 	}
 
 	ctx.JSON(
@@ -50,7 +46,7 @@ func (controller *StationController) AddStation(ctx *gin.Context) {
 	var reqBody model.NewStation
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
@@ -58,7 +54,7 @@ func (controller *StationController) AddStation(ctx *gin.Context) {
 
 	if err != nil {
 		if err := ctx.BindJSON(&reqBody); err != nil {
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Error": err.Error()})
+			ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 			return
 		}
 	}
@@ -71,26 +67,20 @@ func (controller *StationController) EditStation(ctx *gin.Context) {
 	var newStation model.NewStation
 
 	if err := ctx.BindUri(&reqUri); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
 	if err := ctx.BindJSON(&newStation); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return
 	}
 
 	err := controller.stationUseCase.EditStation(ctx, reqUri.StationCode, newStation)
 
 	if err != nil {
-		switch err {
-		case sql.ErrNoRows:
-			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"Error": "Station not found"})
-			return
-		default:
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Error": err.Error()})
-			return
-		}
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
 	}
 	ctx.Status(http.StatusAccepted)
 }
@@ -105,14 +95,8 @@ func (controller *StationController) DeleteStation(ctx *gin.Context) {
 
 	err := controller.stationUseCase.DeleteStation(ctx, reqUri.StationCode)
 	if err != nil {
-		switch err {
-		case sql.ErrNoRows:
-			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"Error": "Station not found"})
-			return
-		default:
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Error": err.Error()})
-			return
-		}
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
 	}
 	ctx.Status(http.StatusNoContent)
 }
