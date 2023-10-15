@@ -8,7 +8,7 @@ import (
 )
 
 type ITicketUseCase interface {
-	GetUserTickets(ctx context.Context, param model.TicketRequestParam) ([]model.UserTicket, error)
+	GetUserTickets(ctx context.Context, userId int64) ([]model.UserTicket, error)
 	GetTicketDetailsById(ctx context.Context, param model.TicketRequestUri) (model.TicketDetails, error)
 }
 type TicketUseCase struct {
@@ -21,9 +21,9 @@ func NewTicketUseCase(ticketRepo repository.ITicketRepository) *TicketUseCase {
 	}
 }
 
-func (uc *TicketUseCase) GetUserTickets(ctx context.Context, param model.TicketRequestParam) ([]model.UserTicket, error) {
+func (uc *TicketUseCase) GetUserTickets(ctx context.Context, userId int64) ([]model.UserTicket, error) {
 	// Get user tickets from repository
-	userTickets, err := uc.ticketRepo.GetUserTickets(ctx, param.UserId)
+	userTickets, err := uc.ticketRepo.GetUserTickets(ctx, userId)
 
 	if err != nil {
 		return nil, err
