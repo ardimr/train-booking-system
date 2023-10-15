@@ -14,7 +14,7 @@ type User struct {
 }
 
 type UserInfo struct {
-	ID          int64    `json:"id,omitempty"`
+	ID          int64    `json:"UserID,omitempty"`
 	FullName    string   `json:"FullName"`
 	Username    string   `json:"Username"`
 	Password    string   `json:"password"`
@@ -42,8 +42,11 @@ type DeleteUserReqUri struct {
 }
 
 type NewUser struct {
-	Name     string `json:"name" binding:"required"`
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
-	Email    string `json:"email" binding:"required,email"`
+	FullName    string `json:"fullName" binding:"required"`
+	Username    string `json:"username" binding:"required"`
+	Password    string `json:"password" binding:"required"`
+	Email       string `json:"email" binding:"required,email"`
+	PhoneNumber string `json:"phone_number"`
+	IDtype      int64  `json:"id_type"`
+	IDNumber    string `json:"id_number"`
 }
