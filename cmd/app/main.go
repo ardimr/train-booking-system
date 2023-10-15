@@ -121,15 +121,18 @@ func main() {
 	// Use minio as cloud client
 	// cloudClient = minioClient
 
+	// Setup CORS Policy
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"http://localhost:3000"}
+	corsConfig.AllowCredentials = true
+	corsConfig.AllowHeaders = append(corsConfig.AllowHeaders, "Authorization")
+
 	// Setup REST Server
 	restServer := gin.New()
 	restServer.Use(gin.Recovery())
 	restServer.Use(gin.Logger())
 	restServer.Use(gzip.Gzip(gzip.DefaultCompression))
-
-	// Setup CORS Policy
-	corsConfig := cors.Default()
-	restServer.Use(corsConfig)
+	restServer.Use(cors.New(corsConfig))
 
 	// Middleware
 
@@ -167,7 +170,7 @@ func main() {
 	ticketRepo := ticketRepository.NewTicketRepository(dbConnection)
 	ticketUseCase := ticketUseCase.NewTicketUseCase(ticketRepo)
 	ticketController := ticketController.NewTicketController(ticketUseCase)
-	ticketRouter := ticket.NewTicketRouter(ticketController)
+	ticketRouter := ticket.NewTicketRouter(ticketController, authService)
 	ticketRouter.RegisterRoute(restServer.Group("/api"))
 
 	// Travel Service
