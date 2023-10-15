@@ -18,6 +18,7 @@ import (
 
 type MyClaims struct {
 	jwt.StandardClaims
+	UserID   int64  `json:"UserID"`
 	Username string `json:"Username"`
 	Email    string `json:"Email"`
 }
@@ -53,7 +54,6 @@ func NewAuthService(issuer string, expiresAt int64, signingKey []byte, querier r
 func (auth *AuthService) SignIn(ctx *gin.Context) {
 	// Get username and password as the basic auth
 	username, password, ok := ctx.Request.BasicAuth()
-
 	if !ok {
 		ctx.AbortWithStatus(http.StatusBadRequest)
 		log.Println("Not a basic auth")
@@ -88,15 +88,15 @@ func (auth *AuthService) SignIn(ctx *gin.Context) {
 
 	// c.SetCookie("token", newToken, 60, "/", "localhost", false, true)
 	ctx.JSON(http.StatusOK, gin.H{
-		"access token":  newTokenPair.AccessToken,
-		"refresh token": newTokenPair.RefreshToken,
+		"access_token":  newTokenPair.AccessToken,
+		"refresh_token": newTokenPair.RefreshToken,
 	})
 }
 
 func (auth *AuthService) SignUp(ctx *gin.Context) {
 	// Get user info from sign up form
 	var newUser model.NewUser
-	if err := ctx.BindJSON(&newUser); err != nil {
+	if err := ctx.ShouldBindJSON(&newUser); err != nil {
 		ctx.AbortWithStatusJSON(
 			http.StatusBadRequest,
 			gin.H{"Error": err.Error()},
@@ -175,6 +175,7 @@ func (auth *AuthService) GenerateNewTokenPair(user *model.UserInfo) (TokenPair, 
 			Issuer:    auth.Issuer,
 			ExpiresAt: time.Now().Add(time.Duration(auth.ExpiresAt) * time.Second).Unix(),
 		},
+		UserID:   user.ID,
 		Username: user.Username,
 		Email:    user.Email,
 	}
