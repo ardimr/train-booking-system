@@ -8,8 +8,11 @@ import (
 	"github.com/ardimr/train-booking-system/configs/db"
 	"github.com/ardimr/train-booking-system/configs/redis"
 
-	// Seats
+	// Auth
+	"github.com/ardimr/train-booking-system/internal/auth"
+	authRepository "github.com/ardimr/train-booking-system/internal/auth/repository"
 
+	// Seats
 	seat "github.com/ardimr/train-booking-system/internal/seat"
 	seatController "github.com/ardimr/train-booking-system/internal/seat/controller"
 	seatRepository "github.com/ardimr/train-booking-system/internal/seat/repository"
@@ -118,17 +121,35 @@ func main() {
 	// Use minio as cloud client
 	// cloudClient = minioClient
 
+	// Setup CORS Policy
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"http://localhost:3000"}
+	corsConfig.AllowCredentials = true
+	corsConfig.AllowHeaders = append(corsConfig.AllowHeaders, "Authorization")
+
 	// Setup REST Server
 	restServer := gin.New()
 	restServer.Use(gin.Recovery())
 	restServer.Use(gin.Logger())
 	restServer.Use(gzip.Gzip(gzip.DefaultCompression))
-
-	// Setup CORS Policy
-	corsConfig := cors.Default()
-	restServer.Use(corsConfig)
+	restServer.Use(cors.New(corsConfig))
 
 	// Middleware
+
+	// Auth Service
+	expiresAt, err := strconv.Atoi(os.Getenv("JWT_EXPIRES_AT"))
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	authRepo := authRepository.NewPostgresQuerier(dbConnection)
+	authService := auth.NewAuthService(
+		os.Getenv("JWT_ISSUER"),
+		int64(expiresAt),
+		[]byte(os.Getenv("JWT_SIGNING_KEY")),
+		authRepo,
+	)
+	authRouter := auth.NewSeatRouter(authService)
+	authRouter.RegisterRoute(restServer.Group("/api"))
 
 	// Seat Service
 	seatRepo := seatRepository.NewSeatRepository(dbConnection)
@@ -149,7 +170,7 @@ func main() {
 	ticketRepo := ticketRepository.NewTicketRepository(dbConnection)
 	ticketUseCase := ticketUseCase.NewTicketUseCase(ticketRepo)
 	ticketController := ticketController.NewTicketController(ticketUseCase)
-	ticketRouter := ticket.NewTicketRouter(ticketController)
+	ticketRouter := ticket.NewTicketRouter(ticketController, authService)
 	ticketRouter.RegisterRoute(restServer.Group("/api"))
 
 	// Travel Service
