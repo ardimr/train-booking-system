@@ -237,13 +237,13 @@ func (q *AuthRepository) AddNewUser(ctx context.Context, newUser model.NewUser) 
 	var newId int64
 
 	sqlStatement := `
-	INSERT INTO public.users 
-		(name, username, password, email) VALUES ($1,$2,$3,$4) RETURNING id
+	INSERT INTO users.users 
+		(fullname, username, password, email) VALUES ($1,$2,$3,$4) RETURNING user_id
 	`
 
 	err := q.db.QueryRowContext(ctx,
 		sqlStatement,
-		newUser.Name,
+		newUser.FullName,
 		newUser.Username,
 		newUser.Password,
 		newUser.Email).Scan(&newId)
