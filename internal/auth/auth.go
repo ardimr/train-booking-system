@@ -135,6 +135,7 @@ func (auth *AuthService) SignUp(ctx *gin.Context) {
 		gin.H{"New Id": newId},
 	)
 }
+
 func (auth *AuthService) RefreshToken(ctx *gin.Context) {
 	// Validate the refresh token
 

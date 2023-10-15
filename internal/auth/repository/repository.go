@@ -53,6 +53,7 @@ func (q *AuthRepository) GetUserPasswordByUsername(ctx context.Context, username
 	return password, nil
 
 }
+
 func (q *AuthRepository) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	var user model.User
 
@@ -69,7 +70,7 @@ func (q *AuthRepository) GetUserByUsername(ctx context.Context, username string)
 	err := q.db.QueryRowContext(ctx, queryStatement, username).Scan(
 		&user.Username,
 		&user.Password,
-		&user.Name,
+		&user.FullName,
 		&user.Email,
 		&user.Role,
 	)
@@ -92,16 +93,18 @@ func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username str
 
 	queryStatement := `
 	SELECT
+		user_id,
 		username,
-		name,
+		fullname,
 		password,
 		email
-	FROM public.users
+	FROM "users"."users"
 	WHERE username=$1
 	`
 	err = tx.QueryRowContext(ctx, queryStatement, username).Scan(
+		&user.ID,
 		&user.Username,
-		&user.Name,
+		&user.FullName,
 		&user.Password,
 		&user.Email,
 	)
@@ -114,14 +117,14 @@ func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username str
 	queryStatement = `
 	SELECT
 		roles.name
-	FROM users
-	INNER JOIN user_roles
-	ON users.username = user_roles.username
-	INNER JOIN roles
+	FROM "users"."users"
+	INNER JOIN users.user_roles
+	ON users.user_id = user_roles.user_id
+	INNER JOIN users.roles
 	ON user_roles.role_id = roles.id
-	WHERE users.username=$1
+	WHERE "users".user_id=$1
 	`
-	err = tx.QueryRowContext(ctx, queryStatement, username).Scan(
+	err = tx.QueryRowContext(ctx, queryStatement, user.ID).Scan(
 		&user.Role,
 	)
 
@@ -130,36 +133,36 @@ func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username str
 		return nil, err
 	}
 
-	queryStatement = `
-	SELECT
-		permissions.action
-	FROM users
-	INNER JOIN user_roles
-	ON users.username = user_roles.username
-	INNER JOIN role_permissions
-	ON user_roles.role_id = role_permissions.role_id
-	INNER JOIN permissions
-	ON role_permissions.permission_id = permissions.id
-	WHERE users.username=$1
-	`
-	rows, err := tx.QueryContext(ctx, queryStatement, username)
+	// queryStatement = `
+	// SELECT
+	// 	permissions.action
+	// FROM "users"
+	// INNER JOIN user_roles
+	// ON users.user_id = user_roles.user_id
+	// INNER JOIN role_permissions
+	// ON user_roles.role_id = role_permissions.role_id
+	// INNER JOIN permissions
+	// ON role_permissions.permission_id = permissions.id
+	// WHERE users.user_id=$1
+	// `
+	// rows, err := tx.QueryContext(ctx, queryStatement, user.ID)
 
-	if err != nil {
-		tx.Rollback()
-		return nil, err
-	}
+	// if err != nil {
+	// 	tx.Rollback()
+	// 	return nil, err
+	// }
 
-	for rows.Next() {
-		var permission string
-		err := rows.Scan(&permission)
+	// for rows.Next() {
+	// 	var permission string
+	// 	err := rows.Scan(&permission)
 
-		if err != nil {
-			tx.Rollback()
-			return nil, err
-		}
+	// 	if err != nil {
+	// 		tx.Rollback()
+	// 		return nil, err
+	// 	}
 
-		user.Permissions = append(user.Permissions, permission)
-	}
+	// 	user.Permissions = append(user.Permissions, permission)
+	// }
 
 	tx.Commit()
 	return &user, nil
@@ -193,7 +196,7 @@ func (q *AuthRepository) GetUsers(ctx context.Context) ([]model.User, error) {
 		err := rows.Scan(
 			&user.ID,
 			&user.Username,
-			&user.Name,
+			&user.FullName,
 			&user.Email,
 			&user.CreatedAt,
 			&user.UpdatedAt,
@@ -219,7 +222,7 @@ func (q *AuthRepository) GetUserById(ctx context.Context, id int64) (*model.User
 	`
 	err := q.db.QueryRowContext(ctx, queryStatement, id).Scan(
 		&user.ID,
-		&user.Name,
+		&user.FullName,
 	)
 
 	if err != nil {
@@ -277,7 +280,7 @@ func (q *AuthRepository) UpdateUser(ctx context.Context, user model.User) (int64
 	UPDATE public.users SET name=$2 WHERE id=$1
 	`
 
-	res, err := q.db.ExecContext(ctx, sqlStatement, user.ID, user.Name)
+	res, err := q.db.ExecContext(ctx, sqlStatement, user.ID, user.FullName)
 
 	if err != nil {
 		return 0, err

@@ -8,8 +8,11 @@ import (
 	"github.com/ardimr/train-booking-system/configs/db"
 	"github.com/ardimr/train-booking-system/configs/redis"
 
-	// Seats
+	// Auth
+	"github.com/ardimr/train-booking-system/internal/auth"
+	authRepository "github.com/ardimr/train-booking-system/internal/auth/repository"
 
+	// Seats
 	seat "github.com/ardimr/train-booking-system/internal/seat"
 	seatController "github.com/ardimr/train-booking-system/internal/seat/controller"
 	seatRepository "github.com/ardimr/train-booking-system/internal/seat/repository"
@@ -129,6 +132,21 @@ func main() {
 	restServer.Use(corsConfig)
 
 	// Middleware
+
+	// Auth Service
+	expiresAt, err := strconv.Atoi(os.Getenv("JWT_EXPIRES_AT"))
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	authRepo := authRepository.NewPostgresQuerier(dbConnection)
+	authService := auth.NewAuthService(
+		os.Getenv("JWT_ISSUER"),
+		int64(expiresAt),
+		[]byte(os.Getenv("JWT_SIGNING_KEY")),
+		authRepo,
+	)
+	authRouter := auth.NewSeatRouter(authService)
+	authRouter.RegisterRoute(restServer.Group("/api"))
 
 	// Seat Service
 	seatRepo := seatRepository.NewSeatRepository(dbConnection)
