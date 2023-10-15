@@ -12,7 +12,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func MiddlewareValidateToken(auth *auth.AuthService) gin.HandlerFunc {
+func ValidateToken(auth *auth.AuthService) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// Check the authorization header
 		authHeader := ctx.GetHeader("Authorization")
@@ -34,7 +34,6 @@ func MiddlewareValidateToken(auth *auth.AuthService) gin.HandlerFunc {
 
 		// Get token claims
 		claims, ok := token.Claims.(jwt.MapClaims)
-
 		if ok && token.Valid {
 			// Put user data in the context as value
 			ctx.Set("user-info", claims)
