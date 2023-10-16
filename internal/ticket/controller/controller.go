@@ -24,12 +24,12 @@ func (controller *TicketController) GetUserTickets(ctx *gin.Context) {
 
 	userInfo := helpers.GetUserInfo(ctx)
 
-	// Retrieve the request parameter in query
-	var reqParam model.TicketRequestParam
-	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
-		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
-		return
-	}
+	// // Retrieve the request parameter in query
+	// var reqParam model.TicketRequestParam
+	// if err := ctx.ShouldBindQuery(&reqParam); err != nil {
+	// 	ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+	// 	return
+	// }
 
 	// Get the tickets data from database
 	userTickets, err := controller.ticketUseCase.GetUserTickets(ctx, userInfo.ID)
