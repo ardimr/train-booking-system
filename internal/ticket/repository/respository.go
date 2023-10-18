@@ -32,6 +32,8 @@ func (q *TicketRepository) GetUserTickets(ctx context.Context, userId int64) ([]
 		SELECT
 			users.user_id,
 			tickets.ticket_id,
+			tickets.booking_code,
+			bookings.status,
 			travels.travel_code,
 			json_build_object(
 				'code',
@@ -67,6 +69,7 @@ func (q *TicketRepository) GetUserTickets(ctx context.Context, userId int64) ([]
 			) AS duration
 		FROM
 			bookings.tickets
+			INNER JOIN bookings.bookings ON tickets.booking_code = bookings.booking_code
 			INNER JOIN users.users ON users.user_id = tickets.user_id
 			INNER JOIN travel_schedules.travels ON travels.travel_id = tickets.travel_id
 			INNER JOIN travel_schedules.stations departure_station ON departure_station.station_code = travels.departure_station
@@ -93,6 +96,8 @@ func (q *TicketRepository) GetUserTickets(ctx context.Context, userId int64) ([]
 		rows.Scan(
 			&userTicket.UserId,
 			&userTicket.TicketId,
+			&userTicket.BookingCode,
+			&userTicket.Status,
 			&userTicket.TravelCode,
 			&departureStationRaw,
 			&destinationStationRaw,
@@ -125,6 +130,7 @@ func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, ticketId in
 	WITH travel_tickets AS (
 		SELECT
 			tickets.ticket_id,
+			bookings.booking_code,
 			bookings.status,
 			users.user_id,
 			travels.travel_code,
@@ -218,6 +224,7 @@ func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, ticketId in
 	ticket_details AS (
 		SELECT
 			travel_tickets.ticket_id,
+			travel_tickets.booking_code,
 			travel_tickets.status,
 			departure_station,
 			destination_station,
@@ -241,6 +248,7 @@ func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, ticketId in
 
 	err := q.db.QueryRowContext(ctx, queryStatement, ticketId).Scan(
 		&ticketDetails.TicketId,
+		&ticketDetails.BookingCode,
 		&ticketDetails.Status,
 		&departureStationRaw,
 		&destinationStationRaw,
