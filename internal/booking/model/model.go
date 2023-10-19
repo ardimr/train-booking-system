@@ -41,3 +41,8 @@ type BookingRequestUri struct {
 type BookingRequestParam struct {
 	TravelId int64 `form:"travel_id"`
 }
+
+type PayBookingRequestParam struct {
+	TravelID    int64  `form:"travel_id"`
+	BookingCode string `form:"booking_code"`
+}

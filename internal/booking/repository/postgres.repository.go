@@ -11,6 +11,7 @@ import (
 
 type IBookingRepository interface {
 	CreateBooking(ctx context.Context, booking model.BookingDetails) error
+	UpdateBookingStatus(ctx context.Context, bookingCode string) error
 }
 
 type BookingRepository struct {
@@ -36,9 +37,9 @@ func (q *BookingRepository) CreateBooking(ctx context.Context, booking model.Boo
 	INSERT INTO
 		bookings.bookings (booking_code, status, total_amount)
 	VALUES
-		($1, 'PAID', '150000')
+		($1, 'WAITING', $2)
 	`
-	_, err = tx.ExecContext(ctx, sqlStatementBooking, booking.BookingCode)
+	_, err = tx.ExecContext(ctx, sqlStatementBooking, booking.BookingCode, 150000)
 
 	if err != nil {
 		if rbErr := tx.Rollback(); rbErr != nil {
@@ -106,4 +107,32 @@ func (q *BookingRepository) CreateBooking(ctx context.Context, booking model.Boo
 		}
 	}
 	return tx.Commit()
+}
+
+func (q *BookingRepository) UpdateBookingStatus(ctx context.Context, bookingCode string) error {
+	sqlStatement := `
+		UPDATE
+			bookings.bookings
+		SET
+			status = 'PAID'
+		WHERE
+			bookings.booking_code = $1
+	`
+
+	res, err := q.db.ExecContext(ctx, sqlStatement, bookingCode)
+
+	if err != nil {
+		return err
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rows == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
 }

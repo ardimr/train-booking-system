@@ -4,6 +4,7 @@ import "time"
 
 type TicketDetails struct {
 	TicketId           int64             `json:"ticket_id"`
+	TravelId           int64             `json:"travel_id"`
 	BookingCode        string            `json:"booking_code"`
 	Status             string            `json:"status"`
 	DepartureStation   Station           `json:"departure_station"`

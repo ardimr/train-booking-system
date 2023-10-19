@@ -80,6 +80,7 @@ func (q *TicketRepository) GetUserTickets(ctx context.Context, userId int64) ([]
 	FROM
 		user_tickets
 	WHERE user_id = $1
+	ORDER BY departure_schedule DESC
 	`
 	rows, err := q.db.QueryContext(ctx, queryStatement, userId)
 
@@ -133,6 +134,7 @@ func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, ticketId in
 			bookings.booking_code,
 			bookings.status,
 			users.user_id,
+			travels.travel_id,
 			travels.travel_code,
 			json_build_object(
 				'code',
@@ -224,6 +226,7 @@ func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, ticketId in
 	ticket_details AS (
 		SELECT
 			travel_tickets.ticket_id,
+			travel_tickets.travel_id,
 			travel_tickets.booking_code,
 			travel_tickets.status,
 			departure_station,
@@ -248,6 +251,7 @@ func (q *TicketRepository) GetTicketDetailsById(ctx context.Context, ticketId in
 
 	err := q.db.QueryRowContext(ctx, queryStatement, ticketId).Scan(
 		&ticketDetails.TicketId,
+		&ticketDetails.TravelId,
 		&ticketDetails.BookingCode,
 		&ticketDetails.Status,
 		&departureStationRaw,

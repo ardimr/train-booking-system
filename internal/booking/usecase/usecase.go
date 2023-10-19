@@ -14,6 +14,7 @@ import (
 type IBookingUseCase interface {
 	NewBooking(ctx context.Context, newBooking model.BookingRequestBody) (model.BookingDetails, error)
 	GetBookingDetails(ctx context.Context, travelId int64, bookingCode string) (model.BookingDetails, error)
+	PayBooking(ctx context.Context, travelID int64, bookingCode string) error
 }
 
 type BookingUseCase struct {
@@ -82,6 +83,12 @@ func (uc *BookingUseCase) NewBooking(ctx context.Context, newBooking model.Booki
 		return bookingDetails, err
 	}
 
+	// Write to repository
+	err = uc.bookingRepo.CreateBooking(ctx, bookingDetails)
+	if err != nil {
+		return bookingDetails, err
+	}
+
 	return bookingDetails, nil
 }
 
@@ -95,4 +102,22 @@ func (uc *BookingUseCase) GetBookingDetails(ctx context.Context, travelId int64,
 	}
 
 	return bookingDetails, nil
+}
+
+func (uc *BookingUseCase) PayBooking(ctx context.Context, travelID int64, bookingCode string) error {
+	var bookingDetails model.BookingDetails
+
+	bookingDetails, err := uc.bookingRedisRepo.GetBooking(ctx, travelID, bookingCode)
+	if err != nil {
+		return err
+	}
+
+	// Update booking status
+	err = uc.bookingRepo.UpdateBookingStatus(ctx, bookingCode)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(bookingDetails)
+	return nil
 }

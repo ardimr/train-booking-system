@@ -76,3 +76,21 @@ func (controller *BookingController) GetBookingDetails(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, bookingDetails)
 
 }
+
+func (controller *BookingController) PayBooking(ctx *gin.Context) {
+	var reqUri model.PayBookingRequestParam
+
+	if err := ctx.ShouldBindQuery(&reqUri); err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
+	}
+
+	err := controller.bookingUseCase.PayBooking(ctx, reqUri.TravelID, reqUri.BookingCode)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
+	}
+
+	ctx.Status(http.StatusAccepted)
+}
