@@ -1,12 +1,691 @@
-openapi: '3.0.2'
+openapi: 3.0.2
 info:
-  title: API Title
-  version: '1.0'
+  title: Train Booking System
+  version: 0.0.1
 servers:
-  - url: https://api.server.test/v1
+  - url: http://localhost:8080
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+tags:
+  - name: Travels
+  - name: Stations
+  - name: Seats
+  - name: Tickets
+  - name: Bookings
+  - name: Users
+  - name: Wagons
+  - name: auth
 paths:
-  /test:
+  /api/v1/travels:
     get:
+      tags:
+        - Travels
+      summary: List Travel Schedules
+      parameters:
+        - name: departure_station_code
+          in: query
+          schema:
+            type: string
+          example: 'BD '
+        - name: destination_station_code
+          in: query
+          schema:
+            type: string
+          example: 'TG '
+        - name: departure_date
+          in: query
+          schema:
+            type: string
+          example: '2023-09-10'
       responses:
         '200':
           description: OK
+          headers:
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Date:
+              schema:
+                type: string
+                example: Wed, 30 Aug 2023 13:16:28 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '351'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - travel_id: 1
+                  travel_code: 144
+                  train_code: CIR
+                  train_name: Ciremai
+                  wagon_class:
+                    wagon_class_code: EKS
+                    wagon_class_name: Excecutive
+                  departure_station:
+                    code: 'BD '
+                    name: Bandung
+                  destination_station:
+                    code: 'TG '
+                    name: Tegal
+                  departure_schedule: '2023-07-07T16:50:00Z'
+                  arrival_schedule: '2023-07-07T22:27:00Z'
+                  duration:
+                    hour: 5
+                    minute: 37
+                  cost:
+                    currency: IDR
+                    amount: 100000
+                  available_seats: 9
+                - travel_id: 1
+                  travel_code: 144
+                  train_code: CIR
+                  train_name: Ciremai
+                  wagon_class:
+                    wagon_class_code: EKO
+                    wagon_class_name: Economy
+                  departure_station:
+                    code: 'BD '
+                    name: Bandung
+                  destination_station:
+                    code: 'TG '
+                    name: Tegal
+                  departure_schedule: '2023-07-07T16:50:00Z'
+                  arrival_schedule: '2023-07-07T22:27:00Z'
+                  duration:
+                    hour: 5
+                    minute: 37
+                  cost:
+                    currency: IDR
+                    amount: 80000
+                  available_seats: 6
+                - travel_id: 3
+                  travel_code: 126
+                  train_code: HAR
+                  train_name: Harina
+                  wagon_class:
+                    wagon_class_code: EKS
+                    wagon_class_name: Excecutive
+                  departure_station:
+                    code: 'BD '
+                    name: Bandung
+                  destination_station:
+                    code: 'TG '
+                    name: Tegal
+                  departure_schedule: '2023-07-07T20:25:00Z'
+                  arrival_schedule: '2023-07-08T01:32:00Z'
+                  duration:
+                    hour: 5
+                    minute: 7
+                  cost:
+                    currency: IDR
+                    amount: 150000
+                  available_seats: 8
+                - travel_id: 3
+                  travel_code: 126
+                  train_code: HAR
+                  train_name: Harina
+                  wagon_class:
+                    wagon_class_code: EKO
+                    wagon_class_name: Economy
+                  departure_station:
+                    code: 'BD '
+                    name: Bandung
+                  destination_station:
+                    code: 'TG '
+                    name: Tegal
+                  departure_schedule: '2023-07-07T20:25:00Z'
+                  arrival_schedule: '2023-07-08T01:32:00Z'
+                  duration:
+                    hour: 5
+                    minute: 7
+                  cost:
+                    currency: IDR
+                    amount: 100000
+                  available_seats: 8
+    post:
+      tags:
+        - Travels
+      summary: Add New Travel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                travel_code: 144
+                departure_station:
+                  code: TG
+                  name: Tegal
+                  city_code: TG
+                destination_station:
+                  code: BD
+                  name: Bandung
+                  city_code: BD
+                departure_schedule: '2023-10-19T14:16:00Z'
+                arrival_schedule: '2023-10-19T20:16:00Z'
+                train_code: CIR
+                fares:
+                  - class_id: 1
+                    amount: 175000
+                    currency: IDR
+                  - class_id: 2
+                    amount: 110000
+                    currency: IDR
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/travels/16:
+    get:
+      tags:
+        - Travels
+      summary: Get Travel By Id
+      parameters:
+        - name: wagon_class
+          in: query
+          schema:
+            type: string
+          example: EKS
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/stations:
+    get:
+      tags:
+        - Stations
+      summary: Search Stations
+      parameters:
+        - name: input_station
+          in: query
+          schema:
+            type: string
+          example: Ba
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Stations
+      summary: Add New Station
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                station_code: KAC
+                name: Kiaracondong
+                city_code: BDG
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/stations/KCA:
+    patch:
+      tags:
+        - Stations
+      summary: Edit Station
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                station_code: KAC
+                name: Kiaracondong
+                city_code: BDG
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/stations/KAC:
+    delete:
+      tags:
+        - Stations
+      summary: Delete Station
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/seats:
+    get:
+      tags:
+        - Seats
+      summary: Find Available Seats
+      parameters:
+        - name: travel_id
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: wagon_class
+          in: query
+          schema:
+            type: string
+          example: EKO
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Date:
+              schema:
+                type: string
+                example: Tue, 22 Aug 2023 16:06:41 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '264'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - wagon_class: EKS
+                  wagon_number: 1
+                  seting_rows:
+                    - row_elements:
+                        - seat_id: 1
+                          seat_row: 1
+                          seat_column: A
+                          seat_label: EKS1-1A
+                          available: false
+                        - seat_id: 4
+                          seat_row: 1
+                          seat_column: D
+                          seat_label: EKS1-1D
+                          available: true
+                        - seat_id: 3
+                          seat_row: 1
+                          seat_column: C
+                          seat_label: EKS1-1C
+                          available: false
+                        - seat_id: 2
+                          seat_row: 1
+                          seat_column: B
+                          seat_label: EKS1-1B
+                          available: false
+                    - row_elements:
+                        - seat_id: 36
+                          seat_row: 2
+                          seat_column: C
+                          seat_label: EKS1-2C
+                          available: true
+                        - seat_id: 35
+                          seat_row: 2
+                          seat_column: B
+                          seat_label: EKS1-2B
+                          available: true
+                        - seat_id: 37
+                          seat_row: 2
+                          seat_column: D
+                          seat_label: EKS1-2D
+                          available: true
+                        - seat_id: 34
+                          seat_row: 2
+                          seat_column: A
+                          seat_label: EKS1-2A
+                          available: true
+                - wagon_class: EKS
+                  wagon_number: 2
+                  seting_rows:
+                    - row_elements:
+                        - seat_id: 6
+                          seat_row: 1
+                          seat_column: B
+                          seat_label: EKS2-1B
+                          available: true
+                        - seat_id: 8
+                          seat_row: 1
+                          seat_column: D
+                          seat_label: EKS2-1D
+                          available: true
+                        - seat_id: 7
+                          seat_row: 1
+                          seat_column: C
+                          seat_label: EKS2-1C
+                          available: true
+                        - seat_id: 5
+                          seat_row: 1
+                          seat_column: A
+                          seat_label: EKS2-1A
+                          available: true
+  /api/v1/tickets/1:
+    get:
+      tags:
+        - Tickets
+      summary: Get TIcket Details
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Date:
+              schema:
+                type: string
+                example: Wed, 26 Jul 2023 15:22:08 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '309'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                ticket_id: 4
+                status: PAID
+                departure_station:
+                  code: 'BD '
+                  name: Bandung
+                destination_station:
+                  code: 'TG '
+                  name: Tegal
+                departure_schedule: '2023-07-07T16:50:00Z'
+                arrival_schedule: '2023-07-07T22:27:00Z'
+                duration:
+                  hour: 5
+                  minute: 37
+                passengers:
+                  - passenger_id: 7
+                    passenger_name: Rizky Ardi Maulana
+                    passenger_id_type: KTP
+                    passenger_id_number: '3376020411990006'
+                    seat_id: 12
+                    seat_label: EKO-1/1C
+                  - passenger_id: 8
+                    passenger_name: Shifa Veronica Aulia
+                    passenger_id_type: KTP
+                    passenger_id_number: '3376020411990007'
+                    seat_id: 13
+                    seat_label: EKO-1/1D
+  /api/v1/tickets:
+    get:
+      tags:
+        - Tickets
+      summary: Get User Tickets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: asd
+          in: query
+          schema:
+            type: string
+          example: asdf
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Date:
+              schema:
+                type: string
+                example: Wed, 26 Jul 2023 15:22:18 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '231'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - user_id: 1
+                  ticket_id: 1
+                  travel_code: '144'
+                  departure_station:
+                    code: 'BD '
+                    name: Bandung
+                  destination_station:
+                    code: 'TG '
+                    name: Tegal
+                  departure_schedule: '2023-07-07T16:50:00Z'
+                  arrival_schedule: '2023-07-07T22:27:00Z'
+                  duration:
+                    hour: 5
+                    minute: 37
+                - user_id: 1
+                  ticket_id: 2
+                  travel_code: '143'
+                  departure_station:
+                    code: 'TG '
+                    name: Tegal
+                  destination_station:
+                    code: 'BD '
+                    name: Bandung
+                  departure_schedule: '2023-07-07T09:40:00Z'
+                  arrival_schedule: '2023-07-07T14:45:00Z'
+                  duration:
+                    hour: 5
+                    minute: 5
+                - user_id: 1
+                  ticket_id: 4
+                  travel_code: '144'
+                  departure_station:
+                    code: 'BD '
+                    name: Bandung
+                  destination_station:
+                    code: 'TG '
+                    name: Tegal
+                  departure_schedule: '2023-07-07T16:50:00Z'
+                  arrival_schedule: '2023-07-07T22:27:00Z'
+                  duration:
+                    hour: 5
+                    minute: 37
+  /api/v1/bookings:
+    post:
+      tags:
+        - Bookings
+      summary: NewBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                travel_id: 1
+                contact_details:
+                  full_name: Rizky Ardi Maulana
+                  phone_number:
+                    country_code: '+62'
+                    number: '8986983930'
+                  email: ardimr@gmail.com
+                passenger_details:
+                  - passenger_name: Rizky Ardi Maulana
+                    passenger_id_type: KTP
+                    passenger_id_number: '3376020411990006'
+                    seat_id: 12
+                  - passenger_name: Shifa Veronica Aulia
+                    passenger_id_type: KTP
+                    passenger_id_number: '3376020411990007'
+                    seat_id: 13
+      responses:
+        '202':
+          description: Accepted
+          headers:
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Date:
+              schema:
+                type: string
+                example: Wed, 26 Jul 2023 14:10:35 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '236'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                travel_id: 1
+                contact_details:
+                  full_name: Rizky Ardi Maulana
+                  phone_number:
+                    country_code: '+62'
+                    number: '8986983930'
+                  email: ardimr@gmail.com
+                passenger_details:
+                  - passenger_name: Rizky Ardi Maulana
+                    passenger_id_type: KTP
+                    passenger_id_number: '3376020411990006'
+                    seat_id: 12
+                  - passenger_name: Shifa Veronica Aulia
+                    passenger_id_type: KTP
+                    passenger_id_number: '3376020411990007'
+                    seat_id: 12
+  /api/v1/bookings/DKMFQBC:
+    get:
+      tags:
+        - Bookings
+      summary: Get Booking Details
+      parameters:
+        - name: travel_id
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/users:
+    post:
+      tags:
+        - Users
+      summary: NewUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                full_name: Rizky Ardi Maulana
+                username: ardimr
+                password: aladfkajdsfalkdjf
+                email: rizkyardimaulana@gmail.com
+                phone_number:
+                  country_code: '+62'
+                  number: '8986983930'
+                id_type: KTP
+                id_number: '33876504011990006'
+                born_date: '1999-11-04'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/users/2:
+    get:
+      tags:
+        - Users
+      summary: Get User Details
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/wagons:
+    post:
+      tags:
+        - Wagons
+      summary: New Request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                wagon_id: 9
+                capacity: 60
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/auth/signin:
+    post:
+      tags:
+        - auth
+      summary: signin
+      requestBody:
+        content: {}
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
