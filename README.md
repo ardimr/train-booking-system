@@ -57,9 +57,7 @@
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-The Train Booking System is a user-friendly and efficient application designed to streamline the process of booking train tickets, making travel by train a hassle-free experience for passengers. Whether you're planning a short commute or a long-distance journey, this application provides a convenient and intuitive platform for booking, managing, and enjoying your train trips
-
-The Train Booking System aims to simplify train travel, making it a convenient and enjoyable mode of transportation for individuals and families alike. With its user-centric design and comprehensive features, it caters to the diverse needs of passengers and enhances the overall travel experience.
+The Train Booking System is application designed to streamline the process of booking train tickets.
 
 Key Features:
   * Search and Book Trains:
@@ -87,7 +85,8 @@ Key Features:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+### Database Design
+<img src='assets/erd.png' />
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -127,7 +126,7 @@ Key Features:
 ## Usage
 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](api/openapi:%20'3.0.yml)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -137,6 +136,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Roadmap
 
 - [x] Add authentication and authorization
+- [ ] Payment integration
+- [ ] Database Migration
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
@@ -145,7 +146,7 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+<!-- ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -158,7 +159,7 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
 
 
