@@ -60,6 +60,16 @@ services:
       - JWT_ISSUER=TRAIN_BOOKING_SYSTEM_AUTH
       - JWT_EXPIRES_AT=3600
       - JWT_SIGNING_KEY=ardimr_signing_key
+  
+  frontend:
+    image: ardimr/tbs-frontend:dev
+    container_name: frontend
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_BACKEND_ENDPOINT=backend:8080
+    
+    
 
 volumes:
   train_booking_system_data:
