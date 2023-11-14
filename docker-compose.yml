@@ -1,0 +1,65 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: train_booking_system_db
+    environment:
+      - PGUSER=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgrespw
+      - POSTGRES_DB=train_booking_system_db
+    ports:
+      - 15432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      retries: 5
+    restart: always
+  
+  initdb:
+    image: ardimr/tbs-db-migrate:dev
+    container_name: initdb
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres   
+      - DB_PASSWORD=postgrespw
+      - DB_NAME=train_booking_system_db
+  redis:
+    container_name: redis
+    image: redis/redis-stack:latest
+    ports:
+      - 6379:6379
+      - 8001:8001
+    volumes:
+      - type: bind
+        source: ./init/redis.conf
+        target: /usr/local/etc/redis/redis.conf
+
+  backend:
+    image: ardimr/tbs-backend:dev
+    container_name: backend
+    depends_on:
+      db :
+          condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - 8080:8080
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgrespw
+      - DB_NAME=train_booking_system_db
+      - REDIS_HOST=redis:6379
+      - REDIS_PASSWORD=
+      - REDIS_DB=0
+      - JWT_ISSUER=TRAIN_BOOKING_SYSTEM_AUTH
+      - JWT_EXPIRES_AT=3600
+      - JWT_SIGNING_KEY=ardimr_signing_key
+
+volumes:
+  train_booking_system_data:
