@@ -21,3 +21,6 @@ push_migrate_image:
 
 build_backend_image:
 	docker image build --no-cache -t $(BACKEND_TAG) -f build/Dockerfile .
+
+push_backend_image:
+	docker push $(BACKEND_TAG)
