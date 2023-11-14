@@ -207,6 +207,6 @@ func main() {
 	// tbsRouter := router.NewRouter(tbsController)
 
 	// tbsRouter.AddRoute(restServer.Group("/api"))
-	restServer.Run("localhost:8080")
+	restServer.Run("0.0.0.0:8080")
 
 }
