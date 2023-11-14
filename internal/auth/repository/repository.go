@@ -236,12 +236,18 @@ func (q *AuthRepository) AddNewUser(ctx context.Context, newUser model.NewUser) 
 
 	var newId int64
 
+	tx, err := q.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelDefault})
+
+	if err != nil {
+		return 0, err
+	}
+
 	sqlStatement := `
 	INSERT INTO users.users 
 		(fullname, username, password, email) VALUES ($1,$2,$3,$4) RETURNING user_id
 	`
 
-	err := q.db.QueryRowContext(ctx,
+	err = tx.QueryRowContext(ctx,
 		sqlStatement,
 		newUser.FullName,
 		newUser.Username,
@@ -249,9 +255,27 @@ func (q *AuthRepository) AddNewUser(ctx context.Context, newUser model.NewUser) 
 		newUser.Email).Scan(&newId)
 
 	if err != nil {
+		tx.Rollback()
 		return 0, err
 	}
 
+	var userRoleId string
+	sqlStatement = `
+	INSERT INTO users.user_roles 
+		(user_id, role_id) VALUES ($1,2)
+	RETURNING id
+	`
+
+	err = tx.QueryRowContext(ctx, sqlStatement, newId).Scan(&userRoleId)
+	if err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return 0, err
+	}
 	return newId, nil
 }
 
