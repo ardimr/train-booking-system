@@ -90,33 +90,59 @@ Key Features:
 
 <!-- GETTING STARTED -->
 ## Getting Started
+<details>
+  <summary>Local Development</summary>
 
-### Prerequisites
+  ### Prerequisites
+  * Golang
+  * Make
+  * Redis
+  * PostgreSQL
+    <!-- ```sh
+    npm install npm@latest -g
+    ``` -->
 
-* Golang
-* Make
-* Redis
-* PostgreSQL
-  <!-- ```sh
-  npm install npm@latest -g
-  ``` -->
+  ### Installation
 
-### Installation
+  1. Clone the repo
+      ```sh
+      git clone https://github.com/ardimr/train-booking-system
+      ```
+  2. Install Go packages
+      ```sh
+      go mod install
+      ```
+  3. Run the program
+      ```sh
+      make run_app
+      ``` 
+</details>
 
+<details>
+  <summary>Local Deployment</summary>
+  
+  ### How To Run with Docker
+  
+  *Make sure you have installed the docker-compose. Please follow this link for the [guidance](https://docs.docker.com/compose/install/)
+  1. Clone the repo
+      ```sh
+      git clone https://github.com/ardimr/train-booking-system
+      ```
+     or you can simply just copy the docker-compose file in this repository
 
+  2. Run docker-compose
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/ardimr/train-booking-system
-   ```
-2. Install Go packages
-   ```sh
-   go mod install
-   ```
-3. Run the program
-   ```sh
-   make run_app
-   ```
+      - Start Application
+        ```sh
+        docker-compose up -d
+        ```
+
+      - Stop Application
+        ```sh
+        docker-compose down
+        ```
+</details>
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
