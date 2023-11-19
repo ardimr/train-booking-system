@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN go mod tidy
+RUN go mod install
 
 RUN go build -o main cmd/app/main.go
 
