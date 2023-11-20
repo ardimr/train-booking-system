@@ -119,7 +119,7 @@ Key Features:
 </details>
 
 <details>
-  <summary>Local Deployment</summary>
+  <summary>Run With Docker Compose</summary>
   
   ### How To Run with Docker
   

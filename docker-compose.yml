@@ -39,7 +39,7 @@ services:
         target: /usr/local/etc/redis/redis.conf
 
   backend:
-    image: ardimr/tbs-backend:dev
+    image: ardimr/train-booking-system:latest
     container_name: backend
     depends_on:
       db :
@@ -62,7 +62,7 @@ services:
       - JWT_SIGNING_KEY=ardimr_signing_key
   
   frontend:
-    image: ardimr/tbs-frontend:dev
+    image: ardimr/train-booking-system.frontend:latest
     container_name: frontend
     ports:
       - 3000:3000
