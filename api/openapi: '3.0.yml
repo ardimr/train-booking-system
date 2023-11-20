@@ -194,7 +194,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/v1/travels/16:
+  /api/v1/travels/{id}:
     get:
       tags:
         - Travels
@@ -244,7 +244,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/v1/stations/KCA:
+  /api/v1/stations/{station_code}:
     patch:
       tags:
         - Stations
@@ -263,7 +263,6 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/v1/stations/KAC:
     delete:
       tags:
         - Stations
@@ -387,7 +386,7 @@ paths:
                           seat_column: A
                           seat_label: EKS2-1A
                           available: true
-  /api/v1/tickets/1:
+  /api/v1/tickets/{id}:
     get:
       tags:
         - Tickets
@@ -605,7 +604,7 @@ paths:
                     passenger_id_type: KTP
                     passenger_id_number: '3376020411990007'
                     seat_id: 12
-  /api/v1/bookings/DKMFQBC:
+  /api/v1/bookings/{booking_code}:
     get:
       tags:
         - Bookings
@@ -647,7 +646,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/v1/users/2:
+  /api/v1/users/{id}:
     get:
       tags:
         - Users

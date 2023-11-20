@@ -163,7 +163,12 @@ _For more examples, please refer to the [Documentation](api/openapi:%20'3.0.yml)
 
 - [x] Add authentication and authorization
 - [ ] Payment integration
-- [ ] Database Migration
+- [x] Database Migration
+- [ ] Refactor booking mechanism
+- [ ] Add Notification
+- [ ] Load Testing
+- [ ] UI Flow
+- [ ] Admin Dashboard
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
