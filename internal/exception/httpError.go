@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -23,6 +24,8 @@ func NewHttpError(statusCode int, description string, metadata error) HttpError 
 }
 
 func ParseError(err error) HttpError {
+	log.Println(err)
+
 	switch {
 	case errors.Is(err, sql.ErrNoRows):
 		return NewHttpError(http.StatusNotFound, "Not Found", err)
