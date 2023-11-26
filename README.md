@@ -88,6 +88,50 @@ Key Features:
 ### Database Design
 <img src='assets/erd.png' />
 
+
+<details>
+  <summary>Trains</summary>
+
+  | Code | Name |
+  | --- | --- |
+  | CHE | Argo Cheribon |
+  | PHR | Argo Pahrahyangan |
+  | TKS | Taksaka |
+  | DWP | Argo Dwipangga |
+  | SMU | Argo Semeru |
+  | GJY | Gajayana |
+  | KLG | Kaligung |
+  | CIR | Ciremai |
+  | HAR | Harina |
+  
+</details>
+
+<details>
+  <summary> Available Travels </summary>
+
+  | Travel Code | Departure Station | Destination Station | Train Name | Departure Schedule | Arrival Schedule | EKO Fare | EKS Fare |
+  | --- | --- | --- | --- | --- | --- | --- | --- |
+  | 26 | Gambir | Tegal | Argo Cheribon | 08:30 | 12:39 | 180000 | 220000 |
+  | 27 | Tegal | Gambir | Argo Cheribon | 13:30 | 17:34 | 180000 | 220000 |
+  | 42 | Gambir | Bandung | Argo Pahrahyangan | 12:30 | 15:25 | 150000 | 200000 |
+  | 47 | Bandung | Gambir | Argo Pahrahyangan | 08:45 | 11:52 | 150000 | 200000 |
+  | 68 | Gambir | Yogyakarta | Taksaka | 09:20 | 15:40 |  | 500000 |
+  | 67 | Yogyakarta | Gambir | Taksaka | 08:45 | 15:09 |  | 500000 |
+  | 10 | Gambir | Solo Balapan | Argo Dwipangga | 08:50 | 15:50 |  | 350000 |
+  | 9 | Solo Balapan | Gambir | Argo Dwipangga | 20:30 | 03:30 |  | 350000 |
+  | 18 | Gambir | Gubeng | Argo Semeru | 06:20 | 16:50 |  | 450000 |
+  | 17 | Gubeng | Gambir | Argo Semeru | 09:05 | 19:40 |  | 450000 |
+  | 56 | Gambir | Malang | Gajayana | 18:50 | 07:06 |  | 550000 |
+  | 55 | Malang | Gambir | Gajayana | 14:55 | 03:10 |  | 550000 |
+  | 194 | Tegal | Semarang Poncol | Kaligung | 05:05 | 07:18 | 80000 | 120000 |
+  | 195 | Semarang Poncol | Tegal | Kaligung | 05:00 | 07:14 | 80000 | 120000 |
+  | 196 | Tegal | Semarang Poncol | Kaligung | 10:46 | 12:55 | 80000 | 120000 |
+  | 197 | Semarang Poncol | Tegal | Kaligung | 13:50 | 16:04 | 80000 | 120000 |
+  | 192 | Tegal | Semarang Poncol | Kaligung | 12:32 | 14:45 | 85000 | 1150000 |
+  | 193 | Semarang Poncol | Tegal | Kaligung | 17:00 | 19:15 | 85000 | 115000 |
+
+</details>
+
 <!-- GETTING STARTED -->
 ## Getting Started
 <details>
@@ -150,7 +194,23 @@ Key Features:
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+<details>
+  <summary>Sample Screens</summary>
 
+  - Registration
+    <img src='assets/registration.png'/>
+  - Login
+    <img src='assets/login.png' />
+  - Search Tickets
+    <img src='assets/search_tickets.png'/>
+  - Booking Page
+    <img src='assets/booking_page.png'/>
+  - Seats Selection
+    <img src='assets/seats_selection.png'/>
+  - My Tickets
+    <img src='assets/mytickets.png'/>
+    <img src='assets/mytickets2.png'/>
+</details>
 
 _For more examples, please refer to the [Documentation](api/openapi:%20'3.0.yml)_
 
