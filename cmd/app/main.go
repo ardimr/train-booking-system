@@ -185,7 +185,7 @@ func main() {
 	bookingRedisRepo := bookingRepository.NewRedisRepository(redisClient)
 	bookingUseCase := bookingUseCase.NewBookingUseCase(bookingRepo, bookingRedisRepo)
 	bookingController := bookingController.NewBookingController(bookingUseCase)
-	bookingRouter := booking.NewBookingRouter(bookingController)
+	bookingRouter := booking.NewBookingRouter(bookingController, authService)
 	bookingRouter.RegisterRoute(restServer.Group("/api"))
 
 	// User Service

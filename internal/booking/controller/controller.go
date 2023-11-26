@@ -6,6 +6,7 @@ import (
 	"github.com/ardimr/train-booking-system/internal/booking/model"
 	"github.com/ardimr/train-booking-system/internal/booking/usecase"
 	"github.com/ardimr/train-booking-system/internal/exception"
+	"github.com/ardimr/train-booking-system/internal/helpers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,6 +21,7 @@ func NewBookingController(bookingUseCase usecase.IBookingUseCase) *BookingContro
 }
 
 func (controller *BookingController) NewBooking(ctx *gin.Context) {
+	userInfo := helpers.GetUserInfo(ctx)
 
 	var reqBody model.BookingRequestBody
 
@@ -29,7 +31,7 @@ func (controller *BookingController) NewBooking(ctx *gin.Context) {
 	}
 
 	// Store new booking
-	bookingDetails, err := controller.bookingUseCase.NewBooking(ctx, reqBody)
+	bookingDetails, err := controller.bookingUseCase.NewBooking(ctx, userInfo.ID, reqBody)
 
 	if err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))

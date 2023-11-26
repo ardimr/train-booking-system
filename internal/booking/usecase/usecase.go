@@ -12,7 +12,7 @@ import (
 )
 
 type IBookingUseCase interface {
-	NewBooking(ctx context.Context, newBooking model.BookingRequestBody) (model.BookingDetails, error)
+	NewBooking(ctx context.Context, userId int64, newBooking model.BookingRequestBody) (model.BookingDetails, error)
 	GetBookingDetails(ctx context.Context, travelId int64, bookingCode string) (model.BookingDetails, error)
 	PayBooking(ctx context.Context, travelID int64, bookingCode string) error
 }
@@ -29,9 +29,10 @@ func NewBookingUseCase(bookingRepo repository.IBookingRepository, bookingRedisRe
 	}
 }
 
-func (uc *BookingUseCase) NewBooking(ctx context.Context, newBooking model.BookingRequestBody) (model.BookingDetails, error) {
+func (uc *BookingUseCase) NewBooking(ctx context.Context, userId int64, newBooking model.BookingRequestBody) (model.BookingDetails, error) {
 	// Generate booking code
 	var bookingDetails model.BookingDetails
+	bookingDetails.UserId = userId
 	bookingDetails.BookingCode = helpers.GenerateBookingCode()
 	bookingDetails.TravelId = newBooking.TravelId
 	bookingDetails.ContactDetails = newBooking.ContactDetails

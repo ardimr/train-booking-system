@@ -60,7 +60,7 @@ func (q *BookingRepository) CreateBooking(ctx context.Context, booking model.Boo
 	RETURNING ticket_id
 	`
 
-	err = tx.QueryRowContext(ctx, sqlStatementTicket, booking.TravelId, 1, booking.BookingCode).Scan(&ticketId)
+	err = tx.QueryRowContext(ctx, sqlStatementTicket, booking.TravelId, booking.UserId, booking.BookingCode).Scan(&ticketId)
 
 	if err != nil {
 		if rbErr := tx.Rollback(); rbErr != nil {

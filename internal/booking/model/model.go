@@ -3,6 +3,7 @@ package model
 import "time"
 
 type BookingDetails struct {
+	UserId           int64              `json:"user_id"`
 	BookingCode      string             `json:"booking_code"`
 	TravelId         int64              `json:"travel_id" binding:"required"`
 	ContactDetails   ContactDetails     `json:"contact_details" binding:"required"`
