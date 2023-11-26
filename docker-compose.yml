@@ -9,6 +9,8 @@ services:
       - POSTGRES_DB=train_booking_system_db
     ports:
       - 15432:5432
+    networks:
+      - train-booking-system
     healthcheck:
       test: ["CMD", "pg_isready"]
       interval: 5s
@@ -21,6 +23,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - train-booking-system
     environment:
       - DB_HOST=db
       - DB_PORT=5432
@@ -33,6 +37,8 @@ services:
     ports:
       - 6379:6379
       - 8001:8001
+    networks:
+      - train-booking-system
     volumes:
       - type: bind
         source: ./init/redis.conf
@@ -41,6 +47,8 @@ services:
   backend:
     image: ardimr/train-booking-system:latest
     container_name: backend
+    networks:
+      - train-booking-system
     depends_on:
       db :
           condition: service_healthy
@@ -64,6 +72,10 @@ services:
   frontend:
     image: ardimr/train-booking-system.frontend:latest
     container_name: frontend
+    depends_on:
+      - backend
+    networks:
+      - train-booking-system
     ports:
       - 3000:3000
     environment:
@@ -73,3 +85,7 @@ services:
 
 volumes:
   train_booking_system_data:
+
+networks:
+  train-booking-system:
+    driver: bridge
