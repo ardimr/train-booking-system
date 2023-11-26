@@ -169,6 +169,7 @@ _For more examples, please refer to the [Documentation](api/openapi:%20'3.0.yml)
 - [ ] Load Testing
 - [ ] UI Flow
 - [ ] Admin Dashboard
+- [ ] UI Booking Form Validation
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
