@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -45,11 +46,10 @@ func (uc *BookingUseCase) NewBooking(ctx context.Context, userId int64, newBooki
 
 	// If booking code is already exists in the redis or database, then regenerate the new booking code
 	isAlreadyExists := true
-
 	for isAlreadyExists {
-		// Set key
+		// Set key and check in database
 		bookingKey = fmt.Sprintf("booking.%d.%s", bookingDetails.TravelId, bookingDetails.BookingCode)
-		countKeys, err := uc.bookingRedisRepo.CheckBookingKey(ctx, bookingKey)
+		countKeys, err := uc.bookingRedisRepo.CheckKey(ctx, bookingKey)
 
 		if err != nil {
 			return bookingDetails, err
@@ -73,6 +73,32 @@ func (uc *BookingUseCase) NewBooking(ctx context.Context, userId int64, newBooki
 		return bookingDetails, err
 	}
 
+	// Check the seats availability to prevent the double booking
+	seatKeys := []string{}
+	for _, passenger := range bookingDetails.PassengerDetails {
+		seatKey := fmt.Sprintf("seat.%d.%d", bookingDetails.TravelId, passenger.SeatId)
+		countSeats, err := uc.bookingRedisRepo.CheckKey(ctx, seatKey)
+
+		if err != nil {
+			return bookingDetails, err
+		}
+
+		// Cancel booking when the selected seat is not available
+		if countSeats > 0 {
+			return bookingDetails, errors.New("selected seat is not available")
+		}
+
+		seatKeys = append(seatKeys, seatKey)
+	}
+
+	// Set the seatkey into the redis cache
+	err = uc.bookingRedisRepo.LockSeats(ctx, seatKeys, ttl)
+
+	if err != nil {
+		return bookingDetails, err
+	}
+
+	// Set The booking Key
 	err = uc.bookingRedisRepo.SetBooking(
 		ctx,
 		bookingKey,
@@ -113,7 +139,7 @@ func (uc *BookingUseCase) PayBooking(ctx context.Context, travelID int64, bookin
 		return err
 	}
 
-	// Update booking status
+	// Update booking status in database
 	err = uc.bookingRepo.UpdateBookingStatus(ctx, bookingCode)
 	if err != nil {
 		return err

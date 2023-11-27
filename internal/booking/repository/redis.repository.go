@@ -12,8 +12,10 @@ import (
 
 type IBookingRedisRepository interface {
 	GetBooking(ctx context.Context, travelId int64, bookingCode string) (model.BookingDetails, error)
-	CheckBookingKey(ctx context.Context, bookingKey string) (int64, error)
+	CheckKey(ctx context.Context, bookingKey string) (int64, error)
 	SetBooking(ctx context.Context, bookingKey string, bookingJson []byte, expiration time.Duration) error
+	LockSeats(ctx context.Context, seatKeys []string, expiration time.Duration) error
+	ReleaseLock(ctx context.Context, seatKey string) error
 }
 
 type BookingRedisRepository struct {
@@ -59,8 +61,28 @@ func (r *BookingRedisRepository) GetBooking(ctx context.Context, travelId int64,
 	return bookingDetails, nil
 }
 
-func (r *BookingRedisRepository) CheckBookingKey(ctx context.Context, bookingKey string) (int64, error) {
+func (r *BookingRedisRepository) CheckKey(ctx context.Context, bookingKey string) (int64, error) {
 	countKeys, err := r.redisClient.Exists(ctx, bookingKey).Result()
 
 	return countKeys, err
+}
+
+func (r *BookingRedisRepository) LockSeats(ctx context.Context, seatKeys []string, expiration time.Duration) error {
+	data := map[string]interface{}{}
+
+	for _, seatKey := range seatKeys {
+		data[seatKey] = true
+	}
+
+	err := r.redisClient.MSet(ctx, data).Err()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *BookingRedisRepository) ReleaseLock(ctx context.Context, seatKey string) error {
+	_, err := r.redisClient.Del(ctx, seatKey).Result()
+	return err
 }

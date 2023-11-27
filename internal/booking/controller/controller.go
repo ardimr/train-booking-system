@@ -38,16 +38,6 @@ func (controller *BookingController) NewBooking(ctx *gin.Context) {
 		return
 	}
 
-	// The following process is proceed with assumptions the payment is success
-	// err = controller.querier.CreateBooking(ctx, bookingDetails)
-	// if err != nil {
-	// 	ctx.AbortWithStatusJSON(
-	// 		http.StatusInternalServerError,
-	// 		gin.H{"Err": err.Error()},
-	// 	)
-	// 	return
-	// }
-
 	ctx.JSON(
 		http.StatusAccepted,
 		gin.H{"Booking code": bookingDetails.BookingCode},
