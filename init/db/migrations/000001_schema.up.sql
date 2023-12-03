@@ -5,7 +5,7 @@
 -- Dumped from database version 15.3 (Debian 15.3-1.pgdg110+1)
 -- Dumped by pg_dump version 15.5
 
--- Started on 2023-12-03 14:49:52
+-- Started on 2023-12-03 16:05:59
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -113,7 +113,7 @@ CREATE SEQUENCE accounts.user_account_user_account_id_seq
 
 
 --
--- TOC entry 3508 (class 0 OID 0)
+-- TOC entry 3509 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: user_account_user_account_id_seq; Type: SEQUENCE OWNED BY; Schema: accounts; Owner: -
 --
@@ -165,7 +165,7 @@ CREATE SEQUENCE bookings.passengers_passenger_id_seq
 
 
 --
--- TOC entry 3509 (class 0 OID 0)
+-- TOC entry 3510 (class 0 OID 0)
 -- Dependencies: 225
 -- Name: passengers_passenger_id_seq; Type: SEQUENCE OWNED BY; Schema: bookings; Owner: -
 --
@@ -202,7 +202,7 @@ CREATE SEQUENCE bookings.tickets_ticket_id_seq
 
 
 --
--- TOC entry 3510 (class 0 OID 0)
+-- TOC entry 3511 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: tickets_ticket_id_seq; Type: SEQUENCE OWNED BY; Schema: bookings; Owner: -
 --
@@ -271,7 +271,7 @@ CREATE SEQUENCE travel_schedules.classes_id_seq
 
 
 --
--- TOC entry 3511 (class 0 OID 0)
+-- TOC entry 3512 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: classes_id_seq; Type: SEQUENCE OWNED BY; Schema: travel_schedules; Owner: -
 --
@@ -307,7 +307,7 @@ CREATE SEQUENCE travel_schedules.seats_id_seq
 
 
 --
--- TOC entry 3512 (class 0 OID 0)
+-- TOC entry 3513 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: seats_id_seq; Type: SEQUENCE OWNED BY; Schema: travel_schedules; Owner: -
 --
@@ -381,7 +381,7 @@ CREATE SEQUENCE travel_schedules.travel_costs_id_seq
 
 
 --
--- TOC entry 3513 (class 0 OID 0)
+-- TOC entry 3514 (class 0 OID 0)
 -- Dependencies: 239
 -- Name: travel_costs_id_seq; Type: SEQUENCE OWNED BY; Schema: travel_schedules; Owner: -
 --
@@ -420,7 +420,7 @@ CREATE SEQUENCE travel_schedules.travel_travel_id_seq
 
 
 --
--- TOC entry 3514 (class 0 OID 0)
+-- TOC entry 3515 (class 0 OID 0)
 -- Dependencies: 241
 -- Name: travel_travel_id_seq; Type: SEQUENCE OWNED BY; Schema: travel_schedules; Owner: -
 --
@@ -443,7 +443,7 @@ CREATE SEQUENCE travel_schedules.untitled_table_213_id_seq
 
 
 --
--- TOC entry 3515 (class 0 OID 0)
+-- TOC entry 3516 (class 0 OID 0)
 -- Dependencies: 242
 -- Name: untitled_table_213_id_seq; Type: SEQUENCE OWNED BY; Schema: travel_schedules; Owner: -
 --
@@ -477,7 +477,7 @@ CREATE SEQUENCE users.id_types_id_type_id_seq
 
 
 --
--- TOC entry 3516 (class 0 OID 0)
+-- TOC entry 3517 (class 0 OID 0)
 -- Dependencies: 244
 -- Name: id_types_id_type_id_seq; Type: SEQUENCE OWNED BY; Schema: users; Owner: -
 --
@@ -511,7 +511,7 @@ CREATE SEQUENCE users.permissions_id_seq
 
 
 --
--- TOC entry 3517 (class 0 OID 0)
+-- TOC entry 3518 (class 0 OID 0)
 -- Dependencies: 246
 -- Name: permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: users; Owner: -
 --
@@ -520,7 +520,7 @@ ALTER SEQUENCE users.permissions_id_seq OWNED BY users.permissions.id;
 
 
 --
--- TOC entry 256 (class 1259 OID 16642)
+-- TOC entry 247 (class 1259 OID 16476)
 -- Name: resources; Type: TABLE; Schema: users; Owner: -
 --
 
@@ -531,7 +531,7 @@ CREATE TABLE users.resources (
 
 
 --
--- TOC entry 255 (class 1259 OID 16641)
+-- TOC entry 248 (class 1259 OID 16481)
 -- Name: resources_id_seq; Type: SEQUENCE; Schema: users; Owner: -
 --
 
@@ -545,8 +545,8 @@ CREATE SEQUENCE users.resources_id_seq
 
 
 --
--- TOC entry 3518 (class 0 OID 0)
--- Dependencies: 255
+-- TOC entry 3519 (class 0 OID 0)
+-- Dependencies: 248
 -- Name: resources_id_seq; Type: SEQUENCE OWNED BY; Schema: users; Owner: -
 --
 
@@ -554,7 +554,7 @@ ALTER SEQUENCE users.resources_id_seq OWNED BY users.resources.id;
 
 
 --
--- TOC entry 247 (class 1259 OID 16476)
+-- TOC entry 249 (class 1259 OID 16482)
 -- Name: role_permissions; Type: TABLE; Schema: users; Owner: -
 --
 
@@ -566,7 +566,7 @@ CREATE TABLE users.role_permissions (
 
 
 --
--- TOC entry 248 (class 1259 OID 16479)
+-- TOC entry 250 (class 1259 OID 16485)
 -- Name: role_permissions_id_seq; Type: SEQUENCE; Schema: users; Owner: -
 --
 
@@ -580,8 +580,8 @@ CREATE SEQUENCE users.role_permissions_id_seq
 
 
 --
--- TOC entry 3519 (class 0 OID 0)
--- Dependencies: 248
+-- TOC entry 3520 (class 0 OID 0)
+-- Dependencies: 250
 -- Name: role_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: users; Owner: -
 --
 
@@ -589,7 +589,7 @@ ALTER SEQUENCE users.role_permissions_id_seq OWNED BY users.role_permissions.id;
 
 
 --
--- TOC entry 258 (class 1259 OID 16651)
+-- TOC entry 251 (class 1259 OID 16486)
 -- Name: role_resource_permissions; Type: TABLE; Schema: users; Owner: -
 --
 
@@ -602,7 +602,7 @@ CREATE TABLE users.role_resource_permissions (
 
 
 --
--- TOC entry 257 (class 1259 OID 16650)
+-- TOC entry 252 (class 1259 OID 16489)
 -- Name: role_resources_permissions_id_seq; Type: SEQUENCE; Schema: users; Owner: -
 --
 
@@ -616,8 +616,8 @@ CREATE SEQUENCE users.role_resources_permissions_id_seq
 
 
 --
--- TOC entry 3520 (class 0 OID 0)
--- Dependencies: 257
+-- TOC entry 3521 (class 0 OID 0)
+-- Dependencies: 252
 -- Name: role_resources_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: users; Owner: -
 --
 
@@ -625,7 +625,7 @@ ALTER SEQUENCE users.role_resources_permissions_id_seq OWNED BY users.role_resou
 
 
 --
--- TOC entry 249 (class 1259 OID 16480)
+-- TOC entry 253 (class 1259 OID 16490)
 -- Name: roles; Type: TABLE; Schema: users; Owner: -
 --
 
@@ -636,7 +636,7 @@ CREATE TABLE users.roles (
 
 
 --
--- TOC entry 250 (class 1259 OID 16485)
+-- TOC entry 254 (class 1259 OID 16495)
 -- Name: roles_id_seq; Type: SEQUENCE; Schema: users; Owner: -
 --
 
@@ -650,8 +650,8 @@ CREATE SEQUENCE users.roles_id_seq
 
 
 --
--- TOC entry 3521 (class 0 OID 0)
--- Dependencies: 250
+-- TOC entry 3522 (class 0 OID 0)
+-- Dependencies: 254
 -- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: users; Owner: -
 --
 
@@ -659,7 +659,7 @@ ALTER SEQUENCE users.roles_id_seq OWNED BY users.roles.id;
 
 
 --
--- TOC entry 251 (class 1259 OID 16486)
+-- TOC entry 255 (class 1259 OID 16496)
 -- Name: user_roles; Type: TABLE; Schema: users; Owner: -
 --
 
@@ -671,7 +671,7 @@ CREATE TABLE users.user_roles (
 
 
 --
--- TOC entry 252 (class 1259 OID 16489)
+-- TOC entry 256 (class 1259 OID 16499)
 -- Name: user_roles_id_seq; Type: SEQUENCE; Schema: users; Owner: -
 --
 
@@ -685,8 +685,8 @@ CREATE SEQUENCE users.user_roles_id_seq
 
 
 --
--- TOC entry 3522 (class 0 OID 0)
--- Dependencies: 252
+-- TOC entry 3523 (class 0 OID 0)
+-- Dependencies: 256
 -- Name: user_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: users; Owner: -
 --
 
@@ -694,7 +694,7 @@ ALTER SEQUENCE users.user_roles_id_seq OWNED BY users.user_roles.id;
 
 
 --
--- TOC entry 253 (class 1259 OID 16490)
+-- TOC entry 257 (class 1259 OID 16500)
 -- Name: users; Type: TABLE; Schema: users; Owner: -
 --
 
@@ -714,7 +714,7 @@ CREATE TABLE users.users (
 
 
 --
--- TOC entry 254 (class 1259 OID 16497)
+-- TOC entry 258 (class 1259 OID 16507)
 -- Name: users_user_id_seq; Type: SEQUENCE; Schema: users; Owner: -
 --
 
@@ -728,8 +728,8 @@ CREATE SEQUENCE users.users_user_id_seq
 
 
 --
--- TOC entry 3523 (class 0 OID 0)
--- Dependencies: 254
+-- TOC entry 3524 (class 0 OID 0)
+-- Dependencies: 258
 -- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: users; Owner: -
 --
 
@@ -737,7 +737,7 @@ ALTER SEQUENCE users.users_user_id_seq OWNED BY users.users.user_id;
 
 
 --
--- TOC entry 3283 (class 2604 OID 16498)
+-- TOC entry 3283 (class 2604 OID 16508)
 -- Name: user_account user_account_id; Type: DEFAULT; Schema: accounts; Owner: -
 --
 
@@ -745,7 +745,7 @@ ALTER TABLE ONLY accounts.user_account ALTER COLUMN user_account_id SET DEFAULT 
 
 
 --
--- TOC entry 3285 (class 2604 OID 16499)
+-- TOC entry 3285 (class 2604 OID 16509)
 -- Name: passengers passenger_id; Type: DEFAULT; Schema: bookings; Owner: -
 --
 
@@ -753,7 +753,7 @@ ALTER TABLE ONLY bookings.passengers ALTER COLUMN passenger_id SET DEFAULT nextv
 
 
 --
--- TOC entry 3287 (class 2604 OID 16500)
+-- TOC entry 3287 (class 2604 OID 16510)
 -- Name: tickets ticket_id; Type: DEFAULT; Schema: bookings; Owner: -
 --
 
@@ -761,7 +761,7 @@ ALTER TABLE ONLY bookings.tickets ALTER COLUMN ticket_id SET DEFAULT nextval('bo
 
 
 --
--- TOC entry 3289 (class 2604 OID 16501)
+-- TOC entry 3289 (class 2604 OID 16511)
 -- Name: classes id; Type: DEFAULT; Schema: travel_schedules; Owner: -
 --
 
@@ -769,7 +769,7 @@ ALTER TABLE ONLY travel_schedules.classes ALTER COLUMN id SET DEFAULT nextval('t
 
 
 --
--- TOC entry 3290 (class 2604 OID 16502)
+-- TOC entry 3290 (class 2604 OID 16512)
 -- Name: seats seat_id; Type: DEFAULT; Schema: travel_schedules; Owner: -
 --
 
@@ -777,7 +777,7 @@ ALTER TABLE ONLY travel_schedules.seats ALTER COLUMN seat_id SET DEFAULT nextval
 
 
 --
--- TOC entry 3291 (class 2604 OID 16503)
+-- TOC entry 3291 (class 2604 OID 16513)
 -- Name: train_cars train_car_id; Type: DEFAULT; Schema: travel_schedules; Owner: -
 --
 
@@ -785,7 +785,7 @@ ALTER TABLE ONLY travel_schedules.train_cars ALTER COLUMN train_car_id SET DEFAU
 
 
 --
--- TOC entry 3292 (class 2604 OID 16504)
+-- TOC entry 3292 (class 2604 OID 16514)
 -- Name: travel_fares travel_fare_id; Type: DEFAULT; Schema: travel_schedules; Owner: -
 --
 
@@ -793,7 +793,7 @@ ALTER TABLE ONLY travel_schedules.travel_fares ALTER COLUMN travel_fare_id SET D
 
 
 --
--- TOC entry 3293 (class 2604 OID 16505)
+-- TOC entry 3293 (class 2604 OID 16515)
 -- Name: travels travel_id; Type: DEFAULT; Schema: travel_schedules; Owner: -
 --
 
@@ -801,7 +801,7 @@ ALTER TABLE ONLY travel_schedules.travels ALTER COLUMN travel_id SET DEFAULT nex
 
 
 --
--- TOC entry 3294 (class 2604 OID 16506)
+-- TOC entry 3294 (class 2604 OID 16516)
 -- Name: id_types id_type_id; Type: DEFAULT; Schema: users; Owner: -
 --
 
@@ -809,7 +809,7 @@ ALTER TABLE ONLY users.id_types ALTER COLUMN id_type_id SET DEFAULT nextval('use
 
 
 --
--- TOC entry 3295 (class 2604 OID 16507)
+-- TOC entry 3295 (class 2604 OID 16517)
 -- Name: permissions id; Type: DEFAULT; Schema: users; Owner: -
 --
 
@@ -817,7 +817,7 @@ ALTER TABLE ONLY users.permissions ALTER COLUMN id SET DEFAULT nextval('users.pe
 
 
 --
--- TOC entry 3302 (class 2604 OID 16645)
+-- TOC entry 3296 (class 2604 OID 16518)
 -- Name: resources id; Type: DEFAULT; Schema: users; Owner: -
 --
 
@@ -825,7 +825,7 @@ ALTER TABLE ONLY users.resources ALTER COLUMN id SET DEFAULT nextval('users.reso
 
 
 --
--- TOC entry 3296 (class 2604 OID 16508)
+-- TOC entry 3297 (class 2604 OID 16519)
 -- Name: role_permissions id; Type: DEFAULT; Schema: users; Owner: -
 --
 
@@ -833,7 +833,7 @@ ALTER TABLE ONLY users.role_permissions ALTER COLUMN id SET DEFAULT nextval('use
 
 
 --
--- TOC entry 3303 (class 2604 OID 16654)
+-- TOC entry 3298 (class 2604 OID 16520)
 -- Name: role_resource_permissions id; Type: DEFAULT; Schema: users; Owner: -
 --
 
@@ -841,7 +841,7 @@ ALTER TABLE ONLY users.role_resource_permissions ALTER COLUMN id SET DEFAULT nex
 
 
 --
--- TOC entry 3297 (class 2604 OID 16509)
+-- TOC entry 3299 (class 2604 OID 16521)
 -- Name: roles id; Type: DEFAULT; Schema: users; Owner: -
 --
 
@@ -849,7 +849,7 @@ ALTER TABLE ONLY users.roles ALTER COLUMN id SET DEFAULT nextval('users.roles_id
 
 
 --
--- TOC entry 3298 (class 2604 OID 16510)
+-- TOC entry 3300 (class 2604 OID 16522)
 -- Name: user_roles id; Type: DEFAULT; Schema: users; Owner: -
 --
 
@@ -857,7 +857,7 @@ ALTER TABLE ONLY users.user_roles ALTER COLUMN id SET DEFAULT nextval('users.use
 
 
 --
--- TOC entry 3299 (class 2604 OID 16511)
+-- TOC entry 3301 (class 2604 OID 16523)
 -- Name: users user_id; Type: DEFAULT; Schema: users; Owner: -
 --
 
@@ -865,7 +865,7 @@ ALTER TABLE ONLY users.users ALTER COLUMN user_id SET DEFAULT nextval('users.use
 
 
 --
--- TOC entry 3307 (class 2606 OID 16517)
+-- TOC entry 3307 (class 2606 OID 16525)
 -- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: accounts; Owner: -
 --
 
@@ -874,7 +874,7 @@ ALTER TABLE ONLY accounts.user_account
 
 
 --
--- TOC entry 3309 (class 2606 OID 16519)
+-- TOC entry 3309 (class 2606 OID 16527)
 -- Name: bookings bookings_pkey; Type: CONSTRAINT; Schema: bookings; Owner: -
 --
 
@@ -883,7 +883,7 @@ ALTER TABLE ONLY bookings.bookings
 
 
 --
--- TOC entry 3311 (class 2606 OID 16521)
+-- TOC entry 3311 (class 2606 OID 16529)
 -- Name: tickets tickets_pkey; Type: CONSTRAINT; Schema: bookings; Owner: -
 --
 
@@ -892,15 +892,16 @@ ALTER TABLE ONLY bookings.tickets
 
 
 --
--- TOC entry 3313 (class 2606 OID 16523)
+-- TOC entry 3313 (class 2606 OID 16531)
 -- Name: currencies currencies_pkey; Type: CONSTRAINT; Schema: finances; Owner: -
 --
 
 ALTER TABLE ONLY finances.currencies
     ADD CONSTRAINT currencies_pkey PRIMARY KEY (currency_code);
 
+
 --
--- TOC entry 3315 (class 2606 OID 16525)
+-- TOC entry 3315 (class 2606 OID 16533)
 -- Name: cities cities_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -909,7 +910,7 @@ ALTER TABLE ONLY travel_schedules.cities
 
 
 --
--- TOC entry 3317 (class 2606 OID 16527)
+-- TOC entry 3317 (class 2606 OID 16535)
 -- Name: classes classes_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -918,7 +919,7 @@ ALTER TABLE ONLY travel_schedules.classes
 
 
 --
--- TOC entry 3319 (class 2606 OID 16529)
+-- TOC entry 3319 (class 2606 OID 16537)
 -- Name: seats seats_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -927,7 +928,7 @@ ALTER TABLE ONLY travel_schedules.seats
 
 
 --
--- TOC entry 3321 (class 2606 OID 16531)
+-- TOC entry 3321 (class 2606 OID 16539)
 -- Name: stations station_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -936,7 +937,7 @@ ALTER TABLE ONLY travel_schedules.stations
 
 
 --
--- TOC entry 3323 (class 2606 OID 16533)
+-- TOC entry 3323 (class 2606 OID 16541)
 -- Name: trains trains_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -945,7 +946,7 @@ ALTER TABLE ONLY travel_schedules.trains
 
 
 --
--- TOC entry 3325 (class 2606 OID 16535)
+-- TOC entry 3325 (class 2606 OID 16543)
 -- Name: travels travels_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -954,7 +955,7 @@ ALTER TABLE ONLY travel_schedules.travels
 
 
 --
--- TOC entry 3327 (class 2606 OID 16537)
+-- TOC entry 3327 (class 2606 OID 16545)
 -- Name: id_types id_types_pkey; Type: CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -963,7 +964,7 @@ ALTER TABLE ONLY users.id_types
 
 
 --
--- TOC entry 3329 (class 2606 OID 16668)
+-- TOC entry 3329 (class 2606 OID 16547)
 -- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -972,7 +973,7 @@ ALTER TABLE ONLY users.permissions
 
 
 --
--- TOC entry 3337 (class 2606 OID 16649)
+-- TOC entry 3331 (class 2606 OID 16549)
 -- Name: resources resources_pkey; Type: CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -981,7 +982,7 @@ ALTER TABLE ONLY users.resources
 
 
 --
--- TOC entry 3331 (class 2606 OID 16539)
+-- TOC entry 3333 (class 2606 OID 16551)
 -- Name: role_permissions role_permissions_pkey; Type: CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -990,7 +991,7 @@ ALTER TABLE ONLY users.role_permissions
 
 
 --
--- TOC entry 3339 (class 2606 OID 16656)
+-- TOC entry 3335 (class 2606 OID 16553)
 -- Name: role_resource_permissions role_resources_permissions_pkey; Type: CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -999,7 +1000,7 @@ ALTER TABLE ONLY users.role_resource_permissions
 
 
 --
--- TOC entry 3333 (class 2606 OID 16541)
+-- TOC entry 3337 (class 2606 OID 16555)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -1008,7 +1009,7 @@ ALTER TABLE ONLY users.roles
 
 
 --
--- TOC entry 3335 (class 2606 OID 16543)
+-- TOC entry 3339 (class 2606 OID 16557)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -1017,7 +1018,7 @@ ALTER TABLE ONLY users.users
 
 
 --
--- TOC entry 3340 (class 2606 OID 16544)
+-- TOC entry 3340 (class 2606 OID 16558)
 -- Name: user_account user_account_currency_code_fkey; Type: FK CONSTRAINT; Schema: accounts; Owner: -
 --
 
@@ -1026,7 +1027,7 @@ ALTER TABLE ONLY accounts.user_account
 
 
 --
--- TOC entry 3341 (class 2606 OID 16549)
+-- TOC entry 3341 (class 2606 OID 16563)
 -- Name: user_account user_account_owner_fkey; Type: FK CONSTRAINT; Schema: accounts; Owner: -
 --
 
@@ -1035,7 +1036,7 @@ ALTER TABLE ONLY accounts.user_account
 
 
 --
--- TOC entry 3342 (class 2606 OID 16554)
+-- TOC entry 3342 (class 2606 OID 16568)
 -- Name: passengers passengers_passenger_id_type_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
 --
 
@@ -1044,7 +1045,7 @@ ALTER TABLE ONLY bookings.passengers
 
 
 --
--- TOC entry 3343 (class 2606 OID 16559)
+-- TOC entry 3343 (class 2606 OID 16573)
 -- Name: passengers passengers_seat_id_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
 --
 
@@ -1053,7 +1054,7 @@ ALTER TABLE ONLY bookings.passengers
 
 
 --
--- TOC entry 3344 (class 2606 OID 16564)
+-- TOC entry 3344 (class 2606 OID 16578)
 -- Name: passengers passengers_ticket_id_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
 --
 
@@ -1062,7 +1063,7 @@ ALTER TABLE ONLY bookings.passengers
 
 
 --
--- TOC entry 3345 (class 2606 OID 16569)
+-- TOC entry 3345 (class 2606 OID 16583)
 -- Name: tickets tickets_booking_code_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
 --
 
@@ -1071,7 +1072,7 @@ ALTER TABLE ONLY bookings.tickets
 
 
 --
--- TOC entry 3346 (class 2606 OID 16574)
+-- TOC entry 3346 (class 2606 OID 16588)
 -- Name: tickets tickets_travel_id_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
 --
 
@@ -1080,7 +1081,7 @@ ALTER TABLE ONLY bookings.tickets
 
 
 --
--- TOC entry 3347 (class 2606 OID 16579)
+-- TOC entry 3347 (class 2606 OID 16593)
 -- Name: tickets tickets_user_id_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
 --
 
@@ -1089,7 +1090,7 @@ ALTER TABLE ONLY bookings.tickets
 
 
 --
--- TOC entry 3348 (class 2606 OID 16584)
+-- TOC entry 3348 (class 2606 OID 16598)
 -- Name: stations station_city_code_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -1098,7 +1099,7 @@ ALTER TABLE ONLY travel_schedules.stations
 
 
 --
--- TOC entry 3349 (class 2606 OID 16589)
+-- TOC entry 3349 (class 2606 OID 16603)
 -- Name: train_cars train_cars_class_id_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -1107,7 +1108,7 @@ ALTER TABLE ONLY travel_schedules.train_cars
 
 
 --
--- TOC entry 3350 (class 2606 OID 16594)
+-- TOC entry 3350 (class 2606 OID 16608)
 -- Name: train_cars train_cars_train_code_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -1116,7 +1117,7 @@ ALTER TABLE ONLY travel_schedules.train_cars
 
 
 --
--- TOC entry 3351 (class 2606 OID 16599)
+-- TOC entry 3351 (class 2606 OID 16613)
 -- Name: travel_fares travel_costs_currency_code_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -1125,7 +1126,16 @@ ALTER TABLE ONLY travel_schedules.travel_fares
 
 
 --
--- TOC entry 3352 (class 2606 OID 16604)
+-- TOC entry 3352 (class 2606 OID 16686)
+-- Name: travel_fares travel_fares_travel_id_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
+--
+
+ALTER TABLE ONLY travel_schedules.travel_fares
+    ADD CONSTRAINT travel_fares_travel_id_fkey FOREIGN KEY (travel_id) REFERENCES travel_schedules.travels(travel_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3353 (class 2606 OID 16618)
 -- Name: travels travels_departure_station_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -1134,7 +1144,7 @@ ALTER TABLE ONLY travel_schedules.travels
 
 
 --
--- TOC entry 3353 (class 2606 OID 16609)
+-- TOC entry 3354 (class 2606 OID 16623)
 -- Name: travels travels_destination_station_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -1143,7 +1153,7 @@ ALTER TABLE ONLY travel_schedules.travels
 
 
 --
--- TOC entry 3354 (class 2606 OID 16614)
+-- TOC entry 3355 (class 2606 OID 16628)
 -- Name: travels travels_train_code_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
 --
 
@@ -1152,7 +1162,7 @@ ALTER TABLE ONLY travel_schedules.travels
 
 
 --
--- TOC entry 3358 (class 2606 OID 16669)
+-- TOC entry 3356 (class 2606 OID 16633)
 -- Name: role_resource_permissions role_resources_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -1161,7 +1171,7 @@ ALTER TABLE ONLY users.role_resource_permissions
 
 
 --
--- TOC entry 3359 (class 2606 OID 16662)
+-- TOC entry 3357 (class 2606 OID 16638)
 -- Name: role_resource_permissions role_resources_permissions_resource_id_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -1170,7 +1180,7 @@ ALTER TABLE ONLY users.role_resource_permissions
 
 
 --
--- TOC entry 3360 (class 2606 OID 16657)
+-- TOC entry 3358 (class 2606 OID 16643)
 -- Name: role_resource_permissions role_resources_permissions_role_id_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -1179,7 +1189,7 @@ ALTER TABLE ONLY users.role_resource_permissions
 
 
 --
--- TOC entry 3355 (class 2606 OID 16619)
+-- TOC entry 3359 (class 2606 OID 16648)
 -- Name: user_roles user_roles_role_id_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -1188,7 +1198,7 @@ ALTER TABLE ONLY users.user_roles
 
 
 --
--- TOC entry 3356 (class 2606 OID 16624)
+-- TOC entry 3360 (class 2606 OID 16653)
 -- Name: user_roles user_roles_user_id_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -1197,7 +1207,7 @@ ALTER TABLE ONLY users.user_roles
 
 
 --
--- TOC entry 3357 (class 2606 OID 16629)
+-- TOC entry 3361 (class 2606 OID 16658)
 -- Name: users users_id_type_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
 --
 
@@ -1205,7 +1215,7 @@ ALTER TABLE ONLY users.users
     ADD CONSTRAINT users_id_type_fkey FOREIGN KEY (id_type) REFERENCES users.id_types(id_type_id) ON UPDATE CASCADE;
 
 
--- Completed on 2023-12-03 14:49:52
+-- Completed on 2023-12-03 16:05:59
 
 --
 -- PostgreSQL database dump complete
