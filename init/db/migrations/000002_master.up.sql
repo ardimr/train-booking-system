@@ -1,6 +1,56 @@
 --
--- TOC entry 3500 (class 0 OID 25056)
--- Dependencies: 244
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.3 (Debian 15.3-1.pgdg110+1)
+-- Dumped by pg_dump version 15.5
+
+-- Started on 2023-12-03 14:50:23
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3490 (class 0 OID 16421)
+-- Dependencies: 228
+-- Data for Name: currencies; Type: TABLE DATA; Schema: finances; Owner: -
+--
+
+INSERT INTO finances.currencies VALUES ('IDR', 'Rupiah');
+
+
+--
+-- TOC entry 3505 (class 0 OID 16464)
+-- Dependencies: 243
+-- Data for Name: id_types; Type: TABLE DATA; Schema: users; Owner: -
+--
+
+INSERT INTO users.id_types VALUES (1, 'KTP');
+INSERT INTO users.id_types VALUES (2, 'SIM');
+INSERT INTO users.id_types VALUES (3, 'Paspor');
+
+
+--
+-- TOC entry 3515 (class 0 OID 16490)
+-- Dependencies: 253
+-- Data for Name: users; Type: TABLE DATA; Schema: users; Owner: -
+--
+
+INSERT INTO users.users VALUES (1, 'admin', 'admin@tbs.com', 'Administrator', '$2y$04$tVLwk.SSd.khyfDk3DympuTCzRAp4k3qIIg2.wox8jFIM/0IHGIXO', '+62890123456', 1, '', '1999-11-04', '2023-07-08 11:16:21.472678', '2023-07-08 11:16:21.472678');
+INSERT INTO users.users VALUES (2, 'ardimr', 'ardi@gmail.com', 'Rizky Ardi Maulana', '$2a$04$piwEb1UECg22/dTEjED6puzMxfbkdkzwnrxbpesF.WHQQnxHoEZXC', '+628986983930', 1, '337602', '1999-11-04', '2023-07-08 11:16:21.472678', '2023-07-08 11:16:21.472678');
+
+
+--
+-- TOC entry 3483 (class 0 OID 16399)
+-- Dependencies: 221
 -- Data for Name: user_account; Type: TABLE DATA; Schema: accounts; Owner: -
 --
 
@@ -9,8 +59,8 @@ INSERT INTO accounts.user_account VALUES (2, 2, 1000000, 'IDR');
 
 
 --
--- TOC entry 3494 (class 0 OID 24994)
--- Dependencies: 238
+-- TOC entry 3485 (class 0 OID 16403)
+-- Dependencies: 223
 -- Data for Name: bookings; Type: TABLE DATA; Schema: bookings; Owner: -
 --
 
@@ -29,48 +79,8 @@ INSERT INTO bookings.bookings VALUES ('GS6X9BL', 'PAID', '2023-10-19 14:19:29.74
 
 
 --
--- TOC entry 3498 (class 0 OID 25030)
--- Dependencies: 242
--- Data for Name: passengers; Type: TABLE DATA; Schema: bookings; Owner: -
---
-
-INSERT INTO bookings.passengers VALUES (3, 'Rizky Ardi Maulana', 1, '337602', 1, 1, '2023-07-17 13:06:04.269296');
-INSERT INTO bookings.passengers VALUES (4, 'Shiva Veronica Aulia', 1, '337601', 1, 2, '2023-07-17 13:06:04.269296');
-INSERT INTO bookings.passengers VALUES (5, 'Najwa Cahya', 1, '337603', 1, 3, '2023-07-17 13:06:04.269296');
-INSERT INTO bookings.passengers VALUES (6, 'Dharma', 1, '337890', 2, 5, '2023-07-17 13:22:48.284519');
-INSERT INTO bookings.passengers VALUES (7, 'Rizky Ardi Maulana', 1, '3376020411990006', 4, 12, '2023-07-26 15:11:15.381848');
-INSERT INTO bookings.passengers VALUES (8, 'Shifa Veronica Aulia', 1, '3376020411990007', 4, 13, '2023-07-26 15:11:15.381848');
-INSERT INTO bookings.passengers VALUES (21, 'Rizky Ardi Maulana', 1, '337602123456789', 11, 2, '2023-10-19 13:52:34.739406');
-INSERT INTO bookings.passengers VALUES (22, 'Shifa Veronica Aulia', 1, '3376020411123321', 12, 35, '2023-10-19 14:14:02.061958');
-INSERT INTO bookings.passengers VALUES (23, 'Najwa Cahya', 1, '336736181273123', 13, 34, '2023-10-19 14:19:29.741228');
-
-
---
--- TOC entry 3496 (class 0 OID 25002)
--- Dependencies: 240
--- Data for Name: tickets; Type: TABLE DATA; Schema: bookings; Owner: -
---
-
-INSERT INTO bookings.tickets VALUES (1, 1, 1, 'RM7AB12', '2023-07-17 13:05:15.302182');
-INSERT INTO bookings.tickets VALUES (2, 2, 1, 'ARDIMR4', '2023-07-17 13:19:30.327731');
-INSERT INTO bookings.tickets VALUES (4, 1, 2, 'TG5O6GM', '2023-07-26 15:11:15.381848');
-INSERT INTO bookings.tickets VALUES (11, 17, 1, 'R0IN724', '2023-10-19 13:52:34.739406');
-INSERT INTO bookings.tickets VALUES (12, 17, 1, '9KLSP9J', '2023-10-19 14:14:02.061958');
-INSERT INTO bookings.tickets VALUES (13, 17, 1, 'GS6X9BL', '2023-10-19 14:19:29.741228');
-
-
---
--- TOC entry 3489 (class 0 OID 24922)
--- Dependencies: 233
--- Data for Name: currencies; Type: TABLE DATA; Schema: finances; Owner: -
---
-
-INSERT INTO finances.currencies VALUES ('IDR', 'Rupiah');
-
-
---
--- TOC entry 3479 (class 0 OID 24742)
--- Dependencies: 223
+-- TOC entry 3492 (class 0 OID 16427)
+-- Dependencies: 230
 -- Data for Name: cities; Type: TABLE DATA; Schema: travel_schedules; Owner: -
 --
 
@@ -86,18 +96,124 @@ INSERT INTO travel_schedules.cities VALUES ('MLG', 'Malang');
 
 
 --
--- TOC entry 3484 (class 0 OID 24813)
--- Dependencies: 228
--- Data for Name: classes; Type: TABLE DATA; Schema: travel_schedules; Owner: -
+-- TOC entry 3497 (class 0 OID 16442)
+-- Dependencies: 235
+-- Data for Name: stations; Type: TABLE DATA; Schema: travel_schedules; Owner: -
 --
 
-INSERT INTO travel_schedules.classes VALUES (1, 'EKS', 'Excecutive');
-INSERT INTO travel_schedules.classes VALUES (2, 'EKO', 'Economy');
+INSERT INTO travel_schedules.stations VALUES ('GMR', 'Gambir', 'JKT');
+INSERT INTO travel_schedules.stations VALUES ('CN ', 'Cirebon', 'CBN');
+INSERT INTO travel_schedules.stations VALUES ('CNP', 'Prujakan', 'CBN');
+INSERT INTO travel_schedules.stations VALUES ('SMC', 'Semarang Poncol', 'SMG');
+INSERT INTO travel_schedules.stations VALUES ('SMT', 'Semarang Tawang', 'SMG');
+INSERT INTO travel_schedules.stations VALUES ('SLO', 'Solo Balapan', 'SKT');
+INSERT INTO travel_schedules.stations VALUES ('SK ', 'Solo Jebres', 'SKT');
+INSERT INTO travel_schedules.stations VALUES ('SGU', 'Surabaya Gubeng', 'SBY');
+INSERT INTO travel_schedules.stations VALUES ('SBI', 'Surabaya Pasarturi', 'SBY');
+INSERT INTO travel_schedules.stations VALUES ('YK ', 'Yogyakarta', 'YYK');
+INSERT INTO travel_schedules.stations VALUES ('LPN', 'Lempuyangan', 'YYK');
+INSERT INTO travel_schedules.stations VALUES ('ML ', 'Malang', 'MLG');
+INSERT INTO travel_schedules.stations VALUES ('TG ', 'Tegal', 'TGL');
+INSERT INTO travel_schedules.stations VALUES ('BD ', 'Bandung', 'BDG');
+INSERT INTO travel_schedules.stations VALUES ('KAC', 'Kiaracondong', 'BDG');
 
 
 --
--- TOC entry 3486 (class 0 OID 24820)
--- Dependencies: 230
+-- TOC entry 3499 (class 0 OID 16450)
+-- Dependencies: 237
+-- Data for Name: trains; Type: TABLE DATA; Schema: travel_schedules; Owner: -
+--
+
+INSERT INTO travel_schedules.trains VALUES ('CIR', 'Ciremai');
+INSERT INTO travel_schedules.trains VALUES ('HAR', 'Harina');
+INSERT INTO travel_schedules.trains VALUES ('CHE', 'Argo Cheribon');
+INSERT INTO travel_schedules.trains VALUES ('PHR', 'Argo Pahrahyangan');
+INSERT INTO travel_schedules.trains VALUES ('TKS', 'Taksaka');
+INSERT INTO travel_schedules.trains VALUES ('DWP', 'Argo Dwipangga');
+INSERT INTO travel_schedules.trains VALUES ('SMU', 'Argo Semeru');
+INSERT INTO travel_schedules.trains VALUES ('GJY', 'Gajayana');
+INSERT INTO travel_schedules.trains VALUES ('KLG', 'Kaligung');
+
+
+--
+-- TOC entry 3502 (class 0 OID 16459)
+-- Dependencies: 240
+-- Data for Name: travels; Type: TABLE DATA; Schema: travel_schedules; Owner: -
+--
+
+INSERT INTO travel_schedules.travels VALUES (2, '143', '2023-07-07 09:40:00+00', '2023-07-07 14:45:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (3, '126', '2023-07-07 20:25:00+00', '2023-07-08 01:32:00+00', 'BD ', 'TG ', 'HAR');
+INSERT INTO travel_schedules.travels VALUES (5, '144', '2023-07-07 16:50:00+00', '2023-07-08 00:59:00+00', 'BD ', 'SMC', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (1, '144', '2023-07-07 16:50:00+00', '2023-07-07 22:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (6, '144', '2023-07-08 16:50:00+00', '2023-07-08 22:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (7, '144', '2023-07-09 16:50:00+00', '2023-07-09 22:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (4, '125', '2023-07-07 22:35:00+00', '2023-07-08 05:30:00+00', 'TG ', 'BD ', 'HAR');
+INSERT INTO travel_schedules.travels VALUES (8, '144', '2023-09-07 16:50:00+00', '2023-09-07 22:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (16, '144', '2023-10-16 14:16:00+00', '2023-10-16 20:16:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (13, '144', '2023-10-16 14:16:00+00', '2023-10-16 20:16:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (14, '144', '2023-10-16 14:16:00+00', '2023-10-16 20:16:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (17, '144', '2023-10-19 14:16:00+00', '2023-10-19 20:16:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (18, '144', '2023-11-26 02:40:00+00', '2023-11-26 07:45:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (19, '144', '2023-11-26 09:50:00+00', '2023-11-26 15:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (20, '26 ', '2023-11-26 01:30:00+00', '2023-11-26 05:39:00+00', 'GMR', 'TG ', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (21, '27 ', '2023-11-26 06:30:00+00', '2023-11-26 10:34:00+00', 'TG ', 'GMR', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (22, '42 ', '2023-11-26 05:30:00+00', '2023-11-26 08:25:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (23, '47 ', '2023-11-26 01:45:00+00', '2023-11-26 12:45:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (24, '144', '2023-11-27 02:40:00+00', '2023-11-27 07:45:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (25, '144', '2023-11-27 09:50:00+00', '2023-11-27 15:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (26, '26 ', '2023-11-27 01:30:00+00', '2023-11-27 05:39:00+00', 'GMR', 'TG ', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (27, '27 ', '2023-11-27 06:30:00+00', '2023-11-27 10:34:00+00', 'TG ', 'GMR', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (28, '42 ', '2023-11-27 05:30:00+00', '2023-11-27 08:25:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (29, '47 ', '2023-11-27 01:45:00+00', '2023-11-27 12:45:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (30, '144', '2023-11-28 02:40:00+00', '2023-11-28 07:45:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (31, '144', '2023-11-28 09:50:00+00', '2023-11-28 15:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (32, '26 ', '2023-11-28 01:30:00+00', '2023-11-28 05:39:00+00', 'GMR', 'TG ', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (33, '27 ', '2023-11-28 06:30:00+00', '2023-11-28 10:34:00+00', 'TG ', 'GMR', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (34, '42 ', '2023-11-28 05:30:00+00', '2023-11-28 08:25:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (35, '47 ', '2023-11-28 01:45:00+00', '2023-11-28 12:45:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (36, '144', '2023-11-29 02:40:00+00', '2023-11-29 07:45:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (37, '144', '2023-11-29 09:50:00+00', '2023-11-29 15:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (38, '26 ', '2023-11-29 01:30:00+00', '2023-11-29 05:39:00+00', 'GMR', 'TG ', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (39, '27 ', '2023-11-29 06:30:00+00', '2023-11-29 10:34:00+00', 'TG ', 'GMR', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (40, '42 ', '2023-11-29 05:30:00+00', '2023-11-29 08:25:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (41, '47 ', '2023-11-29 01:45:00+00', '2023-11-29 12:45:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (42, '144', '2023-11-30 02:40:00+00', '2023-11-30 07:45:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (43, '144', '2023-11-30 09:50:00+00', '2023-11-30 15:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (44, '26 ', '2023-11-30 01:30:00+00', '2023-11-30 05:39:00+00', 'GMR', 'TG ', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (45, '27 ', '2023-11-30 06:30:00+00', '2023-11-30 10:34:00+00', 'TG ', 'GMR', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (46, '42 ', '2023-11-30 05:30:00+00', '2023-11-30 08:25:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (47, '47 ', '2023-11-30 01:45:00+00', '2023-11-30 12:45:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (48, '144', '2023-12-01 02:40:00+00', '2023-12-01 07:45:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (49, '144', '2023-12-01 09:50:00+00', '2023-12-01 15:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (50, '26 ', '2023-12-01 01:30:00+00', '2023-12-01 05:39:00+00', 'GMR', 'TG ', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (51, '27 ', '2023-12-01 06:30:00+00', '2023-12-01 10:34:00+00', 'TG ', 'GMR', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (52, '42 ', '2023-12-01 05:30:00+00', '2023-12-01 08:25:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (53, '47 ', '2023-12-01 01:45:00+00', '2023-12-01 12:45:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (54, '144', '2023-12-02 02:40:00+00', '2023-12-02 07:45:00+00', 'TG ', 'BD ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (55, '144', '2023-12-02 09:50:00+00', '2023-12-02 15:27:00+00', 'BD ', 'TG ', 'CIR');
+INSERT INTO travel_schedules.travels VALUES (56, '26 ', '2023-12-02 01:30:00+00', '2023-12-02 05:39:00+00', 'GMR', 'TG ', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (57, '27 ', '2023-12-02 06:30:00+00', '2023-12-02 10:34:00+00', 'TG ', 'GMR', 'CHE');
+INSERT INTO travel_schedules.travels VALUES (58, '42 ', '2023-12-02 05:30:00+00', '2023-12-02 08:25:00+00', 'GMR', 'BD ', 'PHR');
+INSERT INTO travel_schedules.travels VALUES (59, '47 ', '2023-12-02 01:45:00+00', '2023-12-02 12:45:00+00', 'GMR', 'BD ', 'PHR');
+
+
+--
+-- TOC entry 3488 (class 0 OID 16416)
+-- Dependencies: 226
+-- Data for Name: tickets; Type: TABLE DATA; Schema: bookings; Owner: -
+--
+
+INSERT INTO bookings.tickets VALUES (1, 1, 1, 'RM7AB12', '2023-07-17 13:05:15.302182');
+INSERT INTO bookings.tickets VALUES (2, 2, 1, 'ARDIMR4', '2023-07-17 13:19:30.327731');
+INSERT INTO bookings.tickets VALUES (4, 1, 2, 'TG5O6GM', '2023-07-26 15:11:15.381848');
+INSERT INTO bookings.tickets VALUES (11, 17, 1, 'R0IN724', '2023-10-19 13:52:34.739406');
+INSERT INTO bookings.tickets VALUES (12, 17, 1, '9KLSP9J', '2023-10-19 14:14:02.061958');
+INSERT INTO bookings.tickets VALUES (13, 17, 1, 'GS6X9BL', '2023-10-19 14:19:29.741228');
+
+
+--
+-- TOC entry 3495 (class 0 OID 16438)
+-- Dependencies: 233
 -- Data for Name: seats; Type: TABLE DATA; Schema: travel_schedules; Owner: -
 --
 
@@ -3428,30 +3544,35 @@ INSERT INTO travel_schedules.seats VALUES (3382, 15, 'D', 61);
 
 
 --
--- TOC entry 3478 (class 0 OID 24735)
--- Dependencies: 222
--- Data for Name: stations; Type: TABLE DATA; Schema: travel_schedules; Owner: -
+-- TOC entry 3486 (class 0 OID 16409)
+-- Dependencies: 224
+-- Data for Name: passengers; Type: TABLE DATA; Schema: bookings; Owner: -
 --
 
-INSERT INTO travel_schedules.stations VALUES ('GMR', 'Gambir', 'JKT');
-INSERT INTO travel_schedules.stations VALUES ('CN ', 'Cirebon', 'CBN');
-INSERT INTO travel_schedules.stations VALUES ('CNP', 'Prujakan', 'CBN');
-INSERT INTO travel_schedules.stations VALUES ('SMC', 'Semarang Poncol', 'SMG');
-INSERT INTO travel_schedules.stations VALUES ('SMT', 'Semarang Tawang', 'SMG');
-INSERT INTO travel_schedules.stations VALUES ('SLO', 'Solo Balapan', 'SKT');
-INSERT INTO travel_schedules.stations VALUES ('SK ', 'Solo Jebres', 'SKT');
-INSERT INTO travel_schedules.stations VALUES ('SGU', 'Surabaya Gubeng', 'SBY');
-INSERT INTO travel_schedules.stations VALUES ('SBI', 'Surabaya Pasarturi', 'SBY');
-INSERT INTO travel_schedules.stations VALUES ('YK ', 'Yogyakarta', 'YYK');
-INSERT INTO travel_schedules.stations VALUES ('LPN', 'Lempuyangan', 'YYK');
-INSERT INTO travel_schedules.stations VALUES ('ML ', 'Malang', 'MLG');
-INSERT INTO travel_schedules.stations VALUES ('TG ', 'Tegal', 'TGL');
-INSERT INTO travel_schedules.stations VALUES ('BD ', 'Bandung', 'BDG');
+INSERT INTO bookings.passengers VALUES (3, 'Rizky Ardi Maulana', 1, '337602', 1, 1, '2023-07-17 13:06:04.269296');
+INSERT INTO bookings.passengers VALUES (4, 'Shiva Veronica Aulia', 1, '337601', 1, 2, '2023-07-17 13:06:04.269296');
+INSERT INTO bookings.passengers VALUES (5, 'Najwa Cahya', 1, '337603', 1, 3, '2023-07-17 13:06:04.269296');
+INSERT INTO bookings.passengers VALUES (6, 'Dharma', 1, '337890', 2, 5, '2023-07-17 13:22:48.284519');
+INSERT INTO bookings.passengers VALUES (7, 'Rizky Ardi Maulana', 1, '3376020411990006', 4, 12, '2023-07-26 15:11:15.381848');
+INSERT INTO bookings.passengers VALUES (8, 'Shifa Veronica Aulia', 1, '3376020411990007', 4, 13, '2023-07-26 15:11:15.381848');
+INSERT INTO bookings.passengers VALUES (21, 'Rizky Ardi Maulana', 1, '337602123456789', 11, 2, '2023-10-19 13:52:34.739406');
+INSERT INTO bookings.passengers VALUES (22, 'Shifa Veronica Aulia', 1, '3376020411123321', 12, 35, '2023-10-19 14:14:02.061958');
+INSERT INTO bookings.passengers VALUES (23, 'Najwa Cahya', 1, '336736181273123', 13, 34, '2023-10-19 14:19:29.741228');
 
 
 --
--- TOC entry 3482 (class 0 OID 24808)
--- Dependencies: 226
+-- TOC entry 3493 (class 0 OID 16432)
+-- Dependencies: 231
+-- Data for Name: classes; Type: TABLE DATA; Schema: travel_schedules; Owner: -
+--
+
+INSERT INTO travel_schedules.classes VALUES (1, 'EKS', 'Excecutive');
+INSERT INTO travel_schedules.classes VALUES (2, 'EKO', 'Economy');
+
+
+--
+-- TOC entry 3498 (class 0 OID 16447)
+-- Dependencies: 236
 -- Data for Name: train_cars; Type: TABLE DATA; Schema: travel_schedules; Owner: -
 --
 
@@ -3518,27 +3639,9 @@ INSERT INTO travel_schedules.train_cars VALUES (60, 'KLG', 60, 2, 4);
 INSERT INTO travel_schedules.train_cars VALUES (61, 'KLG', 60, 2, 5);
 
 
-
 --
--- TOC entry 3480 (class 0 OID 24802)
--- Dependencies: 224
--- Data for Name: trains; Type: TABLE DATA; Schema: travel_schedules; Owner: -
---
-
-INSERT INTO travel_schedules.trains VALUES ('CIR', 'Ciremai');
-INSERT INTO travel_schedules.trains VALUES ('HAR', 'Harina');
-INSERT INTO travel_schedules.trains VALUES ('CHE', 'Argo Cheribon');
-INSERT INTO travel_schedules.trains VALUES ('PHR', 'Argo Pahrahyangan');
-INSERT INTO travel_schedules.trains VALUES ('TKS', 'Taksaka');
-INSERT INTO travel_schedules.trains VALUES ('DWP', 'Argo Dwipangga');
-INSERT INTO travel_schedules.trains VALUES ('SMU', 'Argo Semeru');
-INSERT INTO travel_schedules.trains VALUES ('GJY', 'Gajayana');
-INSERT INTO travel_schedules.trains VALUES ('KLG', 'Kaligung');
-
-
---
--- TOC entry 3488 (class 0 OID 24849)
--- Dependencies: 232
+-- TOC entry 3500 (class 0 OID 16455)
+-- Dependencies: 238
 -- Data for Name: travel_fares; Type: TABLE DATA; Schema: travel_schedules; Owner: -
 --
 
@@ -3650,95 +3753,31 @@ INSERT INTO travel_schedules.travel_fares VALUES (110, 59, 250000, 1, 'IDR');
 INSERT INTO travel_schedules.travel_fares VALUES (111, 59, 180000, 2, 'IDR');
 
 
-
 --
--- TOC entry 3477 (class 0 OID 24731)
--- Dependencies: 221
--- Data for Name: travels; Type: TABLE DATA; Schema: travel_schedules; Owner: -
---
-
-INSERT INTO travel_schedules.travels VALUES (2, '143', '2023-07-07 09:40:00+00', '2023-07-07 14:45:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (3, '126', '2023-07-07 20:25:00+00', '2023-07-08 01:32:00+00', 'BD ', 'TG ', 'HAR');
-INSERT INTO travel_schedules.travels VALUES (5, '144', '2023-07-07 16:50:00+00', '2023-07-08 00:59:00+00', 'BD ', 'SMC', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (1, '144', '2023-07-07 16:50:00+00', '2023-07-07 22:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (6, '144', '2023-07-08 16:50:00+00', '2023-07-08 22:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (7, '144', '2023-07-09 16:50:00+00', '2023-07-09 22:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (4, '125', '2023-07-07 22:35:00+00', '2023-07-08 05:30:00+00', 'TG ', 'BD ', 'HAR');
-INSERT INTO travel_schedules.travels VALUES (8, '144', '2023-09-07 16:50:00+00', '2023-09-07 22:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (16, '144', '2023-10-16 14:16:00+00', '2023-10-16 20:16:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (13, '144', '2023-10-16 14:16:00+00', '2023-10-16 20:16:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (14, '144', '2023-10-16 14:16:00+00', '2023-10-16 20:16:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (17, '144', '2023-10-19 14:16:00+00', '2023-10-19 20:16:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (18, '144', '2023-11-26 02:40:00+00', '2023-11-26 07:45:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (19, '144', '2023-11-26 09:50:00+00', '2023-11-26 15:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (20, '26 ', '2023-11-26 01:30:00+00', '2023-11-26 05:39:00+00', 'GMR', 'TG ', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (21, '27 ', '2023-11-26 06:30:00+00', '2023-11-26 10:34:00+00', 'TG ', 'GMR', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (22, '42 ', '2023-11-26 05:30:00+00', '2023-11-26 08:25:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (23, '47 ', '2023-11-26 01:45:00+00', '2023-11-26 12:45:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (24, '144', '2023-11-27 02:40:00+00', '2023-11-27 07:45:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (25, '144', '2023-11-27 09:50:00+00', '2023-11-27 15:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (26, '26 ', '2023-11-27 01:30:00+00', '2023-11-27 05:39:00+00', 'GMR', 'TG ', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (27, '27 ', '2023-11-27 06:30:00+00', '2023-11-27 10:34:00+00', 'TG ', 'GMR', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (28, '42 ', '2023-11-27 05:30:00+00', '2023-11-27 08:25:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (29, '47 ', '2023-11-27 01:45:00+00', '2023-11-27 12:45:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (30, '144', '2023-11-28 02:40:00+00', '2023-11-28 07:45:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (31, '144', '2023-11-28 09:50:00+00', '2023-11-28 15:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (32, '26 ', '2023-11-28 01:30:00+00', '2023-11-28 05:39:00+00', 'GMR', 'TG ', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (33, '27 ', '2023-11-28 06:30:00+00', '2023-11-28 10:34:00+00', 'TG ', 'GMR', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (34, '42 ', '2023-11-28 05:30:00+00', '2023-11-28 08:25:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (35, '47 ', '2023-11-28 01:45:00+00', '2023-11-28 12:45:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (36, '144', '2023-11-29 02:40:00+00', '2023-11-29 07:45:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (37, '144', '2023-11-29 09:50:00+00', '2023-11-29 15:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (38, '26 ', '2023-11-29 01:30:00+00', '2023-11-29 05:39:00+00', 'GMR', 'TG ', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (39, '27 ', '2023-11-29 06:30:00+00', '2023-11-29 10:34:00+00', 'TG ', 'GMR', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (40, '42 ', '2023-11-29 05:30:00+00', '2023-11-29 08:25:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (41, '47 ', '2023-11-29 01:45:00+00', '2023-11-29 12:45:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (42, '144', '2023-11-30 02:40:00+00', '2023-11-30 07:45:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (43, '144', '2023-11-30 09:50:00+00', '2023-11-30 15:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (44, '26 ', '2023-11-30 01:30:00+00', '2023-11-30 05:39:00+00', 'GMR', 'TG ', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (45, '27 ', '2023-11-30 06:30:00+00', '2023-11-30 10:34:00+00', 'TG ', 'GMR', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (46, '42 ', '2023-11-30 05:30:00+00', '2023-11-30 08:25:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (47, '47 ', '2023-11-30 01:45:00+00', '2023-11-30 12:45:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (48, '144', '2023-12-01 02:40:00+00', '2023-12-01 07:45:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (49, '144', '2023-12-01 09:50:00+00', '2023-12-01 15:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (50, '26 ', '2023-12-01 01:30:00+00', '2023-12-01 05:39:00+00', 'GMR', 'TG ', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (51, '27 ', '2023-12-01 06:30:00+00', '2023-12-01 10:34:00+00', 'TG ', 'GMR', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (52, '42 ', '2023-12-01 05:30:00+00', '2023-12-01 08:25:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (53, '47 ', '2023-12-01 01:45:00+00', '2023-12-01 12:45:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (54, '144', '2023-12-02 02:40:00+00', '2023-12-02 07:45:00+00', 'TG ', 'BD ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (55, '144', '2023-12-02 09:50:00+00', '2023-12-02 15:27:00+00', 'BD ', 'TG ', 'CIR');
-INSERT INTO travel_schedules.travels VALUES (56, '26 ', '2023-12-02 01:30:00+00', '2023-12-02 05:39:00+00', 'GMR', 'TG ', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (57, '27 ', '2023-12-02 06:30:00+00', '2023-12-02 10:34:00+00', 'TG ', 'GMR', 'CHE');
-INSERT INTO travel_schedules.travels VALUES (58, '42 ', '2023-12-02 05:30:00+00', '2023-12-02 08:25:00+00', 'GMR', 'BD ', 'PHR');
-INSERT INTO travel_schedules.travels VALUES (59, '47 ', '2023-12-02 01:45:00+00', '2023-12-02 12:45:00+00', 'GMR', 'BD ', 'PHR');
-
---
--- TOC entry 3493 (class 0 OID 24945)
--- Dependencies: 237
--- Data for Name: id_types; Type: TABLE DATA; Schema: users; Owner: -
---
-
-INSERT INTO users.id_types VALUES (1, 'KTP');
-INSERT INTO users.id_types VALUES (2, 'SIM');
-INSERT INTO users.id_types VALUES (3, 'Paspor');
-
-
---
--- TOC entry 3507 (class 0 OID 25160)
--- Dependencies: 251
+-- TOC entry 3507 (class 0 OID 16470)
+-- Dependencies: 245
 -- Data for Name: permissions; Type: TABLE DATA; Schema: users; Owner: -
 --
 
-INSERT INTO users.permissions VALUES (1, 'GET');
-INSERT INTO users.permissions VALUES (2, 'POST');
-INSERT INTO users.permissions VALUES (3, 'DELETE');
 INSERT INTO users.permissions VALUES (4, 'PUT');
-INSERT INTO users.permissions VALUES (5, 'PATCH');
+INSERT INTO users.permissions VALUES (1, 'view');
+INSERT INTO users.permissions VALUES (2, 'add');
+INSERT INTO users.permissions VALUES (3, 'delete');
+INSERT INTO users.permissions VALUES (5, 'edit');
 
 
 --
--- TOC entry 3509 (class 0 OID 25167)
--- Dependencies: 253
+-- TOC entry 3518 (class 0 OID 16642)
+-- Dependencies: 256
+-- Data for Name: resources; Type: TABLE DATA; Schema: users; Owner: -
+--
+
+INSERT INTO users.resources VALUES (1, 'stations');
+
+
+--
+-- TOC entry 3509 (class 0 OID 16476)
+-- Dependencies: 247
 -- Data for Name: role_permissions; Type: TABLE DATA; Schema: users; Owner: -
 --
 
@@ -3750,8 +3789,8 @@ INSERT INTO users.role_permissions VALUES (5, 1, 5);
 
 
 --
--- TOC entry 3502 (class 0 OID 25112)
--- Dependencies: 246
+-- TOC entry 3511 (class 0 OID 16480)
+-- Dependencies: 249
 -- Data for Name: roles; Type: TABLE DATA; Schema: users; Owner: -
 --
 
@@ -3760,29 +3799,32 @@ INSERT INTO users.roles VALUES (2, 'user');
 
 
 --
--- TOC entry 3505 (class 0 OID 25140)
--- Dependencies: 249
+-- TOC entry 3520 (class 0 OID 16651)
+-- Dependencies: 258
+-- Data for Name: role_resource_permissions; Type: TABLE DATA; Schema: users; Owner: -
+--
+
+INSERT INTO users.role_resource_permissions VALUES (1, 1, 1, 1);
+INSERT INTO users.role_resource_permissions VALUES (2, 1, 1, 2);
+INSERT INTO users.role_resource_permissions VALUES (3, 1, 1, 3);
+INSERT INTO users.role_resource_permissions VALUES (4, 1, 1, 4);
+INSERT INTO users.role_resource_permissions VALUES (5, 1, 1, 5);
+INSERT INTO users.role_resource_permissions VALUES (6, 2, 1, 1);
+
+
+--
+-- TOC entry 3513 (class 0 OID 16486)
+-- Dependencies: 251
 -- Data for Name: user_roles; Type: TABLE DATA; Schema: users; Owner: -
 --
 
 INSERT INTO users.user_roles VALUES (1, 1, 2);
-INSERT INTO users.user_roles VALUES (2, 2, 2);
+INSERT INTO users.user_roles VALUES (2, 2, 1);
 
 
 --
--- TOC entry 3491 (class 0 OID 24936)
--- Dependencies: 235
--- Data for Name: users; Type: TABLE DATA; Schema: users; Owner: -
---
-
-INSERT INTO users.users VALUES (1, 'ardimr', 'ardi@gmail.com', 'Rizky Ardi Maulana', '$2a$04$piwEb1UECg22/dTEjED6puzMxfbkdkzwnrxbpesF.WHQQnxHoEZXC', '+628986983930', 1, '337602', '1999-11-04', '2023-07-08 11:16:21.472678', '2023-07-08 11:16:21.472678');
-INSERT INTO users.users VALUES (2, 'shifava', 'shifa@gmail.com', 'Shifa Veronica Aulia', '$2a$04$7jhZb21NcIeFT484fHlY7ePP.Cvh0qJ0NN3HxF23m9k00L1P92v/q', '+62890123456', 1, '337601', '2000-07-07', '2023-07-08 11:25:40.787218', '2023-07-08 11:25:40.787218');
-INSERT INTO users.users VALUES (4, 'shifavero', 'shifa@gmail.com', 'Shifa Veronica Aulia', '$2a$04$7jhZb21NcIeFT484fHlY7ePP.Cvh0qJ0NN3HxF23m9k00L1P92v/q', '+62890123456', 1, '337601', '2000-07-07', '2023-10-15 13:15:28.01111', '2023-10-15 13:15:28.01111');
-
-
---
--- TOC entry 3529 (class 0 OID 0)
--- Dependencies: 243
+-- TOC entry 3526 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: user_account_user_account_id_seq; Type: SEQUENCE SET; Schema: accounts; Owner: -
 --
 
@@ -3790,8 +3832,8 @@ SELECT pg_catalog.setval('accounts.user_account_user_account_id_seq', 2, true);
 
 
 --
--- TOC entry 3530 (class 0 OID 0)
--- Dependencies: 241
+-- TOC entry 3527 (class 0 OID 0)
+-- Dependencies: 225
 -- Name: passengers_passenger_id_seq; Type: SEQUENCE SET; Schema: bookings; Owner: -
 --
 
@@ -3799,8 +3841,8 @@ SELECT pg_catalog.setval('bookings.passengers_passenger_id_seq', 23, true);
 
 
 --
--- TOC entry 3531 (class 0 OID 0)
--- Dependencies: 239
+-- TOC entry 3528 (class 0 OID 0)
+-- Dependencies: 227
 -- Name: tickets_ticket_id_seq; Type: SEQUENCE SET; Schema: bookings; Owner: -
 --
 
@@ -3808,8 +3850,8 @@ SELECT pg_catalog.setval('bookings.tickets_ticket_id_seq', 13, true);
 
 
 --
--- TOC entry 3532 (class 0 OID 0)
--- Dependencies: 247
+-- TOC entry 3529 (class 0 OID 0)
+-- Dependencies: 229
 -- Name: user_roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -3817,8 +3859,8 @@ SELECT pg_catalog.setval('public.user_roles_id_seq', 1, false);
 
 
 --
--- TOC entry 3533 (class 0 OID 0)
--- Dependencies: 227
+-- TOC entry 3530 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: classes_id_seq; Type: SEQUENCE SET; Schema: travel_schedules; Owner: -
 --
 
@@ -3826,8 +3868,8 @@ SELECT pg_catalog.setval('travel_schedules.classes_id_seq', 2, true);
 
 
 --
--- TOC entry 3534 (class 0 OID 0)
--- Dependencies: 229
+-- TOC entry 3531 (class 0 OID 0)
+-- Dependencies: 234
 -- Name: seats_id_seq; Type: SEQUENCE SET; Schema: travel_schedules; Owner: -
 --
 
@@ -3835,8 +3877,8 @@ SELECT pg_catalog.setval('travel_schedules.seats_id_seq', 262, true);
 
 
 --
--- TOC entry 3535 (class 0 OID 0)
--- Dependencies: 231
+-- TOC entry 3532 (class 0 OID 0)
+-- Dependencies: 239
 -- Name: travel_costs_id_seq; Type: SEQUENCE SET; Schema: travel_schedules; Owner: -
 --
 
@@ -3844,8 +3886,8 @@ SELECT pg_catalog.setval('travel_schedules.travel_costs_id_seq', 27, true);
 
 
 --
--- TOC entry 3536 (class 0 OID 0)
--- Dependencies: 220
+-- TOC entry 3533 (class 0 OID 0)
+-- Dependencies: 241
 -- Name: travel_travel_id_seq; Type: SEQUENCE SET; Schema: travel_schedules; Owner: -
 --
 
@@ -3853,8 +3895,8 @@ SELECT pg_catalog.setval('travel_schedules.travel_travel_id_seq', 17, true);
 
 
 --
--- TOC entry 3537 (class 0 OID 0)
--- Dependencies: 225
+-- TOC entry 3534 (class 0 OID 0)
+-- Dependencies: 242
 -- Name: untitled_table_213_id_seq; Type: SEQUENCE SET; Schema: travel_schedules; Owner: -
 --
 
@@ -3862,8 +3904,8 @@ SELECT pg_catalog.setval('travel_schedules.untitled_table_213_id_seq', 9, true);
 
 
 --
--- TOC entry 3538 (class 0 OID 0)
--- Dependencies: 236
+-- TOC entry 3535 (class 0 OID 0)
+-- Dependencies: 244
 -- Name: id_types_id_type_id_seq; Type: SEQUENCE SET; Schema: users; Owner: -
 --
 
@@ -3871,8 +3913,8 @@ SELECT pg_catalog.setval('users.id_types_id_type_id_seq', 3, true);
 
 
 --
--- TOC entry 3539 (class 0 OID 0)
--- Dependencies: 250
+-- TOC entry 3536 (class 0 OID 0)
+-- Dependencies: 246
 -- Name: permissions_id_seq; Type: SEQUENCE SET; Schema: users; Owner: -
 --
 
@@ -3880,8 +3922,17 @@ SELECT pg_catalog.setval('users.permissions_id_seq', 5, true);
 
 
 --
--- TOC entry 3540 (class 0 OID 0)
--- Dependencies: 252
+-- TOC entry 3537 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: resources_id_seq; Type: SEQUENCE SET; Schema: users; Owner: -
+--
+
+SELECT pg_catalog.setval('users.resources_id_seq', 1, true);
+
+
+--
+-- TOC entry 3538 (class 0 OID 0)
+-- Dependencies: 248
 -- Name: role_permissions_id_seq; Type: SEQUENCE SET; Schema: users; Owner: -
 --
 
@@ -3889,8 +3940,17 @@ SELECT pg_catalog.setval('users.role_permissions_id_seq', 5, true);
 
 
 --
--- TOC entry 3541 (class 0 OID 0)
--- Dependencies: 245
+-- TOC entry 3539 (class 0 OID 0)
+-- Dependencies: 257
+-- Name: role_resources_permissions_id_seq; Type: SEQUENCE SET; Schema: users; Owner: -
+--
+
+SELECT pg_catalog.setval('users.role_resources_permissions_id_seq', 6, true);
+
+
+--
+-- TOC entry 3540 (class 0 OID 0)
+-- Dependencies: 250
 -- Name: roles_id_seq; Type: SEQUENCE SET; Schema: users; Owner: -
 --
 
@@ -3898,8 +3958,8 @@ SELECT pg_catalog.setval('users.roles_id_seq', 3, true);
 
 
 --
--- TOC entry 3542 (class 0 OID 0)
--- Dependencies: 248
+-- TOC entry 3541 (class 0 OID 0)
+-- Dependencies: 252
 -- Name: user_roles_id_seq; Type: SEQUENCE SET; Schema: users; Owner: -
 --
 
@@ -3907,297 +3967,17 @@ SELECT pg_catalog.setval('users.user_roles_id_seq', 2, true);
 
 
 --
--- TOC entry 3543 (class 0 OID 0)
--- Dependencies: 234
+-- TOC entry 3542 (class 0 OID 0)
+-- Dependencies: 254
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: users; Owner: -
 --
 
 SELECT pg_catalog.setval('users.users_user_id_seq', 4, true);
 
 
---
--- TOC entry 3311 (class 2606 OID 25061)
--- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: accounts; Owner: -
---
-
-ALTER TABLE ONLY accounts.user_account
-    ADD CONSTRAINT user_account_pkey PRIMARY KEY (user_account_id);
-
-
---
--- TOC entry 3307 (class 2606 OID 25000)
--- Name: bookings bookings_pkey; Type: CONSTRAINT; Schema: bookings; Owner: -
---
-
-ALTER TABLE ONLY bookings.bookings
-    ADD CONSTRAINT bookings_pkey PRIMARY KEY (booking_code);
-
-
---
--- TOC entry 3309 (class 2606 OID 25028)
--- Name: tickets tickets_pkey; Type: CONSTRAINT; Schema: bookings; Owner: -
---
-
-ALTER TABLE ONLY bookings.tickets
-    ADD CONSTRAINT tickets_pkey PRIMARY KEY (ticket_id);
-
-
---
--- TOC entry 3301 (class 2606 OID 24926)
--- Name: currencies currencies_pkey; Type: CONSTRAINT; Schema: finances; Owner: -
---
-
-ALTER TABLE ONLY finances.currencies
-    ADD CONSTRAINT currencies_pkey PRIMARY KEY (currency_code);
-
-
---
--- TOC entry 3293 (class 2606 OID 24748)
--- Name: cities cities_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.cities
-    ADD CONSTRAINT cities_pkey PRIMARY KEY (city_code);
-
-
---
--- TOC entry 3297 (class 2606 OID 24832)
--- Name: classes classes_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.classes
-    ADD CONSTRAINT classes_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3299 (class 2606 OID 24903)
--- Name: seats seats_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.seats
-    ADD CONSTRAINT seats_pkey PRIMARY KEY (seat_id);
-
-
---
--- TOC entry 3291 (class 2606 OID 24765)
--- Name: stations station_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.stations
-    ADD CONSTRAINT station_pkey PRIMARY KEY (station_code);
-
-
---
--- TOC entry 3295 (class 2606 OID 24873)
--- Name: trains trains_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.trains
-    ADD CONSTRAINT trains_pkey PRIMARY KEY (train_code);
-
-
---
--- TOC entry 3289 (class 2606 OID 24896)
--- Name: travels travels_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.travels
-    ADD CONSTRAINT travels_pkey PRIMARY KEY (travel_id);
-
-
---
--- TOC entry 3305 (class 2606 OID 24952)
--- Name: id_types id_types_pkey; Type: CONSTRAINT; Schema: users; Owner: -
---
-
-ALTER TABLE ONLY users.id_types
-    ADD CONSTRAINT id_types_pkey PRIMARY KEY (id_type_id);
-
-
---
--- TOC entry 3315 (class 2606 OID 25172)
--- Name: role_permissions role_permissions_pkey; Type: CONSTRAINT; Schema: users; Owner: -
---
-
-ALTER TABLE ONLY users.role_permissions
-    ADD CONSTRAINT role_permissions_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3313 (class 2606 OID 25119)
--- Name: roles roles_pkey; Type: CONSTRAINT; Schema: users; Owner: -
---
-
-ALTER TABLE ONLY users.roles
-    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3303 (class 2606 OID 24943)
--- Name: users users_pkey; Type: CONSTRAINT; Schema: users; Owner: -
---
-
-ALTER TABLE ONLY users.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
-
-
---
--- TOC entry 3330 (class 2606 OID 25075)
--- Name: user_account user_account_currency_code_fkey; Type: FK CONSTRAINT; Schema: accounts; Owner: -
---
-
-ALTER TABLE ONLY accounts.user_account
-    ADD CONSTRAINT user_account_currency_code_fkey FOREIGN KEY (currency_code) REFERENCES finances.currencies(currency_code) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3331 (class 2606 OID 25070)
--- Name: user_account user_account_owner_fkey; Type: FK CONSTRAINT; Schema: accounts; Owner: -
---
-
-ALTER TABLE ONLY accounts.user_account
-    ADD CONSTRAINT user_account_owner_fkey FOREIGN KEY (owner) REFERENCES users.users(user_id);
-
-
---
--- TOC entry 3327 (class 2606 OID 25037)
--- Name: passengers passengers_passenger_id_type_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
---
-
-ALTER TABLE ONLY bookings.passengers
-    ADD CONSTRAINT passengers_passenger_id_type_fkey FOREIGN KEY (passenger_id_type) REFERENCES users.id_types(id_type_id) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3328 (class 2606 OID 25047)
--- Name: passengers passengers_seat_id_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
---
-
-ALTER TABLE ONLY bookings.passengers
-    ADD CONSTRAINT passengers_seat_id_fkey FOREIGN KEY (seat_id) REFERENCES travel_schedules.seats(seat_id) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3329 (class 2606 OID 25042)
--- Name: passengers passengers_ticket_id_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
---
-
-ALTER TABLE ONLY bookings.passengers
-    ADD CONSTRAINT passengers_ticket_id_fkey FOREIGN KEY (ticket_id) REFERENCES bookings.tickets(ticket_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- TOC entry 3324 (class 2606 OID 25021)
--- Name: tickets tickets_booking_code_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
---
-
-ALTER TABLE ONLY bookings.tickets
-    ADD CONSTRAINT tickets_booking_code_fkey FOREIGN KEY (booking_code) REFERENCES bookings.bookings(booking_code) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3325 (class 2606 OID 25006)
--- Name: tickets tickets_travel_id_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
---
-
-ALTER TABLE ONLY bookings.tickets
-    ADD CONSTRAINT tickets_travel_id_fkey FOREIGN KEY (travel_id) REFERENCES travel_schedules.travels(travel_id) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3326 (class 2606 OID 25016)
--- Name: tickets tickets_user_id_fkey; Type: FK CONSTRAINT; Schema: bookings; Owner: -
---
-
-ALTER TABLE ONLY bookings.tickets
-    ADD CONSTRAINT tickets_user_id_fkey FOREIGN KEY (user_id) REFERENCES users.users(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- TOC entry 3319 (class 2606 OID 24749)
--- Name: stations station_city_code_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.stations
-    ADD CONSTRAINT station_city_code_fkey FOREIGN KEY (city_code) REFERENCES travel_schedules.cities(city_code) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3320 (class 2606 OID 24833)
--- Name: train_cars train_cars_class_id_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.train_cars
-    ADD CONSTRAINT train_cars_class_id_fkey FOREIGN KEY (class_id) REFERENCES travel_schedules.classes(id) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3321 (class 2606 OID 24874)
--- Name: train_cars train_cars_train_code_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.train_cars
-    ADD CONSTRAINT train_cars_train_code_fkey FOREIGN KEY (train_code) REFERENCES travel_schedules.trains(train_code) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3322 (class 2606 OID 24927)
--- Name: travel_fares travel_costs_currency_code_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.travel_fares
-    ADD CONSTRAINT travel_costs_currency_code_fkey FOREIGN KEY (currency_code) REFERENCES finances.currencies(currency_code) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3316 (class 2606 OID 24782)
--- Name: travels travels_departure_station_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.travels
-    ADD CONSTRAINT travels_departure_station_fkey FOREIGN KEY (departure_station) REFERENCES travel_schedules.stations(station_code) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3317 (class 2606 OID 24790)
--- Name: travels travels_destination_station_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.travels
-    ADD CONSTRAINT travels_destination_station_fkey FOREIGN KEY (destination_station) REFERENCES travel_schedules.stations(station_code) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3318 (class 2606 OID 24879)
--- Name: travels travels_train_code_fkey; Type: FK CONSTRAINT; Schema: travel_schedules; Owner: -
---
-
-ALTER TABLE ONLY travel_schedules.travels
-    ADD CONSTRAINT travels_train_code_fkey FOREIGN KEY (train_code) REFERENCES travel_schedules.trains(train_code) ON UPDATE CASCADE;
-
-
---
--- TOC entry 3332 (class 2606 OID 25146)
--- Name: user_roles user_roles_role_id_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
---
-
-ALTER TABLE ONLY users.user_roles
-    ADD CONSTRAINT user_roles_role_id_fkey FOREIGN KEY (role_id) REFERENCES users.roles(id);
-
-
---
--- TOC entry 3333 (class 2606 OID 25151)
--- Name: user_roles user_roles_user_id_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
---
-
-ALTER TABLE ONLY users.user_roles
-    ADD CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES users.users(user_id);
-
+-- Completed on 2023-12-03 14:50:23
 
 --
--- TOC entry 3323 (class 2606 OID 24953)
--- Name: users users_id_type_fkey; Type: FK CONSTRAINT; Schema: users; Owner: -
+-- PostgreSQL database dump complete
 --
 
-ALTER TABLE ONLY users.users
-    ADD CONSTRAINT users_id_type_fkey FOREIGN KEY (id_type) REFERENCES users.id_types(id_type_id) ON UPDATE CASCADE;

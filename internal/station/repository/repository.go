@@ -84,6 +84,7 @@ func (q *StationRepository) AddStation(ctx context.Context, newStation model.New
 	_, err := q.db.ExecContext(ctx, insertStatement, newStation.StationCode, newStation.Name, newStation.CityCode)
 
 	if err != nil {
+		// fmt.Println(err.Error())
 		return err
 	}
 

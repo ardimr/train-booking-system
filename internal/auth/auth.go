@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/ardimr/train-booking-system/internal/auth/model"
@@ -82,7 +83,6 @@ func (auth *AuthService) SignIn(ctx *gin.Context) {
 	newTokenPair, err := auth.GenerateNewTokenPair(user)
 
 	if err != nil {
-		fmt.Println(err.Error())
 		ctx.AbortWithError(http.StatusInternalServerError, errors.New("failed to generate new token"))
 	}
 
@@ -239,7 +239,7 @@ func (auth *AuthService) CheckPermission(userRolePermission model.RolePermission
 	for _, rolePermission := range userRolePermission.Permissions {
 		if rolePermission.ResourceName == resource {
 			for _, actionPermitted := range rolePermission.Actions {
-				if actionPermitted == action {
+				if strings.ToLower(actionPermitted) == action {
 					return true
 				}
 			}

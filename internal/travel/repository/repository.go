@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"fmt"
+	"log"
 
 	"github.com/ardimr/train-booking-system/configs/db"
 	"github.com/ardimr/train-booking-system/internal/travel/model"
@@ -162,7 +162,7 @@ func (q *TravelRepository) AddNewTravel(ctx context.Context, newTravel model.Add
 		newTravel.TrainCode).Scan(&newTravelId)
 
 	if err != nil {
-		fmt.Println("Error travelID", err.Error())
+		log.Println("Error travelID", err.Error())
 		return newTravelId, err
 	}
 
@@ -178,7 +178,7 @@ func (q *TravelRepository) AddNewTravel(ctx context.Context, newTravel model.Add
 		)
 
 		if err != nil {
-			fmt.Println("Error Travel Fare Input", err.Error())
+			log.Println("Error Travel Fare Input", err.Error())
 			return newTravelId, err
 		}
 	}

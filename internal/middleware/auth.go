@@ -59,6 +59,7 @@ func UserHasPermission(auth *auth.AuthService) gin.HandlerFunc {
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 		}
+
 		// Get user Permissions from the request header
 		var rolePermission model.RolePermission
 		rawRolePermission, ok := ctx.Get("user-permissions")
@@ -73,8 +74,6 @@ func UserHasPermission(auth *auth.AuthService) gin.HandlerFunc {
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 		}
-
-		// fmt.Println(rolePermission)
 
 		// Get action method
 		action := ActionFromMethod(ctx.Request.Method)
@@ -107,7 +106,7 @@ func UserHasPermission(auth *auth.AuthService) gin.HandlerFunc {
 	}
 }
 
-func MiddlewareSetUserPermissions(auth *auth.AuthService) gin.HandlerFunc {
+func SetUserPermission(auth *auth.AuthService) gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
 		// Get user's info from the validated token
@@ -126,7 +125,7 @@ func MiddlewareSetUserPermissions(auth *auth.AuthService) gin.HandlerFunc {
 		}
 
 		// Get user's permission from the database
-		rolePermissions, err := auth.Repository.GetRolePermissionsByUsername(ctx, userInfo.Username)
+		rolePermissions, err := auth.Repository.GetRolePermissionsByUserId(ctx, userInfo.ID)
 
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"Error": err.Error()})

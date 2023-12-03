@@ -188,7 +188,6 @@ func (q *SeatRepository) AddSeats(ctx context.Context, wagonId int64, numberOfRo
 	}
 
 	insertStatement := fmt.Sprintf("INSERT INTO travel_schedules.seats (seat_row,seat_column,train_car_id) VALUES %s", strings.Join(placeholders, ","))
-	fmt.Println(insertStatement)
 
 	tx, err := q.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelDefault})
 	if err != nil {
