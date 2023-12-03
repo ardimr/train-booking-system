@@ -53,10 +53,8 @@ func (controller *StationController) AddStation(ctx *gin.Context) {
 	err := controller.stationUseCase.AddStation(ctx, reqBody)
 
 	if err != nil {
-		if err := ctx.ShouldBindJSON(&reqBody); err != nil {
-			ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
-			return
-		}
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
 	}
 
 	ctx.Status(http.StatusAccepted)

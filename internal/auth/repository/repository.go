@@ -20,7 +20,7 @@ type IAuthRepository interface {
 	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
 	GetUserInfoByUsername(ctx context.Context, username string) (*model.UserInfo, error)
 	GetRolePermissions(ctx context.Context) ([]model.RolePermission, error)
-	GetRolePermissionsByUsername(ctx context.Context, username string) (model.RolePermission, error)
+	GetRolePermissionsByUserId(ctx context.Context, userid int64) (model.RolePermission, error)
 }
 
 type AuthRepository struct {
@@ -395,32 +395,39 @@ func (q *AuthRepository) GetRolePermissions(ctx context.Context) ([]model.RolePe
 
 }
 
-func (q *AuthRepository) GetRolePermissionsByUsername(ctx context.Context, username string) (model.RolePermission, error) {
+func (q *AuthRepository) GetRolePermissionsByUserId(ctx context.Context, userId int64) (model.RolePermission, error) {
 
 	queryStatement := `
 	WITH role_resource_permission as (
-		SELECT
-			roles.name AS role_name,
-			resources.name AS resource_name,
-			array_agg(permissions.action) AS actions
-		FROM role_resource_permissions
-		INNER JOIN roles on roles.id = role_resource_permissions.role_id
-		INNER JOIN resources on resources.id = role_resource_permissions.resource_id
-		INNER JOIN permissions on permissions.id = role_resource_permissions.permission_id
-		INNER JOIN user_roles on user_roles.role_id = roles.id
-		WHERE user_roles.username = $1
-		GROUP BY role_name, resource_name
+    SELECT
+        roles.name AS role_name,
+        resources.name AS resource_name,
+        array_agg(permissions.action) AS actions
+    FROM
+        users.role_resource_permissions
+        INNER JOIN users.roles on roles.id = users.role_resource_permissions.role_id
+        INNER JOIN users.resources on resources.id = users.role_resource_permissions.resource_id
+        INNER JOIN users.permissions on permissions.id = users.role_resource_permissions.permission_id
+        INNER JOIN users.user_roles on user_roles.role_id = users.roles.id
+    WHERE
+        users.user_roles.user_id = $1
+    GROUP BY
+        role_name,
+        resource_name
 	)
-	
 	SELECT
-		role_name,
-		json_agg(json_build_object('resource', resource_name, 'actions', actions)) AS permissions
-	FROM role_resource_permission
-	GROUP BY role_name	
+			role_name,
+			json_agg(
+					json_build_object('resource', resource_name, 'actions', actions)
+			) AS permissions
+	FROM
+			role_resource_permission
+	GROUP BY
+			role_name	
 	`
 	var rawRolePermission model.RawRolePermission
 	var rolePermission model.RolePermission
-	err := q.db.QueryRowContext(ctx, queryStatement, username).Scan(
+	err := q.db.QueryRowContext(ctx, queryStatement, userId).Scan(
 		&rawRolePermission.RoleName,
 		&rawRolePermission.Permissions,
 	)

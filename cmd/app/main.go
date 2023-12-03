@@ -163,7 +163,7 @@ func main() {
 	stationRepo := stationRepository.NewStationRepository(dbConnection)
 	stationUseCase := stationUseCase.NewStationUsecase(stationRepo)
 	stationController := stationController.NewStationController(stationUseCase)
-	stationRouter := station.NewStationRouter(stationController)
+	stationRouter := station.NewStationRouter(stationController, authService)
 	stationRouter.RegisterRoute(restServer.Group("/api"))
 
 	// Ticket Service
