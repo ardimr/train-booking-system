@@ -430,10 +430,10 @@ ALTER SEQUENCE travel_schedules.travel_travel_id_seq OWNED BY travel_schedules.t
 
 --
 -- TOC entry 242 (class 1259 OID 16463)
--- Name: untitled_table_213_id_seq; Type: SEQUENCE; Schema: travel_schedules; Owner: -
+-- Name: train_car_id_seq; Type: SEQUENCE; Schema: travel_schedules; Owner: -
 --
 
-CREATE SEQUENCE travel_schedules.untitled_table_213_id_seq
+CREATE SEQUENCE travel_schedules.train_car_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -445,10 +445,10 @@ CREATE SEQUENCE travel_schedules.untitled_table_213_id_seq
 --
 -- TOC entry 3516 (class 0 OID 0)
 -- Dependencies: 242
--- Name: untitled_table_213_id_seq; Type: SEQUENCE OWNED BY; Schema: travel_schedules; Owner: -
+-- Name: train_car_id_seq; Type: SEQUENCE OWNED BY; Schema: travel_schedules; Owner: -
 --
 
-ALTER SEQUENCE travel_schedules.untitled_table_213_id_seq OWNED BY travel_schedules.train_cars.train_car_id;
+ALTER SEQUENCE travel_schedules.train_car_id_seq OWNED BY travel_schedules.train_cars.train_car_id;
 
 
 --
@@ -781,7 +781,7 @@ ALTER TABLE ONLY travel_schedules.seats ALTER COLUMN seat_id SET DEFAULT nextval
 -- Name: train_cars train_car_id; Type: DEFAULT; Schema: travel_schedules; Owner: -
 --
 
-ALTER TABLE ONLY travel_schedules.train_cars ALTER COLUMN train_car_id SET DEFAULT nextval('travel_schedules.untitled_table_213_id_seq'::regclass);
+ALTER TABLE ONLY travel_schedules.train_cars ALTER COLUMN train_car_id SET DEFAULT nextval('travel_schedules.train_car_id_seq'::regclass);
 
 
 --
@@ -944,6 +944,13 @@ ALTER TABLE ONLY travel_schedules.stations
 ALTER TABLE ONLY travel_schedules.trains
     ADD CONSTRAINT trains_pkey PRIMARY KEY (train_code);
 
+--
+-- TOC entry 3263 (class 2606 OID 16682)
+-- Name: train_cars train_cars_pkey; Type: CONSTRAINT; Schema: travel_schedules; Owner: -
+--
+
+ALTER TABLE ONLY travel_schedules.train_cars
+    ADD CONSTRAINT train_cars_pkey PRIMARY KEY (train_car_id);
 
 --
 -- TOC entry 3325 (class 2606 OID 16543)
