@@ -26,7 +26,8 @@ const (
 	AddSeatStatement = `
 	INSERT INTO 
 		travel_schedules.seats (
-			seat_row,seat_column,
+			seat_row,
+			seat_column,
 			train_car_id
 		) 
 		VALUES %s

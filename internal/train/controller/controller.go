@@ -59,6 +59,11 @@ func (controller *TrainController) AddNewTrain(ctx *gin.Context) {
 
 	var newTrain model.Train
 
+	// Bind Request Body
+	if err := ctx.ShouldBindJSON(&newTrain); err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
+	}
 	if err := controller.trainUseCase.AddNewTrain(ctx, newTrain); err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
 		return

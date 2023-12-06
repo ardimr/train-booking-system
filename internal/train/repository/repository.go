@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
@@ -32,6 +33,33 @@ func NewTrainRepository(db db.DBInterface) *TrainRepository {
 func (q *TrainRepository) GetTrains(ctx context.Context, param model.RequestParam) ([]model.Train, error) {
 	var trains []model.Train
 
+	rows, err := q.db.QueryContext(ctx, GetTrainsStatement)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var train model.Train
+		var rawWagons []byte
+
+		err := rows.Scan(
+			&train.Code,
+			&train.Name,
+			&rawWagons,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		// Unmarshal rawWagons
+		if err := json.Unmarshal(rawWagons, &train.Wagons); err != nil {
+			return nil, err
+		}
+
+		trains = append(trains, train)
+
+	}
 	return trains, nil
 
 }
@@ -39,15 +67,29 @@ func (q *TrainRepository) GetTrains(ctx context.Context, param model.RequestPara
 func (q *TrainRepository) GetTrainByCode(ctx context.Context, trainCode string) (model.Train, error) {
 
 	var train model.Train
+	var rawWagons []byte
+	err := q.db.QueryRowContext(ctx, GetTrainByCodeStatement, trainCode).Scan(
+		&train.Code,
+		&train.Name,
+		&rawWagons,
+	)
+
+	if err != nil {
+		return train, err
+	}
+
+	if err := json.Unmarshal(rawWagons, &train.Wagons); err != nil {
+		return train, err
+	}
 
 	return train, nil
 }
 
 func (q *TrainRepository) AddTrain(ctx context.Context, newTrain model.Train) error {
 	seatColumns := []string{"A", "B", "C", "D"}
-
 	// Use transaction
 	tx, err := q.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelDefault})
+
 	if err != nil {
 		return err
 	}
@@ -58,10 +100,11 @@ func (q *TrainRepository) AddTrain(ctx context.Context, newTrain model.Train) er
 		return err
 	}
 
+	var newWagonId int64
 	// Insert wagons
 	for _, wagon := range newTrain.Wagons {
-		var newWagonId int64
-		err = tx.QueryRow(
+		err = tx.QueryRowContext(
+			ctx,
 			AddWagonStatement,
 			newTrain.Code,
 			wagon.Capacity,
@@ -100,13 +143,14 @@ func (q *TrainRepository) AddTrain(ctx context.Context, newTrain model.Train) er
 
 		inserteatsStatement := fmt.Sprintf(AddSeatStatement, strings.Join(placeholders, ","))
 
-		_, err = tx.Exec(inserteatsStatement, vals...)
+		_, err = tx.ExecContext(ctx, inserteatsStatement, vals...)
 		if err != nil {
 			tx.Rollback()
 			return err
 		}
 	}
 
+	// Commit transaction
 	if err = tx.Commit(); err != nil {
 		return err
 	}

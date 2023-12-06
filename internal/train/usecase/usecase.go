@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/ardimr/train-booking-system/internal/train/model"
 	"github.com/ardimr/train-booking-system/internal/train/repository"
@@ -47,6 +48,7 @@ func (uc *TrainUseCase) GetTrainByCode(ctx context.Context, trainCode string) (m
 }
 
 func (uc *TrainUseCase) AddNewTrain(ctx context.Context, newTrain model.Train) error {
+	fmt.Println(newTrain)
 	if err := uc.trainRepo.AddTrain(ctx, newTrain); err != nil {
 		return err
 	}

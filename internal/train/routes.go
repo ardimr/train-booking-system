@@ -28,12 +28,12 @@ func (router *TrainRouter) RegisterRouter(superRoute *gin.RouterGroup) {
 		middleware.SetUserPermission(router.auth),
 		middleware.UserHasPermission(router.auth), router.trainController.AddNewTrain)
 
-	trainRouter.PUT("/trains:/train_code",
+	trainRouter.PUT("/trains/train_code",
 		middleware.ValidateToken(router.auth),
 		middleware.SetUserPermission(router.auth),
 		middleware.UserHasPermission(router.auth), router.trainController.EditTrain)
 
-	trainRouter.DELETE("/trains:/train_code",
+	trainRouter.DELETE("/trains/:train_code",
 		middleware.ValidateToken(router.auth),
 		middleware.SetUserPermission(router.auth),
 		middleware.UserHasPermission(router.auth), router.trainController.DeleteTrain)
