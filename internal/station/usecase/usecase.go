@@ -13,6 +13,7 @@ type IStationUseCase interface {
 	EditStation(ctx context.Context, stationCode string, newStation model.NewStation) error
 	DeleteStation(ctx context.Context, stationCode string) error
 }
+
 type StationUseCase struct {
 	stationRepo repository.IStationRepository
 }

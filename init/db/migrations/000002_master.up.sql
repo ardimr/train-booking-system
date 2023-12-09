@@ -8278,6 +8278,7 @@ INSERT INTO users.permissions VALUES (5, 'edit');
 --
 
 INSERT INTO users.resources VALUES (1, 'stations');
+INSERT INTO users.resources VALUES (2, 'trains');
 
 
 --
@@ -8315,6 +8316,15 @@ INSERT INTO users.role_resource_permissions VALUES (3, 1, 1, 3);
 INSERT INTO users.role_resource_permissions VALUES (4, 1, 1, 4);
 INSERT INTO users.role_resource_permissions VALUES (5, 1, 1, 5);
 INSERT INTO users.role_resource_permissions VALUES (6, 2, 1, 1);
+INSERT INTO users.role_resource_permissions VALUES (7, 1, 2, 1);
+INSERT INTO users.role_resource_permissions VALUES (8, 1, 2, 2);
+INSERT INTO users.role_resource_permissions VALUES (9, 1, 2, 3);
+INSERT INTO users.role_resource_permissions VALUES (10, 1, 2, 4);
+INSERT INTO users.role_resource_permissions VALUES (11, 1, 2, 5);
+
+
+
+
 
 
 --
@@ -8323,8 +8333,8 @@ INSERT INTO users.role_resource_permissions VALUES (6, 2, 1, 1);
 -- Data for Name: user_roles; Type: TABLE DATA; Schema: users; Owner: -
 --
 
-INSERT INTO users.user_roles VALUES (1, 1, 2);
-INSERT INTO users.user_roles VALUES (2, 2, 1);
+INSERT INTO users.user_roles VALUES (1, 1, 1);
+INSERT INTO users.user_roles VALUES (2, 2, 2);
 
 
 --
@@ -8378,7 +8388,7 @@ SELECT pg_catalog.setval('travel_schedules.classes_id_seq', 2, true);
 -- Name: seats_id_seq; Type: SEQUENCE SET; Schema: travel_schedules; Owner: -
 --
 
-SELECT pg_catalog.setval('travel_schedules.seats_id_seq', 262, true);
+SELECT pg_catalog.setval('travel_schedules.seats_id_seq', 3382, true);
 
 
 --
@@ -8405,7 +8415,7 @@ SELECT pg_catalog.setval('travel_schedules.travel_travel_id_seq', 1800, true);
 -- Name: untitled_table_213_id_seq; Type: SEQUENCE SET; Schema: travel_schedules; Owner: -
 --
 
-SELECT pg_catalog.setval('travel_schedules.untitled_table_213_id_seq', 9, true);
+SELECT pg_catalog.setval('travel_schedules.train_car_id_seq', 61, true);
 
 
 --

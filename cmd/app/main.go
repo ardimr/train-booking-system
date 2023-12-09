@@ -24,6 +24,12 @@ import (
 	stationRepository "github.com/ardimr/train-booking-system/internal/station/repository"
 	stationUseCase "github.com/ardimr/train-booking-system/internal/station/usecase"
 
+	// Stations
+	train "github.com/ardimr/train-booking-system/internal/train"
+	trainController "github.com/ardimr/train-booking-system/internal/train/controller"
+	trainRepository "github.com/ardimr/train-booking-system/internal/train/repository"
+	trainUseCase "github.com/ardimr/train-booking-system/internal/train/usecase"
+
 	// Tickets
 	ticket "github.com/ardimr/train-booking-system/internal/ticket"
 	ticketController "github.com/ardimr/train-booking-system/internal/ticket/controller"
@@ -141,6 +147,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+
 	authRepo := authRepository.NewPostgresQuerier(dbConnection)
 	authService := auth.NewAuthService(
 		os.Getenv("JWT_ISSUER"),
@@ -165,6 +172,13 @@ func main() {
 	stationController := stationController.NewStationController(stationUseCase)
 	stationRouter := station.NewStationRouter(stationController, authService)
 	stationRouter.RegisterRoute(restServer.Group("/api"))
+
+	// Train Service
+	trainRepo := trainRepository.NewTrainRepository(dbConnection)
+	trainUseCase := trainUseCase.NewTrainUseCase(trainRepo)
+	trainController := trainController.NewTrainController(trainUseCase)
+	trainRouter := train.NewTrainRouter(trainController, authService)
+	trainRouter.RegisterRouter(restServer.Group("/api"))
 
 	// Ticket Service
 	ticketRepo := ticketRepository.NewTicketRepository(dbConnection)
@@ -202,11 +216,6 @@ func main() {
 	wagonRouter := wagon.NewWagonRouter(wagonController)
 	wagonRouter.RegisterRoute(restServer.Group("/api"))
 
-	// Setup Router
-	// tbsController := controller.NewController(repository.NewPostgresRepository(dbConnection), repository.NewRedisRepository(redisClient))
-	// tbsRouter := router.NewRouter(tbsController)
-
-	// tbsRouter.AddRoute(restServer.Group("/api"))
 	restServer.Run("0.0.0.0:8080")
 
 }
