@@ -109,5 +109,5 @@ func (controller *TrainController) DeleteTrain(ctx *gin.Context) {
 		return
 	}
 
-	ctx.Status(http.StatusAccepted)
+	ctx.Status(http.StatusNoContent)
 }

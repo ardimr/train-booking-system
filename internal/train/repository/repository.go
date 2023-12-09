@@ -164,5 +164,30 @@ func (q *TrainRepository) UpdateTrain(ctx context.Context, trainCode string, new
 }
 
 func (q *TrainRepository) DeleteTrain(ctx context.Context, trainCode string) error {
+
+	tx, err := q.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelDefault})
+
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, DeleteStationCommand, trainCode)
+
+	if err != nil {
+		// Rollback
+		if err := tx.Rollback(); err != nil {
+			log.Println(err)
+		}
+		return err
+	}
+
+	if err := tx.Commit(); err != nil {
+		// Rollback
+		if err := tx.Rollback(); err != nil {
+			log.Println(err)
+		}
+		return err
+	}
+
 	return nil
 }

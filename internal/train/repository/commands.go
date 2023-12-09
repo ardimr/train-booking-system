@@ -32,4 +32,11 @@ const (
 		) 
 		VALUES %s
 	`
+
+	DeleteStationCommand = `
+	DELETE FROM
+    travel_schedules.trains
+	WHERE
+			trains.train_code = $1
+	`
 )
