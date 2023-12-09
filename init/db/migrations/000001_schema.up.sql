@@ -1120,7 +1120,7 @@ ALTER TABLE ONLY travel_schedules.train_cars
 --
 
 ALTER TABLE ONLY travel_schedules.train_cars
-    ADD CONSTRAINT train_cars_train_code_fkey FOREIGN KEY (train_code) REFERENCES travel_schedules.trains(train_code) ON UPDATE CASCADE;
+    ADD CONSTRAINT train_cars_train_code_fkey FOREIGN KEY (train_code) REFERENCES travel_schedules.trains(train_code) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
