@@ -43,7 +43,17 @@ services:
       - type: bind
         source: ./init/redis.conf
         target: /usr/local/etc/redis/redis.conf
-
+  messageQueue:
+    image: rabbitmq:management
+    container_name: messageQueue
+    environment:
+      - RABBITMQ_DEFAULT_USER=ardimr
+      - RABBITMQ_DEFAULT_PASS=ardimr123
+    networks:
+      - train-booking-system
+    ports:
+      - "5672:5672"
+      - "15672:15672"
   backend:
     image: ardimr/train-booking-system:latest
     container_name: backend
