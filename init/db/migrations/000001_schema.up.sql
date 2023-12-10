@@ -709,7 +709,8 @@ CREATE TABLE users.users (
     id_number character varying,
     born_date date,
     created_at timestamp without time zone DEFAULT now(),
-    updated_at timestamp without time zone DEFAULT now()
+    updated_at timestamp without time zone DEFAULT now(),
+    is_verified boolean
 );
 
 

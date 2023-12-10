@@ -44,8 +44,8 @@ INSERT INTO users.id_types VALUES (3, 'Paspor');
 -- Data for Name: users; Type: TABLE DATA; Schema: users; Owner: -
 --
 
-INSERT INTO users.users VALUES (1, 'admin', 'admin@tbs.com', 'Administrator', '$2y$04$tVLwk.SSd.khyfDk3DympuTCzRAp4k3qIIg2.wox8jFIM/0IHGIXO', '+62890123456', 1, '', '1999-11-04', '2023-07-08 11:16:21.472678', '2023-07-08 11:16:21.472678');
-INSERT INTO users.users VALUES (2, 'ardimr', 'ardi@gmail.com', 'Rizky Ardi Maulana', '$2a$04$piwEb1UECg22/dTEjED6puzMxfbkdkzwnrxbpesF.WHQQnxHoEZXC', '+628986983930', 1, '337602', '1999-11-04', '2023-07-08 11:16:21.472678', '2023-07-08 11:16:21.472678');
+INSERT INTO users.users VALUES (1, 'admin', 'admin@tbs.com', 'Administrator', '$2y$04$tVLwk.SSd.khyfDk3DympuTCzRAp4k3qIIg2.wox8jFIM/0IHGIXO', '+62890123456', 1, '', '1999-11-04', '2023-07-08 11:16:21.472678', '2023-07-08 11:16:21.472678', true);
+INSERT INTO users.users VALUES (2, 'ardimr', 'ardi@gmail.com', 'Rizky Ardi Maulana', '$2a$04$piwEb1UECg22/dTEjED6puzMxfbkdkzwnrxbpesF.WHQQnxHoEZXC', '+628986983930', 1, '337602', '1999-11-04', '2023-07-08 11:16:21.472678', '2023-07-08 11:16:21.472678', true);
 
 
 --
