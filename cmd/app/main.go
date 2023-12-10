@@ -4,13 +4,16 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/ardimr/train-booking-system/configs/db"
+	queueclient "github.com/ardimr/train-booking-system/configs/queue_client"
 	"github.com/ardimr/train-booking-system/configs/redis"
 
 	// Auth
 	"github.com/ardimr/train-booking-system/internal/auth"
 	authRepository "github.com/ardimr/train-booking-system/internal/auth/repository"
+	authUseCase "github.com/ardimr/train-booking-system/internal/auth/usecase"
 
 	// Seats
 	seat "github.com/ardimr/train-booking-system/internal/seat"
@@ -106,6 +109,48 @@ func main() {
 		log.Fatalln("Failed to connect redis")
 	}
 
+	// Setup RabbitMQ Client
+	rabbitMQPort, _ := strconv.Atoi(os.Getenv("RABBITMQ_PORT"))
+	rabbitMQ := queueclient.NewRabbitMQ(queueclient.RabbitConfig{
+		Protocol:       os.Getenv("RABBITMQ_PROTOCOL"),
+		Username:       os.Getenv("RABBITMQ_USERNAME"),
+		Password:       os.Getenv("RABBITMQ_PASSWORD"),
+		Host:           os.Getenv("RABBITMQ_HOST"),
+		Port:           rabbitMQPort,
+		VHost:          os.Getenv("RABBITMQ_VHOST"),
+		ConnectionName: os.Getenv("RABBITMQ_CONNECTION_NAME"),
+	})
+
+	if err := rabbitMQ.Connect(); err != nil {
+		log.Fatalln(err)
+	}
+	log.Println("Connected to RabbitMQ")
+	defer rabbitMQ.Close()
+
+	// Setup Publisher
+	publisher := queueclient.NewPublisher(
+		queueclient.PublisherConfig{
+			ExchangeName:   "",
+			ExchangeType:   "",
+			RoutingKey:     "",
+			PuublisherName: os.Getenv("RABBITMQ_PUBLISHER_NAME"),
+			PublisherCount: 1,
+			PrefetchCount:  1,
+			Reconnect: struct {
+				MaxAttempt int
+				Interval   time.Duration
+			}{
+				MaxAttempt: 10,
+				Interval:   1 * time.Second,
+			},
+		},
+		rabbitMQ,
+	)
+
+	err = publisher.QueueDeclare(os.Getenv("RABBITMQ_QUEUE_NAME"))
+	if err != nil {
+		log.Fatalln(err)
+	}
 	// Setup Cloud Storage
 	// var cloudClient cloudstorage.CloudStorageInterface
 
@@ -149,11 +194,15 @@ func main() {
 	}
 
 	authRepo := authRepository.NewPostgresQuerier(dbConnection)
+	authCache := authRepository.NewAuthRedisRepository(redisClient)
+	authUseCase := authUseCase.NewAuthUseCase(authRepo, authCache, publisher)
 	authService := auth.NewAuthService(
 		os.Getenv("JWT_ISSUER"),
 		int64(expiresAt),
 		[]byte(os.Getenv("JWT_SIGNING_KEY")),
+		authUseCase,
 		authRepo,
+		authCache,
 	)
 	authRouter := auth.NewSeatRouter(authService)
 	authRouter.RegisterRoute(restServer.Group("/api"))
