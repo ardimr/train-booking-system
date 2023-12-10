@@ -12,6 +12,7 @@ import (
 type IAuthRepository interface {
 	GetUsers(ctx context.Context) ([]model.User, error)
 	GetUserById(ctx context.Context, id int64) (*model.User, error)
+	GetUserByEmail(ctx context.Context, email string) (*model.User, error)
 	AddNewUser(ctx context.Context, newUser model.NewUser) (int64, error)
 	AddUserRole(ctx context.Context, userRole model.UserRole) (int64, error)
 	UpdateUser(ctx context.Context, user model.User) (int64, error)
@@ -221,6 +222,27 @@ func (q *AuthRepository) GetUserById(ctx context.Context, id int64) (*model.User
 	WHERE id=$1
 	`
 	err := q.db.QueryRowContext(ctx, queryStatement, id).Scan(
+		&user.ID,
+		&user.FullName,
+	)
+
+	if err != nil {
+		return nil, sql.ErrNoRows
+	}
+
+	return &user, nil
+}
+
+func (q *AuthRepository) GetUserByEmail(ctx context.Context, email string) (*model.User, error) {
+	var user model.User
+
+	queryStatement := `
+	SELECT
+		*
+	FROM public.users
+	WHERE email=$1
+	`
+	err := q.db.QueryRowContext(ctx, queryStatement, email).Scan(
 		&user.ID,
 		&user.FullName,
 	)

@@ -3,14 +3,15 @@ package model
 import "time"
 
 type User struct {
-	ID        int64     `json:"id,omitempty"`
-	FullName  string    `json:"fullname"`
-	Username  string    `json:"username,omitempty"`
-	Password  string    `json:"password,omitempty"`
-	Email     string    `json:"email"`
-	Role      string    `json:"role,omitempty"`
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	ID         int64     `json:"id,omitempty"`
+	FullName   string    `json:"fullname"`
+	Username   string    `json:"username,omitempty"`
+	Password   string    `json:"password,omitempty"`
+	Email      string    `json:"email"`
+	Role       string    `json:"role,omitempty"`
+	CreatedAt  time.Time `json:"created_at,omitempty"`
+	UpdatedAt  time.Time `json:"updated_at,omitempty"`
+	IsVerified bool      `json:"is_verified,omitempty"`
 }
 
 type UserInfo struct {

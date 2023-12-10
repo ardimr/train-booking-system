@@ -11,6 +11,9 @@ import (
 
 	"github.com/ardimr/train-booking-system/internal/auth/model"
 	"github.com/ardimr/train-booking-system/internal/auth/repository"
+	"github.com/ardimr/train-booking-system/internal/auth/usecase"
+	"github.com/ardimr/train-booking-system/internal/exception"
+	"github.com/ardimr/train-booking-system/internal/utils"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 
@@ -35,7 +38,9 @@ type AuthService struct {
 	Issuer     string
 	ExpiresAt  int64
 	SigningKey []byte
+	useCase    usecase.IAuthUseCase
 	Repository repository.IAuthRepository
+	Cache      repository.IAuthRedisRepository
 }
 
 type TokenPair struct {
@@ -43,12 +48,14 @@ type TokenPair struct {
 	RefreshToken string
 }
 
-func NewAuthService(issuer string, expiresAt int64, signingKey []byte, querier repository.IAuthRepository) *AuthService {
+func NewAuthService(issuer string, expiresAt int64, signingKey []byte, useCase usecase.IAuthUseCase, querier repository.IAuthRepository, cache repository.IAuthRedisRepository) *AuthService {
 	return &AuthService{
 		Issuer:     issuer,
 		ExpiresAt:  expiresAt,
 		SigningKey: signingKey,
+		useCase:    useCase,
 		Repository: querier,
+		Cache:      cache,
 	}
 }
 
@@ -118,6 +125,32 @@ func (auth *AuthService) SignUp(ctx *gin.Context) {
 
 	newUser.Password = hashedPassword
 
+	// Generate OTP
+	otp, secret, err := utils.GenerateOTP(
+		"train.booking.system",
+		newUser.Email,
+		300,
+	)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+	}
+
+	// User OTP Verification data
+	userOTPVerification := model.UserOTPVerification{
+		OTPCode: otp,
+		Secret:  secret,
+		Email:   newUser.Email,
+	}
+
+	// Store temporary in database for 5 minutes
+	expiration := time.Duration(5) * time.Minute
+
+	err = auth.Cache.SetUserOTP(ctx, otp, userOTPVerification, expiration)
+	if err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+	}
+
 	// Add new user to the datasbase
 	newId, err := auth.Repository.AddNewUser(ctx, newUser)
 
@@ -136,10 +169,47 @@ func (auth *AuthService) SignUp(ctx *gin.Context) {
 	)
 }
 
-func (auth *AuthService) RefreshToken(ctx *gin.Context) {
-	// Validate the refresh token
+func (auth *AuthService) RequestOTP(ctx *gin.Context) {
+	var reqBody model.UserOTPRequest
+	if err := ctx.ShouldBindJSON(&reqBody); err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
+	}
 
-	// Generate new token pair
+	err := auth.useCase.RequestNewOTP(ctx, reqBody.Email)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
+	}
+
+	ctx.Status(http.StatusAccepted)
+}
+
+func (auth *AuthService) VerifyOTP(ctx *gin.Context) {
+	// var reqBody model.UserOTPVerification
+	var reqParam model.UserOTPVerificationParam
+	if err := ctx.ShouldBindQuery(&reqParam); err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
+	}
+
+	email, err := auth.useCase.VerifyOTP(ctx, reqParam.OTPCode)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
+	}
+
+	// OTP is verified, Mark the user's email address as verified in the database
+
+	err = auth.useCase.UpdateEmailVerificationStatus(ctx, email)
+	if err != nil {
+		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+		return
+	}
+
+	ctx.Status(http.StatusOK)
 }
 
 func (auth *AuthService) GenerateNewToken(user *model.UserInfo) (string, error) {
@@ -257,4 +327,12 @@ func HashPassword(password string) (string, error) {
 	hashedPasswordBytes, err := bcrypt.GenerateFromPassword(passwordBytes, bcrypt.MinCost)
 
 	return string(hashedPasswordBytes), err
+}
+
+func (auth *AuthService) RefreshToken(ctx *gin.Context) {
+	// Validate the refresh token
+
+	// Generate new token pair
+
+	ctx.Status(http.StatusOK)
 }
