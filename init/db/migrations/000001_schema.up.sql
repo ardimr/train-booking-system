@@ -1211,7 +1211,7 @@ ALTER TABLE ONLY users.user_roles
 --
 
 ALTER TABLE ONLY users.user_roles
-    ADD CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES users.users(user_id);
+    ADD CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES users.users(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
