@@ -3,7 +3,7 @@ package model
 import "time"
 
 type User struct {
-	ID         int64     `json:"id,omitempty"`
+	ID         int64     `json:"user_id,omitempty"`
 	FullName   string    `json:"fullname"`
 	Username   string    `json:"username,omitempty"`
 	Password   string    `json:"password,omitempty"`
@@ -50,4 +50,5 @@ type NewUser struct {
 	PhoneNumber string `json:"phone_number"`
 	IDtype      int64  `json:"id_type"`
 	IDNumber    string `json:"id_number"`
+	IsVerified  bool   `json:"is_verified"`
 }

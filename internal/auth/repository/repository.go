@@ -11,15 +11,15 @@ import (
 
 type IAuthRepository interface {
 	GetUsers(ctx context.Context) ([]model.User, error)
-	GetUserById(ctx context.Context, id int64) (*model.User, error)
-	GetUserByEmail(ctx context.Context, email string) (*model.User, error)
+	GetUserById(ctx context.Context, id int64) (model.User, error)
+	GetUserByEmail(ctx context.Context, email string) (model.User, error)
 	AddNewUser(ctx context.Context, newUser model.NewUser) (int64, error)
 	AddUserRole(ctx context.Context, userRole model.UserRole) (int64, error)
 	UpdateUser(ctx context.Context, user model.User) (int64, error)
 	DeleteUser(ctx context.Context, id int64) error
 	GetUserPasswordByUsername(ctx context.Context, username string) (string, error)
-	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
-	GetUserInfoByUsername(ctx context.Context, username string) (*model.UserInfo, error)
+	GetUserByUsername(ctx context.Context, username string) (model.User, error)
+	GetUserInfoByUsername(ctx context.Context, username string) (model.UserInfo, error)
 	GetRolePermissions(ctx context.Context) ([]model.RolePermission, error)
 	GetRolePermissionsByUserId(ctx context.Context, userid int64) (model.RolePermission, error)
 }
@@ -55,7 +55,7 @@ func (q *AuthRepository) GetUserPasswordByUsername(ctx context.Context, username
 
 }
 
-func (q *AuthRepository) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
+func (q *AuthRepository) GetUserByUsername(ctx context.Context, username string) (model.User, error) {
 	var user model.User
 
 	queryStatement := `
@@ -77,19 +77,19 @@ func (q *AuthRepository) GetUserByUsername(ctx context.Context, username string)
 	)
 
 	if err != nil {
-		return nil, err
+		return user, err
 	}
 
-	return &user, nil
+	return user, nil
 }
 
-func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username string) (*model.UserInfo, error) {
+func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username string) (model.UserInfo, error) {
 	var user model.UserInfo
 
 	tx, err := q.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelDefault})
 
 	if err != nil {
-		return nil, err
+		return user, err
 	}
 
 	queryStatement := `
@@ -99,7 +99,7 @@ func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username str
 		fullname,
 		password,
 		email
-	FROM "users"."users"
+	FROM users.users
 	WHERE username=$1
 	`
 	err = tx.QueryRowContext(ctx, queryStatement, username).Scan(
@@ -112,7 +112,7 @@ func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username str
 
 	if err != nil {
 		tx.Rollback()
-		return nil, err
+		return user, err
 	}
 
 	queryStatement = `
@@ -131,7 +131,7 @@ func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username str
 
 	if err != nil {
 		tx.Rollback()
-		return nil, err
+		return user, err
 	}
 
 	// queryStatement = `
@@ -166,7 +166,7 @@ func (q *AuthRepository) GetUserInfoByUsername(ctx context.Context, username str
 	// }
 
 	tx.Commit()
-	return &user, nil
+	return user, nil
 }
 
 func (q *AuthRepository) GetUsers(ctx context.Context) ([]model.User, error) {
@@ -212,7 +212,7 @@ func (q *AuthRepository) GetUsers(ctx context.Context) ([]model.User, error) {
 	return users, nil
 }
 
-func (q *AuthRepository) GetUserById(ctx context.Context, id int64) (*model.User, error) {
+func (q *AuthRepository) GetUserById(ctx context.Context, id int64) (model.User, error) {
 	var user model.User
 
 	queryStatement := `
@@ -227,31 +227,40 @@ func (q *AuthRepository) GetUserById(ctx context.Context, id int64) (*model.User
 	)
 
 	if err != nil {
-		return nil, sql.ErrNoRows
+		return user, sql.ErrNoRows
 	}
 
-	return &user, nil
+	return user, nil
 }
 
-func (q *AuthRepository) GetUserByEmail(ctx context.Context, email string) (*model.User, error) {
+func (q *AuthRepository) GetUserByEmail(ctx context.Context, email string) (model.User, error) {
 	var user model.User
 
 	queryStatement := `
 	SELECT
-		*
-	FROM public.users
-	WHERE email=$1
+		user_id,
+		fullname,
+		username,
+		password,
+		email,
+		is_verified
+	FROM users.users
+	WHERE users.email=$1
 	`
 	err := q.db.QueryRowContext(ctx, queryStatement, email).Scan(
 		&user.ID,
 		&user.FullName,
+		&user.Username,
+		&user.Password,
+		&user.Email,
+		&user.IsVerified,
 	)
 
 	if err != nil {
-		return nil, sql.ErrNoRows
+		return user, sql.ErrNoRows
 	}
 
-	return &user, nil
+	return user, nil
 }
 
 func (q *AuthRepository) AddNewUser(ctx context.Context, newUser model.NewUser) (int64, error) {
@@ -266,7 +275,7 @@ func (q *AuthRepository) AddNewUser(ctx context.Context, newUser model.NewUser) 
 
 	sqlStatement := `
 	INSERT INTO users.users 
-		(fullname, username, password, email) VALUES ($1,$2,$3,$4) RETURNING user_id
+		(fullname, username, password, email, is_Verified) VALUES ($1,$2,$3,$4,$5) RETURNING user_id
 	`
 
 	err = tx.QueryRowContext(ctx,
@@ -274,7 +283,8 @@ func (q *AuthRepository) AddNewUser(ctx context.Context, newUser model.NewUser) 
 		newUser.FullName,
 		newUser.Username,
 		newUser.Password,
-		newUser.Email).Scan(&newId)
+		newUser.Email,
+		newUser.IsVerified).Scan(&newId)
 
 	if err != nil {
 		tx.Rollback()
@@ -323,10 +333,25 @@ func (q *AuthRepository) AddUserRole(ctx context.Context, userRole model.UserRol
 func (q *AuthRepository) UpdateUser(ctx context.Context, user model.User) (int64, error) {
 
 	sqlStatement := `
-	UPDATE public.users SET name=$2 WHERE id=$1
+	UPDATE users.users 
+	SET 
+		fullname=$2,
+		username=$3,
+		password=$4,
+		email=$5,
+		is_verified=$6
+	WHERE users.user_id=$1
 	`
 
-	res, err := q.db.ExecContext(ctx, sqlStatement, user.ID, user.FullName)
+	res, err := q.db.ExecContext(
+		ctx,
+		sqlStatement,
+		user.ID,
+		user.FullName,
+		user.Username,
+		user.Password,
+		user.Email,
+		user.IsVerified)
 
 	if err != nil {
 		return 0, err

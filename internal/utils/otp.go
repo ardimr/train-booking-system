@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/pquerna/otp"
@@ -27,17 +27,14 @@ func GenerateOTP(issuer, userEmail string, period int) (string, string, error) {
 }
 
 func VerifyOTP(userSecret string, otpCode string) bool {
-	fmt.Println(otpCode, userSecret)
-	passcode, err := totp.ValidateCustom(otpCode, userSecret, time.Now(), totp.ValidateOpts{
+	_, err := totp.ValidateCustom(otpCode, userSecret, time.Now(), totp.ValidateOpts{
 		Period: 300,
 		Digits: otp.DigitsSix,
 	})
 
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 	}
-
-	fmt.Println(passcode)
 
 	return totp.Validate(otpCode, userSecret)
 }

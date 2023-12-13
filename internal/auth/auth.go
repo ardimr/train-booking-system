@@ -13,7 +13,6 @@ import (
 	"github.com/ardimr/train-booking-system/internal/auth/repository"
 	"github.com/ardimr/train-booking-system/internal/auth/usecase"
 	"github.com/ardimr/train-booking-system/internal/exception"
-	"github.com/ardimr/train-booking-system/internal/utils"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 
@@ -111,55 +110,9 @@ func (auth *AuthService) SignUp(ctx *gin.Context) {
 		return
 	}
 
-	// Generate hashed password
-	hashedPassword, err := HashPassword(newUser.Password)
-
-	if err != nil {
-		ctx.AbortWithStatusJSON(
-			http.StatusInternalServerError,
-			gin.H{"Error": err.Error()},
-		)
-
-		return
-	}
-
-	newUser.Password = hashedPassword
-
-	// Generate OTP
-	otp, secret, err := utils.GenerateOTP(
-		"train.booking.system",
-		newUser.Email,
-		300,
-	)
-
+	newId, err := auth.useCase.RegisterUser(ctx, newUser)
 	if err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
-	}
-
-	// User OTP Verification data
-	userOTPVerification := model.UserOTPVerification{
-		OTPCode: otp,
-		Secret:  secret,
-		Email:   newUser.Email,
-	}
-
-	// Store temporary in database for 5 minutes
-	expiration := time.Duration(5) * time.Minute
-
-	err = auth.Cache.SetUserOTP(ctx, otp, userOTPVerification, expiration)
-	if err != nil {
-		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
-	}
-
-	// Add new user to the datasbase
-	newId, err := auth.Repository.AddNewUser(ctx, newUser)
-
-	if err != nil {
-
-		ctx.AbortWithStatusJSON(
-			http.StatusInternalServerError,
-			gin.H{"Error": err.Error()},
-		)
 		return
 	}
 
@@ -194,7 +147,7 @@ func (auth *AuthService) VerifyOTP(ctx *gin.Context) {
 		return
 	}
 
-	email, err := auth.useCase.VerifyOTP(ctx, reqParam.OTPCode)
+	err := auth.useCase.VerifyOTP(ctx, reqParam.OTPCode)
 
 	if err != nil {
 		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
@@ -202,14 +155,13 @@ func (auth *AuthService) VerifyOTP(ctx *gin.Context) {
 	}
 
 	// OTP is verified, Mark the user's email address as verified in the database
+	// err = auth.useCase.UpdateEmailVerificationStatus(ctx, email)
+	// if err != nil {
+	// 	ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
+	// 	return
+	// }
 
-	err = auth.useCase.UpdateEmailVerificationStatus(ctx, email)
-	if err != nil {
-		ctx.AbortWithStatusJSON(exception.ErrorResponse(err))
-		return
-	}
-
-	ctx.Status(http.StatusOK)
+	ctx.Redirect(http.StatusPermanentRedirect, "https://www.google.com")
 }
 
 func (auth *AuthService) GenerateNewToken(user *model.UserInfo) (string, error) {
@@ -237,7 +189,7 @@ func (auth *AuthService) GenerateNewToken(user *model.UserInfo) (string, error) 
 	return signedToken, nil
 }
 
-func (auth *AuthService) GenerateNewTokenPair(user *model.UserInfo) (TokenPair, error) {
+func (auth *AuthService) GenerateNewTokenPair(user model.UserInfo) (TokenPair, error) {
 	var tokenPair TokenPair
 	// log.Println("Exp: ", auth.ExpiresAt)
 	claims := MyClaims{
@@ -317,16 +269,6 @@ func (auth *AuthService) CheckPermission(userRolePermission model.RolePermission
 	}
 
 	return false
-}
-
-func HashPassword(password string) (string, error) {
-	// Convert password string to slice of byte
-	passwordBytes := []byte(password)
-
-	// Hash password with bycript's min cost
-	hashedPasswordBytes, err := bcrypt.GenerateFromPassword(passwordBytes, bcrypt.MinCost)
-
-	return string(hashedPasswordBytes), err
 }
 
 func (auth *AuthService) RefreshToken(ctx *gin.Context) {

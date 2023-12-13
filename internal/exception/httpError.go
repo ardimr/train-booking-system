@@ -35,6 +35,9 @@ func ParseError(err error) HttpError {
 		return NewHttpError(http.StatusBadRequest, "Invalid param", err)
 	case strings.Contains(strings.ToLower(err.Error()), "seat"):
 		return NewHttpError(http.StatusConflict, "Seat is Not Available", err)
+	case strings.Contains(strings.ToLower(err.Error()), "otp."):
+		return NewHttpError(http.StatusBadRequest, "OTP is not valid", err)
+
 	default:
 		return NewHttpError(http.StatusInternalServerError, "Internal Server Error", err)
 	}

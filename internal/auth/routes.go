@@ -18,4 +18,7 @@ func (au *AuthRouter) RegisterRoute(superRoute *gin.RouterGroup) {
 	authRouter := superRoute.Group("/auth")
 	authRouter.POST("/signin", au.auth.SignIn)
 	authRouter.POST("/signup", au.auth.SignUp)
+
+	authRouter.GET("/verify-otp", au.auth.VerifyOTP)
+	authRouter.POST("/request-otp", au.auth.RequestOTP)
 }
